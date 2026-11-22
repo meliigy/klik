@@ -13,7 +13,15 @@ Figma file: [Klik](https://www.figma.com/design/QWop4fDpniRYeC6xhK9Zh7/Klik?node
 
 Changes that apply everywhere (colors, fonts, spacing, buttons) should be made once, and the matching CSS variables in `index.html` (`:root`) get updated so every screen follows.
 
-## Frame map
+## Implemented from Figma
+
+| Figma node | Screen | Notes |
+|---|---|---|
+| [2017:6706](https://www.figma.com/design/QWop4fDpniRYeC6xhK9Zh7/Klik?node-id=2017-6706) | New event, step 1 Details | Dark split layout, Manrope, stamp picker. Steps 2 and 3 use the same layout until they're designed. |
+
+Assets exported from this frame are in `assets/new-event/`.
+
+## Frame map (original code captures)
 
 All frames are 1512 px wide desktop captures. They are currently named "Code - /" in Figma.
 
