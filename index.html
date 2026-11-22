@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KLIK — One album for every photo from the day</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#E8EDF3; --paper-2:#F6F8FB; --white:#fff;
+  --ink:#16213E; --ink-2:#4A5677; --ink-3:#8590AB;
+  --red:#C8102E; --blue:#2B59C3; --night:#0F1730; --night-2:#18224A;
+  --line:rgba(22,33,62,.14); --line-2:rgba(22,33,62,.08);
+  --gold:#F2B705;
+  --display:"Big Shoulders Display",Impact,sans-serif;
+  --sans:"Instrument Sans",system-ui,sans-serif;
+  --hand:"Caveat",cursive;
+  --airmail:repeating-linear-gradient(-45deg,var(--red) 0 12px,transparent 12px 20px,var(--blue) 20px 32px,transparent 32px 40px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100vh}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0}
+a{color:inherit}
+img{display:block;max-width:100%}
+:focus-visible{outline:2.5px solid var(--blue);outline-offset:2px;border-radius:4px}
+.wrap{width:min(1180px,100% - 48px);margin-inline:auto}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* ---------- type ---------- */
+h1,h2,h3{font-family:var(--display);font-weight:800;line-height:.95;letter-spacing:-.005em}
+.h-xl{font-size:clamp(56px,8vw,104px)}
+.h-l{font-size:clamp(40px,5vw,64px)}
+.h-m{font-size:clamp(30px,3.2vw,40px)}
+.h-s{font-size:26px}
+.lead{font-size:19px;color:var(--ink-2);max-width:54ch}
+.muted{color:var(--ink-2)}
+.small{font-size:14px}
+.tiny{font-size:12.5px;color:var(--ink-3)}
+
+/* ---------- buttons & fields ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:10px;font-weight:600;font-size:15px;
+     border:1.5px solid var(--ink);transition:background .15s,color .15s,transform .15s;text-decoration:none;white-space:nowrap}
+.btn:hover{transform:translateY(-1px)}
+.btn.primary{background:var(--ink);color:var(--paper-2)}
+.btn.primary:hover{background:#0c1530}
+.btn.red{background:var(--red);border-color:var(--red);color:#fff}
+.btn.ghost{border-color:var(--line);background:var(--white)}
+.btn.ghost:hover{border-color:var(--ink)}
+.btn.sm{padding:8px 14px;font-size:14px;border-radius:8px}
+.btn.lg{padding:15px 26px;font-size:16px}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.link{background:none;border:0;padding:0;font-weight:600;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1.5px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:18px}
+.field label{font-weight:600;font-size:14px}
+.field .help{font-size:13px;color:var(--ink-3)}
+.input{width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid var(--line);background:var(--white);transition:border-color .15s}
+.input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(43,89,195,.15)}
+textarea.input{resize:vertical;min-height:84px}
+.err{color:var(--red);font-size:13.5px;margin-top:4px}
+
+/* ---------- signature: stamp, airmail, postmark ---------- */
+.stamp{--r:5px;--g:14px;background:var(--white);padding:9px;
+  -webkit-mask:radial-gradient(circle var(--r),#0000 97%,#000) calc(var(--g)/-2) calc(var(--g)/-2)/var(--g) var(--g) round,linear-gradient(#000 0 0) content-box;
+  mask:radial-gradient(circle var(--r),#0000 97%,#000) calc(var(--g)/-2) calc(var(--g)/-2)/var(--g) var(--g) round,linear-gradient(#000 0 0) content-box;
+  filter:drop-shadow(0 6px 10px rgba(22,33,62,.18))}
+.stamp-shadow{filter:drop-shadow(0 8px 14px rgba(22,33,62,.2))}
+.stamp > .inner{position:relative;overflow:hidden;background:var(--paper)}
+.stamp .denom{position:absolute;top:6px;left:8px;font-family:var(--display);font-weight:800;font-size:20px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.35);line-height:1}
+.airmail{position:relative;background:var(--paper-2);border-radius:8px;padding:10px}
+.airmail::before{content:"";position:absolute;inset:0;border-radius:8px;background:var(--airmail);z-index:0}
+.airmail > *{position:relative;z-index:1}
+.airmail > .card-in{background:var(--paper-2);border-radius:3px}
+.postmark{color:var(--ink);opacity:.82}
+
+/* ---------- site nav ---------- */
+.nav{position:sticky;top:0;z-index:30;background:rgba(232,237,243,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line-2)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:68px;gap:20px}
+.logo{display:inline-flex;align-items:center;gap:10px;font-family:var(--display);font-weight:900;font-size:30px;letter-spacing:.03em;text-decoration:none;line-height:1}
+.logo .mark{width:30px;height:34px;--r:3px;--g:8px;padding:5px;background:var(--red)}
+.logo .mark .inner{background:var(--red);height:100%;display:grid;place-items:center;color:#fff;font-size:15px}
+.nav-links{display:flex;align-items:center;gap:26px;font-weight:500;font-size:15px}
+.nav-links button,.nav-links a{color:var(--ink-2);text-decoration:none}
+.nav-links button:hover,.nav-links a:hover{color:var(--ink)}
+.nav-right{display:flex;gap:10px;align-items:center}
+@media (max-width:820px){.nav-links{display:none}}
+@media (max-width:560px){.nav-right .btn.ghost{display:none}.logo{font-size:26px}}
+
+/* ---------- landing ---------- */
+.hero{padding:64px 0 90px}
+.hero .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center}
+.hero h1{margin-bottom:22px}
+.hero .lead{margin-bottom:30px}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.postcard{position:relative;aspect-ratio:5/4}
+.postcard .airmail{position:absolute;inset:0;transform:rotate(-2deg);box-shadow:0 30px 60px rgba(22,33,62,.18)}
+.postcard .card-in{height:100%;padding:28px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.postcard .msg{font-family:var(--hand);font-size:27px;line-height:1.2;color:var(--ink);border-right:1.5px solid var(--line);padding-right:20px;display:flex;flex-direction:column;justify-content:space-between}
+.postcard .addr{display:flex;flex-direction:column;justify-content:flex-end;gap:22px;padding-bottom:16px}
+.postcard .addr i{display:block;height:1.5px;background:var(--line)}
+.fan{position:absolute;inset:0;pointer-events:none}
+.fan > div{position:absolute}
+.fan .s1{top:-7%;right:3%;width:24%;transform:rotate(7deg)}
+.fan .s2{top:9%;right:23%;width:20%;transform:rotate(-6deg)}
+.fan .s3{bottom:-10%;right:30%;width:20%;transform:rotate(5deg)}
+.fan .pm{top:24%;right:4%;width:36%;animation:thud .7s cubic-bezier(.3,1.6,.5,1) .5s both}
+@keyframes thud{0%{transform:scale(1.8) rotate(-30deg);opacity:0}100%{transform:scale(1) rotate(-12deg);opacity:1}}
+@media (max-width:900px){.hero .wrap{grid-template-columns:1fr}.postcard{max-width:520px;margin:20px auto 0;width:100%}}
+
+.section{padding:96px 0}
+.section-head{max-width:640px;margin-bottom:48px}
+.section-head h2{margin-bottom:14px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;counter-reset:s}
+.step-i{border-top:2px solid var(--ink);padding-top:18px}
+.step-i .num{font-family:var(--display);font-weight:900;font-size:56px;line-height:1;color:var(--red);margin-bottom:10px}
+.step-i h3{font-size:26px;margin-bottom:8px}
+.step-i p{color:var(--ink-2);font-size:15px}
+@media (max-width:900px){.steps{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.steps{grid-template-columns:1fr}}
+
+.band{background:var(--night);color:#E8EDF3;position:relative}
+.band::before,.band::after{content:"";position:absolute;left:0;right:0;height:10px;background:var(--airmail)}
+.band::before{top:0}.band::after{bottom:0}
+.band .lead{color:rgba(232,237,243,.7)}
+.gestures{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.gesture{padding:28px;border:1px solid rgba(232,237,243,.14);border-radius:14px;background:var(--night-2)}
+.gesture .g{font-size:46px;line-height:1;margin-bottom:22px;display:flex;gap:10px;align-items:center}
+.gesture .g span{font-family:var(--display);font-size:34px;color:var(--gold)}
+.gesture h3{font-size:28px;margin-bottom:8px;color:#fff}
+.gesture p{color:rgba(232,237,243,.7);font-size:15px}
+.band-note{margin-top:28px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+@media (max-width:820px){.gestures{grid-template-columns:1fr}}
+
+.views{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.view-demo{background:var(--paper-2);border:1px solid var(--line);border-radius:14px;padding:24px}
+.view-demo h3{font-size:30px;margin:18px 0 6px}
+.mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.mini-journal{position:relative;aspect-ratio:4/3;background:#EFE9DD;border-radius:6px;overflow:hidden;background-image:linear-gradient(var(--line-2) 1px,transparent 1px);background-size:100% 26px}
+.mini-journal .stamp{position:absolute;width:30%}
+.tape{position:absolute;width:56px;height:18px;background:rgba(242,183,5,.55);top:-8px;left:50%;transform:translateX(-50%) rotate(-4deg);z-index:2}
+.hand{font-family:var(--hand);font-weight:700;color:var(--ink)}
+@media (max-width:820px){.views{grid-template-columns:1fr}}
+
+.privacy-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:center}
+.vis-demo{display:flex;flex-direction:column;gap:12px}
+.vis-opt{display:flex;gap:16px;align-items:flex-start;padding:18px 20px;background:var(--white);border:1.5px solid var(--line);border-radius:12px}
+.vis-opt.on{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.vis-opt .ic{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;flex:none;background:var(--paper)}
+.vis-opt b{display:block;font-size:16px}
+.checks{list-style:none;display:flex;flex-direction:column;gap:14px;margin-top:24px}
+.checks li{display:flex;gap:12px;align-items:flex-start}
+.checks li::before{content:"";width:18px;height:18px;flex:none;margin-top:3px;border-radius:50%;background:var(--blue) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5'%3E%3Cpath d='M5 12l5 5 9-10'/%3E%3C/svg%3E") center/11px no-repeat}
+@media (max-width:820px){.privacy-grid{grid-template-columns:1fr}}
+
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch}
+.plan{background:var(--paper-2);border:1px solid var(--line);border-radius:14px;padding:28px;display:flex;flex-direction:column;gap:14px}
+.plan.feat{background:var(--white);border:2px solid var(--ink)}
+.plan h3{font-size:34px}
+.plan .price{font-family:var(--display);font-size:44px;font-weight:800;line-height:1}
+.plan ul{list-style:none;display:flex;flex-direction:column;gap:8px;font-size:15px;color:var(--ink-2);flex:1}
+.plan ul li::before{content:"✓";color:var(--blue);font-weight:700;margin-right:8px}
+@media (max-width:860px){.plans{grid-template-columns:1fr}}
+
+.cta-band{padding:80px 0;text-align:center}
+.cta-band .airmail{max-width:860px;margin:0 auto}
+.cta-band .card-in{padding:56px 32px}
+.cta-band h2{margin-bottom:14px}
+.cta-band p{margin:0 auto 28px}
+.footer{padding:40px 0;border-top:1px solid var(--line);font-size:14px;color:var(--ink-2)}
+.footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+
+/* ---------- app shell ---------- */
+.page{padding:44px 0 90px}
+.page-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:34px;flex-wrap:wrap}
+.crumb{font-size:14px;color:var(--ink-2);margin-bottom:10px;display:inline-flex;gap:6px;align-items:center;text-decoration:none}
+.crumb:hover{color:var(--ink)}
+.panel{background:var(--paper-2);border:1px solid var(--line);border-radius:14px;padding:28px}
+.center-card{max-width:460px;margin:40px auto}
+.center-card h1{font-size:46px;margin-bottom:10px}
+
+.events{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:26px}
+.ev-card{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:14px;text-decoration:none;transition:border-color .15s,box-shadow .15s}
+.ev-card:hover{border-color:var(--ink);box-shadow:0 10px 30px rgba(22,33,62,.1)}
+.ev-card .top{display:flex;gap:16px;align-items:flex-start}
+.ev-card .stamp{width:96px;flex:none}
+.ev-card h3{font-size:26px;margin-bottom:4px}
+.meter{height:6px;border-radius:6px;background:var(--paper);overflow:hidden}
+.meter i{display:block;height:100%;background:var(--blue);border-radius:6px}
+.meter.full i{background:var(--red)}
+.ev-meta{display:flex;justify-content:space-between;font-size:13px;color:var(--ink-2)}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:12.5px;font-weight:600;background:var(--paper);color:var(--ink-2)}
+.pill.open{background:rgba(43,89,195,.12);color:var(--blue)}
+.pill.closed{background:rgba(22,33,62,.08)}
+.pill.warn{background:rgba(200,16,46,.1);color:var(--red)}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.pill.plain::before{display:none}
+.empty{text-align:center;padding:64px 24px;border:2px dashed var(--line);border-radius:14px}
+.empty h3{font-size:32px;margin:18px 0 8px}
+.empty p{color:var(--ink-2);max-width:42ch;margin:0 auto 22px}
+
+/* wizard */
+.wizard{display:grid;grid-template-columns:240px 1fr;gap:48px;align-items:start}
+.wz-steps{list-style:none;display:flex;flex-direction:column;gap:4px;position:sticky;top:100px}
+.wz-steps li{display:flex;gap:12px;align-items:center;padding:10px 12px;border-radius:10px;color:var(--ink-3);font-weight:500}
+.wz-steps li b{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;border:1.5px solid currentColor;font-size:13px}
+.wz-steps li.on{color:var(--ink);background:var(--paper-2)}
+.wz-steps li.done{color:var(--ink-2)}
+.wz-steps li.done b{background:var(--ink);border-color:var(--ink);color:#fff}
+.choice-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.choice{position:relative;text-align:left;padding:16px;background:var(--white);border:1.5px solid var(--line);border-radius:12px;transition:border-color .15s}
+.choice:hover{border-color:var(--ink-3)}
+.choice.on{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.choice b{display:block;font-size:15px;margin-bottom:2px}
+.choice span{font-size:13px;color:var(--ink-2)}
+.choice.wide{grid-column:span 2}
+.covers{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.cover-opt{padding:0;border-radius:6px;transition:transform .15s;outline-offset:4px}
+.cover-opt .stamp{transform:scale(.94)}
+.cover-opt.on{outline:2.5px solid var(--ink)}
+.wz-actions{display:flex;justify-content:space-between;gap:12px;margin-top:30px;padding-top:24px;border-top:1px solid var(--line)}
+@media (max-width:820px){.wizard{grid-template-columns:1fr}.wz-steps{flex-direction:row;position:static;overflow-x:auto}.covers{grid-template-columns:repeat(3,1fr)}}
+
+/* event page */
+.ev-head{display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center;margin-bottom:30px}
+.ev-head .stamp{width:120px}
+.ev-head h1{font-size:clamp(40px,5vw,60px);margin-bottom:8px}
+.ev-head .meta{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.ev-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+@media (max-width:860px){.ev-head{grid-template-columns:auto 1fr}.ev-actions{grid-column:1/-1;justify-content:flex-start}}
+.tabs{display:flex;gap:4px;box-shadow:inset 0 -1.5px 0 var(--line);margin-bottom:28px;overflow-x:auto}
+.tab{padding:12px 16px;font-weight:600;color:var(--ink-2);border-bottom:2.5px solid transparent;text-decoration:none;white-space:nowrap;display:inline-flex;gap:8px;align-items:center}
+.tab:hover{color:var(--ink)}
+.tab.on{color:var(--ink);border-color:var(--red)}
+.tab .count{background:var(--red);color:#fff;border-radius:999px;font-size:11.5px;padding:1px 7px}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:20px;flex-wrap:wrap}
+
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:26px 22px;align-items:start}
+.ph{position:relative;cursor:pointer}
+.ph .stamp .inner{aspect-ratio:var(--ar,3/4)}
+.ph img{width:100%;height:100%;object-fit:cover}
+.ph .cap{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:13px;color:var(--ink-2);gap:8px}
+.ph .tools{position:absolute;top:14px;right:14px;display:flex;gap:6px;opacity:0;transition:opacity .15s}
+.ph:hover .tools,.ph:focus-within .tools{opacity:1}
+.tool{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.95);display:grid;place-items:center;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.tool:hover{background:#fff;color:var(--red)}
+.ph.dragging{opacity:.35}
+.ph.drop-before .stamp{box-shadow:-6px 0 0 var(--blue)}
+.badge-admin{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--red)}
+
+.journal-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.journal{position:relative;aspect-ratio:3/2;border-radius:10px;overflow:hidden;border:1px solid var(--line);touch-action:none;user-select:none}
+.journal.t-paper{background:#F3EEE3;background-image:linear-gradient(rgba(22,33,62,.07) 1px,transparent 1px);background-size:100% 30px}
+.journal.t-grid{background:#F6F8FB;background-image:linear-gradient(rgba(43,89,195,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(43,89,195,.1) 1px,transparent 1px);background-size:28px 28px}
+.journal.t-kraft{background:#C9A77C;background-image:radial-gradient(rgba(0,0,0,.06) 1px,transparent 1px);background-size:6px 6px}
+.journal .title{position:absolute;top:4%;left:4%;font-family:var(--hand);font-weight:700;font-size:clamp(28px,4vw,52px);color:var(--ink);pointer-events:none}
+.j-item{position:absolute;width:var(--w,15%);cursor:grab}
+.j-item.ro{cursor:default}
+.j-item:active{cursor:grabbing}
+.j-item img{width:100%;height:auto;pointer-events:none}
+.j-note{position:absolute;min-width:120px;max-width:30%;padding:12px 14px;background:#FFF3B8;box-shadow:0 6px 14px rgba(0,0,0,.12);font-family:var(--hand);font-size:24px;line-height:1.15;cursor:grab}
+.j-note [contenteditable]{outline:none;cursor:text}
+.j-note .x{position:absolute;top:-10px;right:-10px;width:22px;height:22px;border-radius:50%;background:var(--ink);color:#fff;font-size:12px;display:none}
+.j-note:hover .x{display:block}
+
+.people{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--white)}
+.person{display:flex;align-items:center;gap:14px;padding:14px 18px;border-top:1px solid var(--line-2)}
+.person:first-child{border-top:0}
+.avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:#fff;flex:none;font-size:14px}
+.person .who{flex:1;min-width:0}
+.person .who b{display:block}
+.person .who span{font-size:13px;color:var(--ink-2)}
+.person .acts{display:flex;gap:8px}
+
+.share{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center}
+.qr{width:150px;height:150px;background:#fff;padding:10px;border-radius:10px;border:1px solid var(--line)}
+.qr svg{width:100%;height:100%}
+.copy-row{display:flex;gap:8px}
+.copy-row .input{font-size:14px}
+
+.settings{display:grid;gap:28px;max-width:720px}
+.settings .group-h{font-family:var(--display);font-size:24px;font-weight:800;margin-bottom:12px}
+.switch-row{display:flex;justify-content:space-between;gap:20px;align-items:center;padding:16px 18px;background:var(--white);border:1px solid var(--line);border-radius:12px}
+.switch{position:relative;width:44px;height:26px;border-radius:999px;background:var(--ink-3);flex:none;transition:background .2s}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s}
+.switch[aria-checked=true]{background:var(--blue)}
+.switch[aria-checked=true]::after{transform:translateX(18px)}
+
+/* modal, toast, lightbox */
+.modal-bg{position:fixed;inset:0;background:rgba(15,23,48,.55);backdrop-filter:blur(4px);z-index:60;display:grid;place-items:center;padding:20px;animation:fade .2s}
+.modal{background:var(--paper-2);border-radius:16px;padding:30px;width:min(520px,100%);max-height:90vh;overflow:auto;box-shadow:0 30px 80px rgba(0,0,0,.35);animation:rise .25s cubic-bezier(.2,.8,.2,1)}
+.modal h2{font-size:36px;margin-bottom:8px}
+.modal .acts{display:flex;justify-content:flex-end;gap:10px;margin-top:24px}
+@keyframes fade{from{opacity:0}}
+@keyframes rise{from{transform:translateY(16px);opacity:0}}
+.toasts{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:80;display:flex;flex-direction:column;gap:8px;align-items:center}
+.toast{background:var(--ink);color:#fff;padding:12px 18px;border-radius:10px;font-size:14.5px;font-weight:500;box-shadow:0 10px 30px rgba(0,0,0,.25);animation:rise .25s}
+.lightbox{position:fixed;inset:0;background:rgba(10,14,30,.92);z-index:70;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;animation:fade .2s}
+.lightbox img{max-height:78vh;max-width:min(90vw,900px);border-radius:4px}
+.lightbox .bar{display:flex;gap:10px;align-items:center;color:#E8EDF3;font-size:14px}
+
+/* explore */
+.ex-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:30px 24px}
+.ex-card{text-decoration:none;display:block}
+.ex-card .stamp .inner{aspect-ratio:4/3}
+.ex-card h3{font-size:26px;margin:14px 0 2px}
+.ex-intro{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;margin-bottom:56px}
+@media (max-width:820px){.ex-intro{grid-template-columns:1fr}}
+
+/* ---------- booth ---------- */
+body.booth-mode{background:var(--night);color:#E8EDF3}
+body.booth-mode .nav,body.booth-mode .footer{display:none}
+.booth{min-height:100vh;display:flex;flex-direction:column}
+.bbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 22px;border-bottom:1px solid rgba(232,237,243,.1)}
+.bbar .left{display:flex;align-items:center;gap:16px}
+.bbar .back{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:rgba(232,237,243,.75);text-decoration:none;padding:8px 12px;border-radius:8px}
+.bbar .back:hover{background:rgba(255,255,255,.06);color:#fff}
+.bbar .ev{font-family:var(--display);font-size:22px;font-weight:800}
+.bctrl{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.bgroup{display:flex;align-items:center;gap:8px;font-size:12.5px;color:rgba(232,237,243,.6)}
+.seg{display:flex;background:rgba(255,255,255,.06);border:1px solid rgba(232,237,243,.12);border-radius:10px;padding:3px}
+.seg button{padding:6px 11px;border-radius:7px;font-size:13px;color:rgba(232,237,243,.65);display:flex;align-items:center;gap:6px}
+.seg button:hover{color:#fff}
+.seg button.on{background:#E8EDF3;color:var(--night)}
+.lay{display:inline-grid;gap:1.5px}.lay b{display:block;background:currentColor;border-radius:1px}
+.ibtn{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(232,237,243,.12);display:grid;place-items:center;color:#E8EDF3}
+.ibtn:hover{background:rgba(255,255,255,.12)}
+.ibtn.off{color:#ff8a80}
+.bmain{flex:1;display:flex;align-items:center;justify-content:center;padding:20px}
+.stage{position:relative;width:min(100%,calc((100vh - 120px)*4/3));aspect-ratio:4/3;border-radius:22px;overflow:hidden;background:#000;box-shadow:0 30px 80px rgba(0,0,0,.5),0 0 0 1px rgba(232,237,243,.1)}
+#view{position:absolute;inset:0;width:100%;height:100%}
+#video{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.glass{background:rgba(15,23,48,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(232,237,243,.14)}
+.shade{position:absolute;pointer-events:none}
+.shade.t{top:0;left:0;right:0;height:110px;background:linear-gradient(rgba(0,0,0,.45),transparent)}
+.shade.b{bottom:0;left:0;right:0;height:150px;background:linear-gradient(transparent,rgba(0,0,0,.55))}
+.shade.s{top:0;bottom:0;right:0;width:200px;background:linear-gradient(to left,rgba(0,0,0,.55),transparent)}
+.ui{transition:opacity .3s}
+.stage.counting .ui{opacity:0;pointer-events:none}
+.slots{position:absolute;top:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px}
+.slot{width:42px;height:32px;border-radius:5px;border:1.5px solid rgba(255,255,255,.45);overflow:hidden;background:rgba(0,0,0,.3);transition:.3s}
+.slot.now{border-color:var(--gold);box-shadow:0 0 0 3px rgba(242,183,5,.25)}
+.slot.pop{animation:spop .5s ease-out}
+@keyframes spop{0%{transform:scale(1.4)}}
+.slot canvas{width:100%;height:100%;display:block}
+.bstep{position:absolute;top:18px;left:18px;font-size:13px;padding:6px 13px;border-radius:999px}
+.bhint{position:absolute;top:62px;left:50%;transform:translateX(-50%);font-size:14px;padding:8px 16px;border-radius:999px;white-space:nowrap}
+.bhint:empty{display:none}
+.fname{position:absolute;top:50%;right:146px;transform:translateY(-50%);text-align:right;pointer-events:none;opacity:0;transition:opacity .35s}
+.fname.show{opacity:1}
+.fname b{display:block;font-family:var(--display);font-size:54px;font-weight:800;line-height:.9;color:#fff;text-shadow:0 4px 20px rgba(0,0,0,.5)}
+.carousel{position:absolute;top:0;bottom:0;right:12px;width:108px;overflow:hidden;
+  -webkit-mask-image:linear-gradient(transparent,#000 22%,#000 78%,transparent);mask-image:linear-gradient(transparent,#000 22%,#000 78%,transparent)}
+.track{position:absolute;top:0;left:0;right:0;display:flex;flex-direction:column;align-items:center;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.track.drag{transition:none}
+.fx{height:96px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;transition:transform .3s,opacity .3s;opacity:.5;transform:scale(.82);cursor:pointer}
+.fx canvas{width:64px;height:64px;border-radius:50%;border:2px solid rgba(255,255,255,.25);display:block;transition:.3s}
+.fx span{font-size:12px;white-space:nowrap;color:#fff}
+.fx.on{opacity:1;transform:scale(1.08)}
+.fx.on canvas{border-color:var(--gold);box-shadow:0 0 0 4px rgba(242,183,5,.25)}
+.cmark{position:absolute;top:50%;right:124px;width:6px;height:6px;margin-top:-17px;border-radius:50%;background:var(--gold)}
+.intensity{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:999px;transition:.25s}
+.intensity.active{border-color:var(--gold);box-shadow:0 0 0 4px rgba(242,183,5,.2)}
+.intensity.dim{opacity:.4}
+.intensity .lbl{font-size:12.5px;color:rgba(232,237,243,.65)}
+.intensity .bar{width:190px;height:4px;border-radius:4px;background:rgba(255,255,255,.2);position:relative}
+.intensity .fill{position:absolute;inset:0 auto 0 0;border-radius:4px;background:var(--gold)}
+.intensity .knob{position:absolute;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:#fff}
+.intensity .val{font-size:13px;font-weight:600;min-width:40px;text-align:right;color:#fff}
+.legend{position:absolute;bottom:18px;left:18px;padding:8px;border-radius:14px;display:flex;flex-direction:column;gap:2px;min-width:200px}
+.legend .row{display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:9px;font-size:13px;color:rgba(232,237,243,.65);transition:.2s}
+.legend .row .k{width:44px;text-align:center;font-size:15px}
+.legend .row.on{background:rgba(242,183,5,.18);color:#fff}
+.legend small{font-size:11.5px;color:rgba(232,237,243,.55);padding:6px 8px 2px;border-top:1px solid rgba(232,237,243,.12);margin-top:4px}
+.cursor{position:absolute;width:56px;height:56px;margin:-28px 0 0 -28px;pointer-events:none;opacity:0;transition:opacity .2s;display:grid;place-items:center}
+.cursor.show{opacity:1}
+.cursor .dot{width:16px;height:16px;border-radius:50%;border:2px solid #fff;transition:.15s;box-shadow:0 0 12px rgba(0,0,0,.5)}
+.cursor.pinch .dot{background:var(--gold);border-color:var(--gold);transform:scale(1.3)}
+.cursor.blocked .dot{border-color:#ff8a80}
+.cursor svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.cursor .ax{position:absolute;top:-6px;font-size:14px;font-weight:700;color:var(--gold);opacity:0}
+.cursor.pinch .ax{opacity:1}
+.cursor .emoji{position:absolute;font-size:24px;opacity:0}
+.cursor.peace .emoji{opacity:1}.cursor.peace .dot{opacity:0}
+.cdown{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;color:#fff}
+.cdown span{font-family:var(--display);font-weight:900;font-size:min(40vh,280px);line-height:1;text-shadow:0 10px 40px rgba(0,0,0,.5)}
+.cdown span.pop{animation:pop .9s ease-out}
+.cdown small{font-size:24px;font-weight:600;opacity:0;transition:.3s}
+.cdown small.show{opacity:1}
+@keyframes pop{0%{transform:scale(1.5);opacity:0}20%{opacity:1}100%{transform:scale(.9);opacity:.85}}
+.bcancel{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);padding:9px 20px;border-radius:999px;font-size:14px;display:none;color:#fff}
+.stage.counting .bcancel{display:block}
+.flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;transition:opacity .3s}
+.boverlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:28px;text-align:center;background:radial-gradient(ellipse at center,var(--night-2) 0%,var(--night) 75%)}
+.boverlay h2{font-size:clamp(36px,4.5vw,54px);color:#fff}
+.boverlay p{color:rgba(232,237,243,.7);max-width:46ch}
+.bguides{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.bguide{width:196px;padding:16px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(232,237,243,.12);text-align:left}
+.bguide .g{font-size:24px;margin-bottom:8px}
+.bguide b{display:block;font-size:15px;margin-bottom:4px;color:#fff}
+.bguide small{color:rgba(232,237,243,.65);font-size:13px;line-height:1.55;display:block}
+.btn.light{background:#E8EDF3;color:var(--night);border-color:#E8EDF3}
+.btn.dark-ghost{background:transparent;color:#E8EDF3;border-color:rgba(232,237,243,.25)}
+.btn.dark-ghost:hover{border-color:#E8EDF3}
+.berr{color:#ff9a8f;font-size:14px;min-height:20px;max-width:440px}
+.breview{display:none;width:100%;max-width:1000px;align-items:center;justify-content:center;gap:56px;flex-wrap:wrap}
+.breview.show{display:flex}
+.strip-wrap{position:relative;display:flex}
+#strip{max-height:calc(100vh - 150px);max-width:min(90vw,440px);width:auto;height:auto;display:block}
+.hot{position:absolute;cursor:pointer;display:grid;place-items:center;opacity:0;transition:.2s;background:rgba(15,23,48,.55);color:#fff;font-size:14px;font-weight:600}
+.hot:hover,.hot:focus-visible{opacity:1}
+.bside{display:flex;flex-direction:column;gap:12px;min-width:260px;max-width:320px}
+.bside h2{font-size:48px;color:#fff}
+.bside p{color:rgba(232,237,243,.7);font-size:15px;margin-bottom:8px}
+.tune{position:fixed;top:66px;right:22px;width:290px;background:var(--night-2);border:1px solid rgba(232,237,243,.14);border-radius:14px;padding:16px;font-size:12.5px;display:none;z-index:20}
+.tune.show{display:block}
+.tune label{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:10px 0}
+.tune input{flex:1;accent-color:var(--gold)}
+.tune pre{font-family:ui-monospace,monospace;color:#9be29b;margin-top:8px;white-space:pre-wrap;font-size:11px}
+.blocked-msg{max-width:520px;text-align:center;display:flex;flex-direction:column;gap:16px;align-items:center}
+.blocked-msg h2{font-size:48px;color:#fff}
+.blocked-msg p{color:rgba(232,237,243,.7)}
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav"></nav>
+<main id="app"></main>
+<footer class="footer" id="footer">
+  <div class="wrap">
+    <a href="#/" class="logo" style="font-size:24px"><span class="stamp mark"><span class="inner">K</span></span>KLIK</a>
+    <span>Photos are kept in your browser in this prototype. Nothing is uploaded.</span>
+  </div>
+</footer>
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script>
+/* =========================================================
+   KLIK — web prototype
+   Data: localStorage (events) + IndexedDB (images)
+   ========================================================= */
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const uid = () => Math.random().toString(36).slice(2, 9);
+const app = $("#app");
+
+/* ---------- storage ---------- */
+let S = JSON.parse(localStorage.getItem("klik.v1") || "null") || { user: null, events: [], me: {} };
+const save = () => localStorage.setItem("klik.v1", JSON.stringify(S));
+const getEv = id => S.events.find(e => e.id === id);
+
+const idb = new Promise((res, rej) => {
+  const r = indexedDB.open("klik", 1);
+  r.onupgradeneeded = () => r.result.createObjectStore("img");
+  r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+});
+const imgCache = new Map();
+async function putImg(k, v) { const db = await idb; imgCache.set(k, v); return new Promise((res, rej) => { const t = db.transaction("img", "readwrite"); t.objectStore("img").put(v, k); t.oncomplete = res; t.onerror = () => rej(t.error); }); }
+async function getImg(k) { if (imgCache.has(k)) return imgCache.get(k); const db = await idb; return new Promise(res => { const r = db.transaction("img").objectStore("img").get(k); r.onsuccess = () => { imgCache.set(k, r.result); res(r.result); }; r.onerror = () => res(null); }); }
+async function delImg(k) { const db = await idb; imgCache.delete(k); db.transaction("img", "readwrite").objectStore("img").delete(k); }
+function hydrate(root = document) { $$("img[data-img]", root).forEach(async im => { const v = await getImg(im.dataset.img); if (v) im.src = v; }); }
+
+/* ---------- helpers ---------- */
+const WINDOWS = { "1h": ["1 hour", 3600e3], "2h": ["2 hours", 7200e3], "1d": ["1 day", 864e5], "open": ["Always open", Infinity] };
+const isOwner = ev => S.user && ev.ownerEmail === S.user.email;
+const myGuest = ev => ev.guests.find(g => g.id === S.me[ev.id]);
+const uploadsOpen = ev => WINDOWS[ev.window][1] === Infinity || Date.now() < ev.createdAt + WINDOWS[ev.window][1];
+const atLimit = ev => ev.photos.length >= ev.limit;
+function timeLeft(ev) {
+  if (WINDOWS[ev.window][1] === Infinity) return "Uploads always open";
+  const ms = ev.createdAt + WINDOWS[ev.window][1] - Date.now();
+  if (ms <= 0) return "Uploads closed";
+  const mins = Math.ceil(ms / 6e4), h = Math.floor(mins / 60), m = mins % 60;
+  return `Uploads close in ${h ? h + "h " : ""}${m}m`;
+}
+const fmtDate = d => d ? new Date(d + "T00:00").toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) : "No date set";
+const AV = ["#2B59C3", "#C8102E", "#16213E", "#7A5CC2", "#1E8A6E", "#D9822B"];
+const avatar = (name, i = 0) => `<span class="avatar" style="background:${AV[(name.charCodeAt(0) + i) % AV.length]}">${esc(name.trim()[0] || "?").toUpperCase()}</span>`;
+
+function toast(msg) { const t = document.createElement("div"); t.className = "toast"; t.textContent = msg; $("#toasts").appendChild(t); setTimeout(() => t.remove(), 3200); }
+function modal(html, bind) {
+  const bg = document.createElement("div"); bg.className = "modal-bg";
+  bg.innerHTML = `<div class="modal" role="dialog" aria-modal="true">${html}</div>`;
+  const close = () => { bg.remove(); document.removeEventListener("keydown", onKey); };
+  const onKey = e => { if (e.key === "Escape") close(); };
+  bg.addEventListener("click", e => { if (e.target === bg) close(); });
+  document.addEventListener("keydown", onKey);
+  document.body.appendChild(bg);
+  bind && bind(bg, close);
+  const f = $("input,button.primary,button", bg); f && f.focus();
+  return close;
+}
+function confirmBox(title, body, okLabel, onOk, danger = true) {
+  modal(`<h2>${title}</h2><p class="muted">${body}</p><div class="acts"><button class="btn ghost" data-x>Cancel</button><button class="btn ${danger ? "red" : "primary"}" data-ok>${okLabel}</button></div>`,
+    (el, close) => { $("[data-x]", el).onclick = close; $("[data-ok]", el).onclick = () => { close(); onOk(); }; });
+}
+
+/* ---------- illustrated stamp covers (placeholders until real photos) ---------- */
+const COVERS = {
+  wedding:  { label: "Wedding",    bg: ["#F4C7C3", "#E88F8A"], d: "74" },
+  birthday: { label: "Birthday",   bg: ["#FFE08A", "#F2B705"], d: "25" },
+  trip:     { label: "Trip",       bg: ["#A8D0F0", "#2B59C3"], d: "48" },
+  party:    { label: "Party",      bg: ["#C9B6F2", "#7A5CC2"], d: "99" },
+  grad:     { label: "Graduation", bg: ["#BFE3D3", "#1E8A6E"], d: "20" },
+  everyday: { label: "Everyday",   bg: ["#F6D2B0", "#D9822B"], d: "1" }
+};
+function scene(kind) {
+  const c = COVERS[kind] || COVERS.everyday, [a, b] = c.bg;
+  const art = {
+    wedding: `<circle cx="70" cy="58" r="26" fill="#fff" opacity=".55"/><path d="M38 150 q12-52 26-52 q14 0 22 52z" fill="#16213E"/><circle cx="62" cy="86" r="10" fill="#16213E"/><path d="M84 150 q10-50 26-50 q16 0 28 50z" fill="#fff"/><circle cx="110" cy="88" r="10" fill="#fff"/>`,
+    birthday: `<rect x="44" y="96" width="72" height="46" rx="4" fill="#fff"/><rect x="44" y="96" width="72" height="12" fill="#C8102E"/><rect x="66" y="74" width="5" height="22" fill="#16213E"/><rect x="89" y="74" width="5" height="22" fill="#16213E"/><circle cx="68.5" cy="70" r="5" fill="#C8102E"/><circle cx="91.5" cy="70" r="5" fill="#C8102E"/>`,
+    trip: `<circle cx="112" cy="48" r="16" fill="#FFE08A"/><path d="M0 150 L52 74 L86 118 L112 88 L160 150z" fill="#16213E"/><path d="M52 74 L64 92 L42 92z" fill="#fff"/>`,
+    party: `<circle cx="40" cy="44" r="6" fill="#FFE08A"/><circle cx="118" cy="36" r="5" fill="#fff"/><circle cx="96" cy="70" r="4" fill="#C8102E"/><path d="M50 150 L80 60 L110 150z" fill="#16213E"/><circle cx="80" cy="58" r="8" fill="#FFE08A"/>`,
+    grad: `<path d="M30 80 L80 56 L130 80 L80 104z" fill="#16213E"/><path d="M54 92 v24 q26 16 52 0 v-24 l-26 12z" fill="#16213E"/><path d="M122 84 v28" stroke="#FFE08A" stroke-width="4"/>`,
+    everyday: `<circle cx="80" cy="70" r="30" fill="#fff" opacity=".6"/><path d="M20 150 q60-60 120 0z" fill="#16213E"/>`
+  }[kind] || "";
+  return `<svg viewBox="0 0 160 150" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%;display:block"><defs><linearGradient id="g${kind}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs><rect width="160" height="150" fill="url(#g${kind})"/>${art}</svg>`;
+}
+const stampCover = (kind, ar = "4/5", denom = true) => `<div class="stamp"><div class="inner" style="aspect-ratio:${ar}">${scene(kind)}${denom ? `<span class="denom">${COVERS[kind]?.d ?? ""}</span>` : ""}</div></div>`;
+function postmark(text = "KLIK · ALBUM · 2026") {
+  return `<svg class="postmark" viewBox="0 0 220 120" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="60" cy="60" r="50"/><circle cx="60" cy="60" r="34"/>
+  <path d="M118 36 q14 -8 28 0 t28 0 t28 0 M118 52 q14 -8 28 0 t28 0 t28 0 M118 68 q14 -8 28 0 t28 0 t28 0 M118 84 q14 -8 28 0 t28 0 t28 0"/></g>
+  <defs><path id="pm-arc" d="M60 60 m-42 0 a42 42 0 1 1 84 0 a42 42 0 1 1 -84 0"/></defs>
+  <text font-family="Instrument Sans" font-weight="700" font-size="11" letter-spacing="2" fill="currentColor"><textPath href="#pm-arc">${esc(text)}</textPath></text>
+  <text x="60" y="66" text-anchor="middle" font-family="Big Shoulders Display" font-weight="800" font-size="20" fill="currentColor">${new Date().getDate()} ${new Date().toLocaleString("en", { month: "short" }).toUpperCase()}</text></svg>`;
+}
+const ICON = {
+  trash: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>`,
+  lock: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>`,
+  people: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-3.5 3-6 7-6s7 2.5 7 6M16 4.5a3.5 3.5 0 0 1 0 7M18 14c2.5.6 4 2.8 4 6"/></svg>`,
+  eye: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>`,
+  down: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13M6 10l6 6 6-6M4 21h16"/></svg>`,
+  back: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>`
+};
+
+/* =========================================================
+   NAV
+   ========================================================= */
+function renderNav() {
+  $("#nav").innerHTML = `<div class="wrap">
+    <a href="#/" class="logo"><span class="stamp mark"><span class="inner">K</span></span>KLIK</a>
+    <div class="nav-links">
+      <button data-scroll="how">How it works</button>
+      <a href="#/explore">Explore</a>
+      <button data-scroll="pricing">Pricing</button>
+    </div>
+    <div class="nav-right">
+      ${S.user ? `<a class="btn ghost sm" href="#/dashboard">Your events</a>` : `<a class="btn ghost sm" href="#/signin">Sign in</a>`}
+      <a class="btn primary sm" href="${S.user ? "#/new" : "#/signin?next=new"}">Create an event</a>
+    </div></div>`;
+  $$("[data-scroll]", $("#nav")).forEach(b => b.onclick = () => {
+    if (location.hash !== "#/" && location.hash !== "") { location.hash = "#/"; setTimeout(() => document.getElementById(b.dataset.scroll)?.scrollIntoView(), 60); }
+    else document.getElementById(b.dataset.scroll)?.scrollIntoView();
+  });
+}
+
+/* =========================================================
+   LANDING
+   ========================================================= */
+function vLanding() {
+  return `
+  <section class="hero"><div class="wrap">
+    <div>
+      <h1 class="h-xl">One album for every photo from the day.</h1>
+      <p class="lead">Create an event and share a link. Your guests shoot photo strips with a wave of the hand, and every shot lands in one shared album, framed like a stamp.</p>
+      <div class="hero-ctas">
+        <a class="btn primary lg" href="${S.user ? "#/new" : "#/signin?next=new"}">Create an event</a>
+        <a class="btn ghost lg" href="#/booth">Try the booth</a>
+      </div>
+      <p class="tiny">Your first event is free. Guests join with a name and email, no account needed.</p>
+    </div>
+    <div class="postcard">
+      <div class="airmail"><div class="card-in">
+        <div class="msg"><span>Wish you were here! Found all 212 photos from the wedding in one place.</span><span style="font-size:22px">— Salma &amp; Omar</span></div>
+        <div class="addr"><i></i><i></i><i></i><i></i></div>
+      </div></div>
+      <div class="fan">
+        <div class="s1">${stampCover("wedding")}</div>
+        <div class="s2">${stampCover("party")}</div>
+        <div class="s3">${stampCover("trip")}</div>
+        <div class="pm">${postmark("WITH LOVE · KLIK · CAIRO")}</div>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="section" id="how" style="background:var(--paper-2)"><div class="wrap">
+    <div class="section-head"><h2 class="h-l">From invite to album in four steps</h2><p class="lead">You set it up once. Your guests do the rest from their own phones and laptops.</p></div>
+    <div class="steps">
+      <div class="step-i"><div class="num">1</div><h3>Create your event</h3><p>Name it, pick a date and a cover stamp, and choose how long guests can add photos.</p></div>
+      <div class="step-i"><div class="num">2</div><h3>Share the link</h3><p>Send the invite link or print the QR code. Let anyone in, or approve each guest yourself.</p></div>
+      <div class="step-i"><div class="num">3</div><h3>Guests shoot</h3><p>The booth opens in the browser. Guests pick a filter and take a photo strip using hand gestures.</p></div>
+      <div class="step-i"><div class="num">4</div><h3>Relive it</h3><p>Every strip lands in your album. Browse it as a gallery or arrange it into a journal.</p></div>
+    </div>
+  </div></section>
+
+  <section class="section band"><div class="wrap">
+    <div class="section-head"><h2 class="h-l" style="color:#fff">No buttons. Just your hands.</h2><p class="lead">The booth reads your hand through the camera, so the whole group can stand back and pose.</p></div>
+    <div class="gestures">
+      <div class="gesture"><div class="g">🤏<span>↕</span></div><h3>Pinch and slide up or down</h3><p>Scroll through filters like film stock, from Gold to Noir. Let go to keep one.</p></div>
+      <div class="gesture"><div class="g">🤏<span>↔</span></div><h3>Pinch and slide sideways</h3><p>Dial the filter's strength anywhere from 0 to 100%. Use your other hand at the same time.</p></div>
+      <div class="gesture"><div class="g">✌️</div><h3>Hold up a peace sign</h3><p>Hold it until the ring fills. A 3 or 5 second timer starts, then the strip is shot frame by frame.</p></div>
+    </div>
+    <div class="band-note"><span class="lead" style="font-size:16px">Works in Chrome on laptops and phones. Photos are processed on the device.</span><a class="btn light" href="#/booth">Try the booth</a></div>
+  </div></section>
+
+  <section class="section"><div class="wrap">
+    <div class="section-head"><h2 class="h-l">Two ways to look back</h2><p class="lead">The same photos, shown as a tidy gallery or laid out by hand like a scrapbook.</p></div>
+    <div class="views">
+      <div class="view-demo">
+        <div class="mini-grid">${["wedding", "party", "birthday", "trip", "grad", "everyday"].map(k => stampCover(k, "3/4", false)).join("")}</div>
+        <h3>Gallery</h3><p class="muted">Every photo in order, ready to download. Hosts can reorder, hide or remove any shot.</p>
+      </div>
+      <div class="view-demo">
+        <div class="mini-journal">
+          <span class="hand" style="position:absolute;top:6%;left:6%;font-size:34px">Our first trip</span>
+          <div class="stamp" style="left:8%;top:34%;transform:rotate(-6deg)"><span class="tape"></span><div class="inner" style="aspect-ratio:3/4">${scene("trip")}</div></div>
+          <div class="stamp" style="left:38%;top:22%;transform:rotate(4deg)"><div class="inner" style="aspect-ratio:3/4">${scene("everyday")}</div></div>
+          <div class="stamp" style="left:66%;top:40%;transform:rotate(-3deg)"><span class="tape"></span><div class="inner" style="aspect-ratio:3/4">${scene("party")}</div></div>
+        </div>
+        <h3>Journal</h3><p class="muted">Drag photos onto a paper page, add handwritten notes, and choose a paper style.</p>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="section" style="background:var(--paper-2)"><div class="wrap privacy-grid">
+    <div>
+      <h2 class="h-l" style="margin-bottom:14px">You decide who sees each photo</h2>
+      <p class="lead">Before publishing, every guest chooses who can see their strip. Hosts always see everything.</p>
+      <ul class="checks">
+        <li>Approve guests before they can see or add photos, or let anyone with the link join.</li>
+        <li>Set an upload window: one hour, two hours, a day, or always open.</li>
+        <li>Your photos stay in your album for as long as you want, and you can download or delete them anytime.</li>
+      </ul>
+    </div>
+    <div class="vis-demo">
+      <div class="vis-opt on"><span class="ic">${ICON.people}</span><div><b>Everyone at the event</b><span class="muted small">All approved guests can see it in the album.</span></div></div>
+      <div class="vis-opt"><span class="ic">${ICON.lock}</span><div><b>Only the host</b><span class="muted small">Hidden from other guests. Only the host can see it.</span></div></div>
+    </div>
+  </div></section>
+
+  <section class="section" id="pricing"><div class="wrap">
+    <div class="section-head"><h2 class="h-l">Start free</h2><p class="lead">Your first event is on us. Paid plans for bigger events are on the way.</p></div>
+    <div class="plans">
+      <div class="plan"><h3>Free</h3><div class="price">$0</div><ul><li>Your first event</li><li>Up to 20 photos</li><li>Unlimited guests</li><li>Gallery and journal</li></ul><a class="btn ghost" href="${S.user ? "#/new" : "#/signin?next=new"}">Create an event</a></div>
+      <div class="plan feat"><h3>Plus</h3><div class="price small" style="font-size:30px">Coming soon</div><ul><li>Up to 100 photos per event</li><li>3 co-hosts</li><li>All filters and frames</li></ul><button class="btn primary" data-soon>Notify me</button></div>
+      <div class="plan"><h3>Pro</h3><div class="price small" style="font-size:30px">Coming soon</div><ul><li>Up to 200 photos per event</li><li>5 co-hosts</li><li>Custom stamps and frames</li></ul><button class="btn ghost" data-soon>Notify me</button></div>
+    </div>
+  </div></section>
+
+  <section class="cta-band"><div class="wrap"><div class="airmail"><div class="card-in">
+    <h2 class="h-l">Got an event coming up?</h2>
+    <p class="lead">Set it up in two minutes and send the link before the first guest arrives.</p>
+    <a class="btn red lg" href="${S.user ? "#/new" : "#/signin?next=new"}">Create an event</a>
+  </div></div></div></section>`;
+}
+function bindLanding() { $$("[data-soon]").forEach(b => b.onclick = () => toast("We'll let you know when paid plans launch.")); }
+
+/* =========================================================
+   SIGN IN
+   ========================================================= */
+function vSignin() {
+  return `<div class="wrap page"><div class="center-card panel">
+    <h1>Sign in to host</h1>
+    <p class="muted" style="margin-bottom:24px">You need an account to create and manage events. Guests never need one.</p>
+    <form id="sf" novalidate>
+      <div class="field"><label for="sn">Your name</label><input class="input" id="sn" autocomplete="name" placeholder="Salma Hassan"></div>
+      <div class="field"><label for="se">Email</label><input class="input" id="se" type="email" autocomplete="email" placeholder="salma@example.com"><div class="err" id="serr"></div></div>
+      <button class="btn primary lg" style="width:100%">Continue</button>
+    </form>
+    <p class="tiny" style="margin-top:16px">Prototype: no password or email check. Your account lives in this browser.</p>
+  </div></div>`;
+}
+function bindSignin(q) {
+  $("#sf").onsubmit = e => {
+    e.preventDefault();
+    const name = $("#sn").value.trim(), email = $("#se").value.trim().toLowerCase();
+    if (!name) return $("#serr").textContent = "Enter your name.";
+    if (!/^\S+@\S+\.\S+$/.test(email)) return $("#serr").textContent = "Enter a valid email, like name@example.com.";
+    S.user = { name, email }; save(); toast(`Signed in as ${name}`);
+    location.hash = q.get("next") === "new" ? "#/new" : "#/dashboard";
+  };
+}
+
+/* =========================================================
+   DASHBOARD
+   ========================================================= */
+function vDashboard() {
+  if (!S.user) return redirect("#/signin");
+  const mine = S.events.filter(isOwner).sort((a, b) => b.createdAt - a.createdAt);
+  return `<div class="wrap page">
+    <div class="page-head"><div><h1 class="h-l">Your events</h1><p class="muted">Signed in as ${esc(S.user.name)} · <button class="link" id="so">Sign out</button></p></div>
+    <a class="btn primary" href="#/new">New event</a></div>
+    ${mine.length ? `<div class="events">${mine.map(evCard).join("")}</div>` : `
+    <div class="empty">
+      <div style="width:110px;margin:0 auto">${stampCover("everyday")}</div>
+      <h3>No events yet</h3><p>Create your first event, then share the link with your guests. It's free for up to 20 photos.</p>
+      <a class="btn primary" href="#/new">Create an event</a>
+    </div>`}
+  </div>`;
+}
+function evCard(ev) {
+  const pending = ev.guests.filter(g => g.status === "pending").length, n = ev.photos.length, pct = Math.min(100, n / ev.limit * 100);
+  return `<a class="ev-card" href="#/event/${ev.id}">
+    <div class="top">${stampCover(ev.cover)}<div><h3>${esc(ev.name)}</h3><p class="small muted">${fmtDate(ev.date)}</p>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">
+        <span class="pill ${uploadsOpen(ev) ? "open" : "closed"}">${uploadsOpen(ev) ? "Uploads open" : "Uploads closed"}</span>
+        ${pending ? `<span class="pill warn">${pending} waiting</span>` : ""}
+      </div></div></div>
+    <div><div class="meter ${n >= ev.limit ? "full" : ""}"><i style="width:${pct}%"></i></div>
+    <div class="ev-meta" style="margin-top:8px"><span>${n} of ${ev.limit} photos</span><span>${ev.guests.filter(g => g.status === "approved").length} guests</span></div></div>
+  </a>`;
+}
+function bindDashboard() { const b = $("#so"); if (b) b.onclick = () => { S.user = null; save(); toast("Signed out"); location.hash = "#/"; }; }
+
+/* =========================================================
+   NEW EVENT WIZARD
+   ========================================================= */
+let draft = null;
+function vNew() {
+  if (!S.user) return redirect("#/signin?next=new");
+  const first = !S.events.some(isOwner);
+  if (!draft) draft = { step: 0, name: "", date: "", desc: "", cover: "wedding", access: "open", window: "1d", public: false };
+  const st = ["Details", "Access", "Review"];
+  return `<div class="wrap page">
+    <a class="crumb" href="#/dashboard">${ICON.back} Your events</a>
+    <h1 class="h-l" style="margin-bottom:34px">New event</h1>
+    <div class="wizard">
+      <ol class="wz-steps">${st.map((s, i) => `<li class="${i === draft.step ? "on" : i < draft.step ? "done" : ""}"><b>${i < draft.step ? "✓" : i + 1}</b>${s}</li>`).join("")}</ol>
+      <div class="panel" id="wz">${[wzDetails, wzAccess, wzReview][draft.step](first)}</div>
+    </div></div>`;
+}
+const wzDetails = () => `
+  <div class="field"><label for="wn">Event name</label><input class="input" id="wn" maxlength="60" value="${esc(draft.name)}" placeholder="Salma &amp; Omar's wedding"><div class="err" id="wnerr"></div></div>
+  <div class="field"><label for="wd">Date</label><input class="input" id="wd" type="date" value="${esc(draft.date)}" style="max-width:240px"></div>
+  <div class="field"><label for="wde">Description <span class="tiny">(optional)</span></label><textarea class="input" id="wde" maxlength="240" placeholder="A note your guests will see when they open the link.">${esc(draft.desc)}</textarea></div>
+  <div class="field"><label>Cover stamp</label><div class="covers">${Object.keys(COVERS).map(k => `<button type="button" class="cover-opt ${draft.cover === k ? "on" : ""}" data-cover="${k}" aria-label="${COVERS[k].label}" aria-pressed="${draft.cover === k}">${stampCover(k)}</button>`).join("")}</div></div>
+  <div class="wz-actions"><a class="btn ghost" href="#/dashboard">Cancel</a><button class="btn primary" data-next>Continue</button></div>`;
+const wzAccess = () => `
+  <div class="field"><label>Who can join</label><div class="choice-grid">
+    <button type="button" class="choice wide ${draft.access === "open" ? "on" : ""}" data-access="open"><b>Anyone with the link</b><span>Guests enter a name and email and join right away.</span></button>
+    <button type="button" class="choice wide ${draft.access === "approval" ? "on" : ""}" data-access="approval"><b>Guests you approve</b><span>Guests send a request. They can't see or add photos until you approve them.</span></button>
+  </div></div>
+  <div class="field"><label>Upload window</label><p class="help">How long guests can add photos, starting when you create the event.</p><div class="choice-grid">
+    ${Object.entries(WINDOWS).map(([k, [l]]) => `<button type="button" class="choice ${draft.window === k ? "on" : ""}" data-window="${k}"><b>${l}</b></button>`).join("")}
+  </div></div>
+  <div class="field"><div class="switch-row"><div><b>Show in Explore</b><p class="small muted">Anyone on KLIK can view this album. Guests are told before they publish.</p></div>
+    <button type="button" class="switch" role="switch" aria-checked="${draft.public}" id="wpub" aria-label="Show in Explore"></button></div></div>
+  <div class="wz-actions"><button class="btn ghost" data-prev>Back</button><button class="btn primary" data-next>Continue</button></div>`;
+const wzReview = first => `
+  <div style="display:flex;gap:24px;align-items:center;margin-bottom:24px;flex-wrap:wrap">
+    <div style="width:110px">${stampCover(draft.cover)}</div>
+    <div><h2 class="h-m">${esc(draft.name)}</h2><p class="muted">${fmtDate(draft.date)}</p>${draft.desc ? `<p class="small" style="margin-top:6px;max-width:48ch">${esc(draft.desc)}</p>` : ""}</div>
+  </div>
+  <div class="people" style="margin-bottom:8px">
+    <div class="person"><div class="who"><b>Who can join</b><span>${draft.access === "open" ? "Anyone with the link" : "Guests you approve"}</span></div></div>
+    <div class="person"><div class="who"><b>Upload window</b><span>${WINDOWS[draft.window][0]}</span></div></div>
+    <div class="person"><div class="who"><b>Visibility</b><span>${draft.public ? "Shown in Explore" : "Private, link only"}</span></div></div>
+    <div class="person"><div class="who"><b>Plan</b><span>${first ? "Free: up to 20 photos" : "Free: up to 20 photos. Paid plans for more photos are coming soon."}</span></div></div>
+  </div>
+  <div class="wz-actions"><button class="btn ghost" data-prev>Back</button><button class="btn red" data-create>Create event</button></div>`;
+function bindNew() {
+  const wz = $("#wz"); if (!wz) return;
+  const keep = () => { if ($("#wn")) { draft.name = $("#wn").value.trim(); draft.date = $("#wd").value; draft.desc = $("#wde").value.trim(); } };
+  $$("[data-cover]", wz).forEach(b => b.onclick = () => { keep(); draft.cover = b.dataset.cover; rerender(); });
+  $$("[data-access]", wz).forEach(b => b.onclick = () => { draft.access = b.dataset.access; rerender(); });
+  $$("[data-window]", wz).forEach(b => b.onclick = () => { draft.window = b.dataset.window; rerender(); });
+  const p = $("#wpub"); if (p) p.onclick = () => { draft.public = !draft.public; rerender(); };
+  const n = $("[data-next]", wz); if (n) n.onclick = () => { keep(); if (draft.step === 0 && !draft.name) { $("#wnerr").textContent = "Give your event a name."; $("#wn").focus(); return; } draft.step++; rerender(); };
+  const pr = $("[data-prev]", wz); if (pr) pr.onclick = () => { draft.step--; rerender(); };
+  const c = $("[data-create]", wz); if (c) c.onclick = () => {
+    const ev = { id: uid(), ownerEmail: S.user.email, ownerName: S.user.name, name: draft.name, date: draft.date, desc: draft.desc, cover: draft.cover,
+      access: draft.access, window: draft.window, public: draft.public, createdAt: Date.now(), limit: 20, guests: [], photos: [], notes: [], paper: "t-paper" };
+    S.events.push(ev); save(); draft = null; toast("Event created"); location.hash = `#/event/${ev.id}/share`;
+  };
+}
+
+/* =========================================================
+   EVENT (host and guest)
+   ========================================================= */
+const joinUrl = ev => `${location.href.split("#")[0]}#/join/${ev.id}`;
+function qrSvg(text) { try { const q = qrcode(0, "M"); q.addData(text); q.make(); return q.createSvgTag({ cellSize: 4, margin: 0, scalable: true }); } catch { return `<p class="tiny">QR unavailable offline</p>`; } }
+
+function vEvent(id, tab = "gallery") {
+  const ev = getEv(id); if (!ev) return vNotFound();
+  if (!isOwner(ev)) return redirect(`#/join/${id}`);
+  const pending = ev.guests.filter(g => g.status === "pending");
+  const tabs = [["gallery", "Gallery"], ["journal", "Journal"], ["guests", "Guests"], ["requests", "Requests", pending.length], ["share", "Share"], ["settings", "Settings"]];
+  return `<div class="wrap page">
+    <a class="crumb" href="#/dashboard">${ICON.back} Your events</a>
+    ${evHeader(ev, true)}
+    <nav class="tabs" aria-label="Event sections">${tabs.map(([k, l, c]) => `<a class="tab ${tab === k ? "on" : ""}" href="#/event/${ev.id}/${k}">${l}${c ? `<span class="count">${c}</span>` : ""}</a>`).join("")}</nav>
+    <div id="tabBody">${({ gallery: tGallery, journal: tJournal, guests: tGuests, requests: tRequests, share: tShare, settings: tSettings }[tab] || tGallery)(ev, true)}</div>
+  </div>`;
+}
+function evHeader(ev, host) {
+  const n = ev.photos.length;
+  return `<header class="ev-head">
+    ${stampCover(ev.cover)}
+    <div><h1>${esc(ev.name)}</h1>
+      <div class="meta"><span class="muted small">${fmtDate(ev.date)}</span>
+      <span class="pill ${uploadsOpen(ev) ? "open" : "closed"}">${timeLeft(ev)}</span>
+      ${host ? `<span class="pill plain">${n} of ${ev.limit} photos</span>` : `<span class="pill plain">Hosted by ${esc(ev.ownerName)}</span>`}
+      ${ev.public ? `<span class="pill plain">Public</span>` : ""}</div>
+      ${ev.desc ? `<p class="small muted" style="margin-top:10px;max-width:60ch">${esc(ev.desc)}</p>` : ""}
+    </div>
+    <div class="ev-actions">
+      ${host ? `<a class="btn ghost" href="#/event/${ev.id}/share">Invite guests</a>` : ""}
+      <a class="btn red" href="#/booth/${ev.id}" ${!uploadsOpen(ev) || atLimit(ev) ? `aria-disabled="true" data-blocked="${!uploadsOpen(ev) ? "Uploads are closed for this event." : "This event has reached its photo limit."}"` : ""}>Open the booth</a>
+    </div>
+  </header>`;
+}
+
+function visiblePhotos(ev, host) {
+  if (host) return ev.photos;
+  const me = S.me[ev.id];
+  return ev.photos.filter(p => p.visibility === "everyone" || p.by === me);
+}
+function tGallery(ev, host) {
+  const ph = visiblePhotos(ev, host);
+  if (!ph.length) return `<div class="empty"><div style="width:96px;margin:0 auto">${stampCover(ev.cover)}</div><h3>The album is empty</h3>
+    <p>${host ? "Share the invite link so guests can start adding photos, or take the first strip yourself." : "Be the first to add a photo strip."}</p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">${host ? `<a class="btn ghost" href="#/event/${ev.id}/share">Invite guests</a>` : ""}<a class="btn primary" href="#/booth/${ev.id}">Open the booth</a></div></div>`;
+  return `<div class="toolbar"><p class="muted small">${ph.length} photo${ph.length > 1 ? "s" : ""}${host ? " · Drag to reorder" : ""}</p>
+    ${host ? `<button class="btn ghost sm" id="dlAll">${ICON.down} Download all</button>` : ""}</div>
+  <div class="gallery" id="gal">${ph.map(p => `
+    <figure class="ph" data-id="${p.id}" ${host ? 'draggable="true"' : ""} tabindex="0" aria-label="Photo by ${esc(p.byName)}">
+      <div class="stamp"><div class="inner" style="--ar:${p.ar || "3/4"}"><img data-img="${p.img}" alt="Photo strip by ${esc(p.byName)}"></div></div>
+      ${host ? `<div class="tools"><button class="tool" data-vis="${p.id}" title="${p.visibility === "admin" ? "Show to everyone" : "Hide from guests"}" aria-label="Change visibility">${p.visibility === "admin" ? ICON.eye : ICON.lock}</button><button class="tool" data-del="${p.id}" title="Delete photo" aria-label="Delete photo">${ICON.trash}</button></div>` : ""}
+      <figcaption class="cap"><span>${esc(p.byName)}</span>${p.visibility === "admin" ? `<span class="badge-admin">${ICON.lock} Host only</span>` : ""}</figcaption>
+    </figure>`).join("")}</div>`;
+}
+function bindGallery(ev, host) {
+  const gal = $("#gal"); if (!gal) return;
+  hydrate(gal);
+  $$(".ph", gal).forEach(f => {
+    f.addEventListener("click", e => { if (e.target.closest(".tool")) return; lightbox(ev, f.dataset.id, host); });
+    f.addEventListener("keydown", e => { if (e.key === "Enter" && !e.target.closest(".tool")) lightbox(ev, f.dataset.id, host); });
+  });
+  if (!host) return;
+  $$("[data-del]", gal).forEach(b => b.onclick = () => confirmBox("Delete this photo?", "It will be removed from the album for everyone. This can't be undone.", "Delete photo", () => {
+    const p = ev.photos.find(x => x.id === b.dataset.del); ev.photos = ev.photos.filter(x => x !== p); save(); delImg(p.img); toast("Photo deleted"); rerender(); }));
+  $$("[data-vis]", gal).forEach(b => b.onclick = () => { const p = ev.photos.find(x => x.id === b.dataset.vis); p.visibility = p.visibility === "admin" ? "everyone" : "admin"; save(); toast(p.visibility === "admin" ? "Hidden from guests" : "Visible to everyone"); rerender(); });
+  const dl = $("#dlAll"); if (dl) dl.onclick = async () => { for (const [i, p] of ev.photos.entries()) { const v = await getImg(p.img); if (v) download(v, `${slug(ev.name)}-${i + 1}.jpg`); await new Promise(r => setTimeout(r, 250)); } };
+  // reorder by drag
+  let dragId = null;
+  $$(".ph", gal).forEach(f => {
+    f.addEventListener("dragstart", () => { dragId = f.dataset.id; f.classList.add("dragging"); });
+    f.addEventListener("dragend", () => { f.classList.remove("dragging"); $$(".drop-before", gal).forEach(x => x.classList.remove("drop-before")); });
+    f.addEventListener("dragover", e => { e.preventDefault(); $$(".drop-before", gal).forEach(x => x.classList.remove("drop-before")); if (f.dataset.id !== dragId) f.classList.add("drop-before"); });
+    f.addEventListener("drop", e => { e.preventDefault(); if (!dragId || dragId === f.dataset.id) return;
+      const from = ev.photos.findIndex(p => p.id === dragId), [m] = ev.photos.splice(from, 1);
+      ev.photos.splice(ev.photos.findIndex(p => p.id === f.dataset.id), 0, m); save(); rerender(); });
+  });
+}
+const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "klik";
+function download(href, name) { const a = document.createElement("a"); a.href = href; a.download = name; a.click(); }
+async function lightbox(ev, id, host) {
+  const list = visiblePhotos(ev, host); let i = list.findIndex(p => p.id === id);
+  const lb = document.createElement("div"); lb.className = "lightbox"; lb.setAttribute("role", "dialog");
+  const show = async () => { const p = list[i]; lb.innerHTML = `<img src="${await getImg(p.img) || ""}" alt="Photo by ${esc(p.byName)}">
+    <div class="bar"><button class="btn dark-ghost sm" data-p ${i === 0 ? "disabled" : ""}>Previous</button><span>${esc(p.byName)} · ${i + 1} of ${list.length}</span>
+    <button class="btn dark-ghost sm" data-n ${i === list.length - 1 ? "disabled" : ""}>Next</button><button class="btn light sm" data-d>${ICON.down} Download</button><button class="btn dark-ghost sm" data-c>Close</button></div>`;
+    $("[data-p]", lb).onclick = () => { i--; show(); }; $("[data-n]", lb).onclick = () => { i++; show(); };
+    $("[data-d]", lb).onclick = async () => download(await getImg(p.img), `${slug(ev.name)}-${i + 1}.jpg`); $("[data-c]", lb).onclick = close; };
+  const close = () => { lb.remove(); document.removeEventListener("keydown", key); };
+  const key = e => { if (e.key === "Escape") close(); if (e.key === "ArrowRight" && i < list.length - 1) { i++; show(); } if (e.key === "ArrowLeft" && i > 0) { i--; show(); } };
+  lb.addEventListener("click", e => { if (e.target === lb) close(); }); document.addEventListener("keydown", key);
+  document.body.appendChild(lb); await show();
+}
+
+/* ---------- journal ---------- */
+function tJournal(ev, host) {
+  const ph = visiblePhotos(ev, host);
+  return `<div class="toolbar"><p class="muted small">${host ? "Drag photos and notes to arrange the page. Changes save automatically." : "Arranged by the host."}</p>
+    ${host ? `<div class="journal-bar">
+      <div class="seg" style="background:var(--white);border-color:var(--line)">${[["t-paper", "Lined"], ["t-grid", "Grid"], ["t-kraft", "Kraft"]].map(([k, l]) => `<button data-paper="${k}" class="${ev.paper === k ? "on" : ""}" style="color:var(--ink)">${l}</button>`).join("")}</div>
+      <button class="btn ghost sm" id="addNote">Add a note</button></div>` : ""}</div>
+  ${ph.length || ev.notes.length ? `<div class="journal ${ev.paper || "t-paper"}" id="jr">
+    <span class="title">${esc(ev.name)}</span>
+    ${ph.map((p, i) => { const j = p.j || (p.j = { x: 4 + (i % 7) * 13.5, y: 18 + (Math.floor(i / 7) % 2) * 38 + (i % 2) * 4, r: (i * 37 % 11) - 5 });
+      const [aw, ah] = String(p.ar || "3/4").split("/").map(Number), w = aw / ah < .6 ? 9 : 15;
+      return `<div class="j-item stamp ${host ? "" : "ro"}" data-id="${p.id}" style="--w:${w}%;left:${j.x}%;top:${j.y}%;transform:rotate(${j.r}deg)">${i % 2 ? '<span class="tape"></span>' : ""}<div class="inner"><img data-img="${p.img}" alt=""></div></div>`; }).join("")}
+    ${ev.notes.map(n => `<div class="j-note" data-note="${n.id}" style="left:${n.x}%;top:${n.y}%;transform:rotate(${n.r}deg)">${host ? `<button class="x" data-rm="${n.id}" aria-label="Remove note">✕</button>` : ""}<div ${host ? 'contenteditable="true"' : ""} spellcheck="false">${esc(n.text)}</div></div>`).join("")}
+  </div>` : `<div class="empty"><h3>Nothing to arrange yet</h3><p>Photos appear on the journal page as soon as they're added to the album.</p></div>`}`;
+}
+function bindJournal(ev, host) {
+  const jr = $("#jr"); save();
+  if (jr) hydrate(jr);
+  if (!host) return;
+  $$("[data-paper]").forEach(b => b.onclick = () => { ev.paper = b.dataset.paper; save(); rerender(); });
+  $("#addNote").onclick = () => { ev.notes.push({ id: uid(), text: "Write something…", x: 40, y: 40, r: -3 }); save(); rerender(); };
+  if (!jr) return;
+  $$("[data-rm]", jr).forEach(b => b.onclick = e => { e.stopPropagation(); ev.notes = ev.notes.filter(n => n.id !== b.dataset.rm); save(); rerender(); });
+  $$(".j-note [contenteditable]", jr).forEach(el => el.addEventListener("input", () => { ev.notes.find(n => n.id === el.parentElement.dataset.note).text = el.textContent; save(); }));
+  const dragEl = (el, getObj) => {
+    el.addEventListener("pointerdown", e => {
+      if (e.target.closest("[contenteditable],.x")) return;
+      e.preventDefault(); el.setPointerCapture(e.pointerId);
+      const r = jr.getBoundingClientRect(), o = getObj(), sx = e.clientX, sy = e.clientY, ox = o.x, oy = o.y;
+      jr.appendChild(el);
+      const mv = ev2 => { o.x = Math.max(-5, Math.min(92, ox + (ev2.clientX - sx) / r.width * 100)); o.y = Math.max(-5, Math.min(90, oy + (ev2.clientY - sy) / r.height * 100)); el.style.left = o.x + "%"; el.style.top = o.y + "%"; };
+      const up = () => { el.removeEventListener("pointermove", mv); el.removeEventListener("pointerup", up); save(); };
+      el.addEventListener("pointermove", mv); el.addEventListener("pointerup", up);
+    });
+  };
+  $$(".j-item", jr).forEach(el => dragEl(el, () => ev.photos.find(p => p.id === el.dataset.id).j));
+  $$(".j-note", jr).forEach(el => dragEl(el, () => ev.notes.find(n => n.id === el.dataset.note)));
+}
+
+/* ---------- guests & requests ---------- */
+function tGuests(ev) {
+  const g = ev.guests.filter(x => x.status === "approved");
+  if (!g.length) return `<div class="empty"><h3>No guests yet</h3><p>Guests appear here once they join with the invite link.</p><a class="btn primary" href="#/event/${ev.id}/share">Invite guests</a></div>`;
+  return `<div class="people">${g.map((x, i) => `<div class="person">${avatar(x.name, i)}<div class="who"><b>${esc(x.name)}</b><span>${esc(x.email)} · ${ev.photos.filter(p => p.by === x.id).length} photos</span></div>
+    <div class="acts"><button class="btn ghost sm" data-remove="${x.id}">Remove</button></div></div>`).join("")}</div>`;
+}
+function tRequests(ev) {
+  const g = ev.guests.filter(x => x.status === "pending");
+  if (ev.access === "open" && !g.length) return `<div class="empty"><h3>No approval needed</h3><p>Anyone with the link joins right away. Switch to "Guests you approve" in Settings to review each guest first.</p><a class="btn ghost" href="#/event/${ev.id}/settings">Open settings</a></div>`;
+  if (!g.length) return `<div class="empty"><h3>No requests right now</h3><p>When guests ask to join, they appear here for you to approve or decline.</p></div>`;
+  return `<div class="toolbar"><p class="muted small">${g.length} waiting for your approval</p><button class="btn ghost sm" id="apAll">Approve all</button></div>
+  <div class="people">${g.map((x, i) => `<div class="person">${avatar(x.name, i)}<div class="who"><b>${esc(x.name)}</b><span>${esc(x.email)}</span></div>
+    <div class="acts"><button class="btn ghost sm" data-decline="${x.id}">Decline</button><button class="btn primary sm" data-approve="${x.id}">Approve</button></div></div>`).join("")}</div>`;
+}
+function bindPeople(ev) {
+  $$("[data-approve]").forEach(b => b.onclick = () => { ev.guests.find(g => g.id === b.dataset.approve).status = "approved"; save(); toast("Guest approved"); rerender(); });
+  $$("[data-decline]").forEach(b => b.onclick = () => { ev.guests.find(g => g.id === b.dataset.decline).status = "declined"; save(); toast("Request declined"); rerender(); });
+  const a = $("#apAll"); if (a) a.onclick = () => { ev.guests.forEach(g => { if (g.status === "pending") g.status = "approved"; }); save(); toast("All guests approved"); rerender(); };
+  $$("[data-remove]").forEach(b => b.onclick = () => { const g = ev.guests.find(x => x.id === b.dataset.remove);
+    confirmBox(`Remove ${esc(g.name)}?`, "They will lose access to the album. Photos they already added stay in the album.", "Remove guest", () => { g.status = "removed"; save(); toast("Guest removed"); rerender(); }); });
+}
+
+/* ---------- share ---------- */
+function tShare(ev) {
+  const url = joinUrl(ev);
+  return `<div class="panel" style="max-width:760px">
+    <h2 class="h-m" style="margin-bottom:6px">Invite your guests</h2>
+    <p class="muted" style="margin-bottom:24px">${ev.access === "open" ? "Anyone with this link can join and add photos." : "Guests who open this link send you a request. Approve them in Requests."}</p>
+    <div class="share"><div class="qr" aria-label="QR code for the invite link">${qrSvg(url)}</div>
+      <div>
+        <div class="field" style="margin-bottom:12px"><label for="lnk">Invite link</label><div class="copy-row"><input class="input" id="lnk" readonly value="${esc(url)}"><button class="btn primary" id="cp">Copy link</button></div></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <a class="btn ghost sm" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(`Join "${ev.name}" on KLIK and add your photos: ${url}`)}">Share on WhatsApp</a>
+          <a class="btn ghost sm" href="mailto:?subject=${encodeURIComponent(`Add your photos to ${ev.name}`)}&body=${encodeURIComponent(`Join the album and add your photos: ${url}`)}">Send by email</a>
+          <button class="btn ghost sm" id="dlqr">${ICON.down} Download QR</button>
+        </div>
+        <p class="tiny" style="margin-top:16px">Testing on your own? <a class="link" href="#/join/${ev.id}" id="asGuest">Open the link as a guest</a>. You'll stay signed in as the host.</p>
+      </div></div></div>`;
+}
+function bindShare(ev) {
+  $("#cp").onclick = async () => { try { await navigator.clipboard.writeText($("#lnk").value); toast("Link copied"); } catch { $("#lnk").select(); toast("Press Ctrl+C to copy"); } };
+  $("#dlqr").onclick = () => { const svg = $(".qr svg").outerHTML; download("data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg), `${slug(ev.name)}-qr.svg`); };
+  $("#asGuest").onclick = e => { e.preventDefault(); sessionStorage.setItem("klik.asGuest", ev.id); location.hash = `#/join/${ev.id}`; };
+}
+
+/* ---------- settings ---------- */
+function tSettings(ev) {
+  return `<div class="settings">
+    <div><div class="group-h">Event details</div><div class="panel">
+      <div class="field"><label for="en">Event name</label><input class="input" id="en" value="${esc(ev.name)}" maxlength="60"></div>
+      <div class="field"><label for="ed">Date</label><input class="input" id="ed" type="date" value="${esc(ev.date)}" style="max-width:240px"></div>
+      <div class="field"><label for="ede">Description</label><textarea class="input" id="ede" maxlength="240">${esc(ev.desc)}</textarea></div>
+      <button class="btn primary" id="saveD">Save changes</button></div></div>
+    <div><div class="group-h">Access</div><div class="choice-grid">
+      <button class="choice wide ${ev.access === "open" ? "on" : ""}" data-sacc="open"><b>Anyone with the link</b><span>Guests join right away.</span></button>
+      <button class="choice wide ${ev.access === "approval" ? "on" : ""}" data-sacc="approval"><b>Guests you approve</b><span>Review each request first.</span></button></div></div>
+    <div><div class="group-h">Upload window</div><p class="small muted" style="margin-bottom:12px">${timeLeft(ev)}. Changing it counts from when the event was created.</p>
+      <div class="choice-grid">${Object.entries(WINDOWS).map(([k, [l]]) => `<button class="choice ${ev.window === k ? "on" : ""}" data-swin="${k}"><b>${l}</b></button>`).join("")}</div></div>
+    <div class="switch-row"><div><b>Show in Explore</b><p class="small muted">Anyone on KLIK can view photos shared with everyone.</p></div><button class="switch" role="switch" aria-checked="${ev.public}" id="spub" aria-label="Show in Explore"></button></div>
+    <div class="switch-row"><div><b>Blur faces of children</b><p class="small muted">Optional protection for family events. Coming in the next version.</p></div><button class="switch" role="switch" aria-checked="false" disabled aria-label="Blur faces of children"></button></div>
+    <div><div class="group-h" style="color:var(--red)">Delete event</div><div class="switch-row"><p class="small muted">Deletes the event, its guests and all ${ev.photos.length} photos. This can't be undone.</p><button class="btn red sm" id="delEv">Delete event</button></div></div>
+  </div>`;
+}
+function bindSettings(ev) {
+  $("#saveD").onclick = () => { const n = $("#en").value.trim(); if (!n) return toast("Event name can't be empty."); ev.name = n; ev.date = $("#ed").value; ev.desc = $("#ede").value.trim(); save(); toast("Changes saved"); rerender(); };
+  $$("[data-sacc]").forEach(b => b.onclick = () => { ev.access = b.dataset.sacc; save(); toast("Access updated"); rerender(); });
+  $$("[data-swin]").forEach(b => b.onclick = () => { ev.window = b.dataset.swin; save(); toast("Upload window updated"); rerender(); });
+  $("#spub").onclick = () => { ev.public = !ev.public; save(); toast(ev.public ? "Shown in Explore" : "Hidden from Explore"); rerender(); };
+  $("#delEv").onclick = () => confirmBox(`Delete ${esc(ev.name)}?`, `All ${ev.photos.length} photos and the guest list will be deleted for good.`, "Delete event", () => {
+    ev.photos.forEach(p => delImg(p.img)); S.events = S.events.filter(e => e !== ev); save(); toast("Event deleted"); location.hash = "#/dashboard"; });
+}
+
+/* =========================================================
+   GUEST: JOIN, PENDING, EVENT
+   ========================================================= */
+function vJoin(id) {
+  const ev = getEv(id); if (!ev) return vNotFound();
+  const testing = sessionStorage.getItem("klik.asGuest") === id;
+  if (isOwner(ev) && !testing) return redirect(`#/event/${id}`);
+  const g = myGuest(ev);
+  if (g?.status === "approved") return redirect(`#/e/${id}`);
+  if (g?.status === "pending") return vPending(ev, g);
+  if (g?.status === "removed" || g?.status === "declined") return `<div class="wrap page"><div class="center-card panel" style="text-align:center"><h1>You can't join this event</h1><p class="muted">The host hasn't given you access. Contact them if you think this is a mistake.</p></div></div>`;
+  return `<div class="wrap page"><div class="center-card">
+    <div class="airmail"><div class="card-in" style="padding:30px">
+      <div style="display:flex;gap:20px;align-items:center;margin-bottom:22px"><div style="width:84px;flex:none">${stampCover(ev.cover)}</div>
+      <div><p class="small muted">${esc(ev.ownerName)} invited you to</p><h1 style="font-size:40px">${esc(ev.name)}</h1><p class="small muted">${fmtDate(ev.date)}</p></div></div>
+      ${ev.desc ? `<p class="hand" style="font-size:24px;line-height:1.2;margin-bottom:20px">${esc(ev.desc)}</p>` : ""}
+      ${!uploadsOpen(ev) ? `<p class="pill closed" style="margin-bottom:16px">Uploads are closed, but you can still view the album.</p>` : ""}
+      <form id="jf" novalidate>
+        <div class="field"><label for="jn">Your name</label><input class="input" id="jn" autocomplete="name" placeholder="How the host will see you"></div>
+        <div class="field"><label for="je">Email</label><input class="input" id="je" type="email" autocomplete="email" placeholder="name@example.com"><span class="help">Use the same email next time to come back to the album.</span><div class="err" id="jerr"></div></div>
+        <button class="btn primary lg" style="width:100%">${ev.access === "open" ? "Join the event" : "Ask to join"}</button>
+      </form>
+      <p class="tiny" style="margin-top:14px">${ev.access === "open" ? "You'll be able to add photos right away." : "The host approves each guest before they can see or add photos."} No account needed.</p>
+    </div></div></div></div>`;
+}
+function bindJoin(id) {
+  const f = $("#jf"); if (!f) return bindPendingBtns(id);
+  f.onsubmit = e => {
+    e.preventDefault(); const ev = getEv(id);
+    const name = $("#jn").value.trim(), email = $("#je").value.trim().toLowerCase();
+    if (!name) return $("#jerr").textContent = "Enter your name so the host knows who you are.";
+    if (!/^\S+@\S+\.\S+$/.test(email)) return $("#jerr").textContent = "Enter a valid email, like name@example.com.";
+    let g = ev.guests.find(x => x.email === email);       // returning guest: recognised by email
+    if (g && (g.status === "removed" || g.status === "declined")) { S.me[id] = g.id; save(); return rerender(); }
+    if (!g) { g = { id: uid(), name, email, status: ev.access === "open" ? "approved" : "pending", at: Date.now() }; ev.guests.push(g); }
+    S.me[id] = g.id; save();
+    if (g.status === "approved") { toast(`Welcome, ${g.name}`); location.hash = `#/e/${id}`; } else rerender();
+  };
+}
+function vPending(ev, g) {
+  return `<div class="wrap page"><div class="center-card panel" style="text-align:center">
+    <div style="width:150px;margin:0 auto 10px">${postmark("REQUEST SENT · KLIK")}</div>
+    <h1>Request sent</h1>
+    <p class="muted" style="margin-bottom:22px">${esc(ev.ownerName)} will review your request to join <b>${esc(ev.name)}</b>. You'll be able to see the album and add photos once you're approved.</p>
+    <button class="btn primary" id="chk">Check again</button>
+    <p class="tiny" style="margin-top:18px">Signed up as ${esc(g.email)}. <button class="link" id="notme">Not you?</button></p>
+    ${isOwner(ev) ? `<p class="tiny" style="margin-top:10px">You're the host: approve this request from <a class="link" href="#/event/${ev.id}/requests" id="backHost">Requests</a>.</p>` : ""}
+  </div></div>`;
+}
+function bindPendingBtns(id) {
+  const c = $("#chk"); if (c) c.onclick = () => { const g = myGuest(getEv(id)); if (g.status === "approved") toast("You're in!"); else toast("Still waiting for the host."); rerender(); };
+  const n = $("#notme"); if (n) n.onclick = () => { delete S.me[id]; save(); rerender(); };
+  const b = $("#backHost"); if (b) b.onclick = () => sessionStorage.removeItem("klik.asGuest");
+}
+function vGuestEvent(id, tab = "gallery") {
+  const ev = getEv(id); if (!ev) return vNotFound();
+  const g = myGuest(ev);
+  if (!g || g.status !== "approved") return redirect(`#/join/${id}`);
+  const mine = ev.photos.filter(p => p.by === g.id).length;
+  return `<div class="wrap page">
+    <p class="small muted" style="margin-bottom:14px">Joined as ${esc(g.name)}${isOwner(ev) ? ` · <a class="link" href="#/event/${id}" id="backHost">Back to host view</a>` : ""}</p>
+    ${evHeader(ev, false)}
+    <nav class="tabs"><a class="tab ${tab === "gallery" ? "on" : ""}" href="#/e/${id}/gallery">Album</a><a class="tab ${tab === "journal" ? "on" : ""}" href="#/e/${id}/journal">Journal</a><a class="tab ${tab === "mine" ? "on" : ""}" href="#/e/${id}/mine">My photos <span class="count" style="background:var(--ink)">${mine}</span></a></nav>
+    <div id="tabBody">${tab === "journal" ? tJournal(ev, false) : tab === "mine" ? tMine(ev, g) : tGallery(ev, false)}</div>
+  </div>`;
+}
+function tMine(ev, g) {
+  const ph = ev.photos.filter(p => p.by === g.id);
+  if (!ph.length) return `<div class="empty"><h3>You haven't added photos yet</h3><p>Open the booth to take a photo strip. It appears here and in the album.</p><a class="btn primary" href="#/booth/${ev.id}">Open the booth</a></div>`;
+  return `<p class="muted small" style="margin-bottom:20px">Photos can't be edited after publishing. Ask the host if you need one removed.</p>
+  <div class="gallery" id="gal">${ph.map(p => `<figure class="ph" data-id="${p.id}" tabindex="0"><div class="stamp"><div class="inner" style="--ar:${p.ar || "3/4"}"><img data-img="${p.img}" alt="Your photo strip"></div></div>
+  <figcaption class="cap"><span>${new Date(p.at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span><span class="${p.visibility === "admin" ? "badge-admin" : ""}">${p.visibility === "admin" ? ICON.lock + " Host only" : "Everyone"}</span></figcaption></figure>`).join("")}</div>`;
+}
+
+/* =========================================================
+   EXPLORE
+   ========================================================= */
+const SAMPLES = [
+  { name: "Nour turns 30", by: "Nour", cover: "birthday", n: 86 },
+  { name: "Class of 2026", by: "AUC Design", cover: "grad", n: 214 },
+  { name: "Dahab weekend", by: "Karim", cover: "trip", n: 57 },
+  { name: "Studio launch night", by: "UX Labs", cover: "party", n: 132 },
+  { name: "Mona & Tarek", by: "Mona", cover: "wedding", n: 301 },
+  { name: "Sunday at grandma's", by: "Hana", cover: "everyday", n: 24 }
+];
+function vExplore() {
+  const pub = S.events.filter(e => e.public);
+  return `<div class="wrap page">
+    <div class="ex-intro">
+      <div><h1 class="h-l" style="margin-bottom:14px">See what people are making</h1>
+        <p class="lead">Public albums from weddings, trips and nights out. Hosts choose to share them here, and guests know before they publish.</p>
+        <div style="display:flex;gap:10px;margin-top:24px;flex-wrap:wrap"><a class="btn primary" href="${S.user ? "#/new" : "#/signin?next=new"}">Create an event</a><a class="btn ghost" href="#/booth">Try the booth</a></div></div>
+      <div style="max-width:300px;justify-self:center">${postmark("EXPLORE · KLIK · ALBUMS")}</div>
+    </div>
+    ${pub.length ? `<h2 class="h-m" style="margin-bottom:22px">Shared on this device</h2><div class="ex-grid" style="margin-bottom:56px">${pub.map(e => `<a class="ex-card" href="#/view/${e.id}">${stampCover(e.cover, "4/3", false)}<h3>${esc(e.name)}</h3><p class="small muted">By ${esc(e.ownerName)} · ${e.photos.filter(p => p.visibility === "everyone").length} photos</p></a>`).join("")}</div>` : ""}
+    <h2 class="h-m" style="margin-bottom:6px">Example albums</h2><p class="muted small" style="margin-bottom:22px">Sample content to show how albums look.</p>
+    <div class="ex-grid">${SAMPLES.map(s => `<div class="ex-card">${stampCover(s.cover, "4/3", false)}<h3>${esc(s.name)}</h3><p class="small muted">By ${esc(s.by)} · ${s.n} photos</p></div>`).join("")}</div>
+  </div>`;
+}
+function vPublicView(id) {
+  const ev = getEv(id); if (!ev || !ev.public) return vNotFound();
+  const ph = ev.photos.filter(p => p.visibility === "everyone");
+  return `<div class="wrap page"><a class="crumb" href="#/explore">${ICON.back} Explore</a>
+    <header class="ev-head">${stampCover(ev.cover)}<div><h1>${esc(ev.name)}</h1><div class="meta"><span class="muted small">${fmtDate(ev.date)}</span><span class="pill plain">By ${esc(ev.ownerName)}</span></div></div></header>
+    ${ph.length ? `<div class="gallery" id="gal">${ph.map(p => `<figure class="ph" data-id="${p.id}" tabindex="0"><div class="stamp"><div class="inner" style="--ar:${p.ar || "3/4"}"><img data-img="${p.img}" alt="Photo by ${esc(p.byName)}"></div></div><figcaption class="cap"><span>${esc(p.byName)}</span></figcaption></figure>`).join("")}</div>`
+      : `<div class="empty"><h3>No public photos yet</h3><p>Photos shared with everyone will show up here.</p></div>`}</div>`;
+}
+
+/* =========================================================
+   ROUTER
+   ========================================================= */
+let current = null;
+function redirect(h) { setTimeout(() => location.hash = h); return ""; }
+function vNotFound() { return `<div class="wrap page"><div class="empty"><h3>We couldn't find that page</h3><p>The link may be wrong, or the event was deleted.</p><a class="btn primary" href="#/">Go to the home page</a></div></div>`; }
+function rerender() { const y = scrollY; render(); scrollTo(0, y); }
+function render() {
+  boothTeardown();
+  document.body.classList.remove("booth-mode");
+  const [path, qs] = location.hash.replace(/^#\/?/, "").split("?");
+  const q = new URLSearchParams(qs || ""), parts = path.split("/").filter(Boolean);
+  renderNav();
+  let html = "", bind = () => {};
+  const [r, a, b] = parts;
+  if (!r) { html = vLanding(); bind = bindLanding; }
+  else if (r === "signin") { html = vSignin(); bind = () => $("#sf") && bindSignin(q); }
+  else if (r === "dashboard") { html = vDashboard(); bind = bindDashboard; }
+  else if (r === "new") { html = vNew(); bind = bindNew; }
+  else if (r === "event") {
+    html = vEvent(a, b || "gallery");
+    bind = () => { const ev = getEv(a); if (!ev || !isOwner(ev)) return; sessionStorage.removeItem("klik.asGuest"); bindBlocked();
+      ({ gallery: () => bindGallery(ev, true), journal: () => bindJournal(ev, true), guests: () => bindPeople(ev), requests: () => bindPeople(ev), share: () => bindShare(ev), settings: () => bindSettings(ev) }[b || "gallery"] || (() => {}))(); };
+  }
+  else if (r === "join") { html = vJoin(a); bind = () => bindJoin(a); }
+  else if (r === "e") { html = vGuestEvent(a, b || "gallery"); bind = () => { const ev = getEv(a); if (!ev) return; bindBlocked(); const bh = $("#backHost"); if (bh) bh.onclick = () => sessionStorage.removeItem("klik.asGuest");
+      if ((b || "gallery") === "journal") bindJournal(ev, false); else bindGallery(ev, false); }; }
+  else if (r === "view") { html = vPublicView(a); bind = () => { const ev = getEv(a); if (ev) bindGallery(ev, false); }; }
+  else if (r === "explore") { html = vExplore(); }
+  else if (r === "booth") { document.body.classList.add("booth-mode"); html = vBooth(a); bind = () => boothInit(a); }
+  else html = vNotFound();
+  app.innerHTML = html; bind();
+  if (current !== path) { scrollTo(0, 0); current = path; }
+  document.title = r === "booth" ? "KLIK — Booth" : "KLIK — One album for every photo from the day";
+}
+function bindBlocked() { $$("[data-blocked]").forEach(a => a.onclick = e => { e.preventDefault(); toast(a.dataset.blocked); }); }
+window.addEventListener("hashchange", render);
+
+/* =========================================================
+   BOOTH
+   ========================================================= */
+const FILTERS = [
+  { name: "Original", css: "none" },
+  { name: "Gold", css: "contrast(1.08) saturate(1.25) sepia(.18) brightness(1.05)", grain: .07, vig: .25 },
+  { name: "Soft", css: "contrast(.94) saturate(.88) brightness(1.08) sepia(.1)", grain: .05, vig: .15 },
+  { name: "Noir", css: "grayscale(1) contrast(1.35) brightness(.95)", grain: .14, vig: .45 },
+  { name: "Sunset", css: "sepia(.35) saturate(1.4) hue-rotate(-10deg) brightness(1.06)", leak: true, vig: .2 },
+  { name: "Y2K", css: "saturate(1.6) contrast(1.15) hue-rotate(8deg) brightness(1.05)", grain: .05 },
+  { name: "Darkroom", css: "contrast(1.25) brightness(.85) saturate(.8) sepia(.2)", grain: .1, vig: .55 },
+  { name: "Mosaic", pixel: 22 }
+];
+const LAYOUTS = { "1x3": { cols: 1, rows: 3 }, "1x4": { cols: 1, rows: 4 }, "2x2": { cols: 2, rows: 2 }, "1x1": { cols: 1, rows: 1 } };
+const noise = document.createElement("canvas"); noise.width = noise.height = 256;
+{ const n = noise.getContext("2d"), d = n.createImageData(256, 256); for (let i = 0; i < d.data.length; i += 4) { const v = Math.random() * 255; d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = 255; } n.putImageData(d, 0, 0); }
+let recognizer = null, B = null;
+
+function boothAccess(id) {
+  if (!id) return { ok: true, personal: true };
+  const ev = getEv(id); if (!ev) return { ok: false, title: "Event not found", msg: "This booth link doesn't belong to an event.", href: "#/" };
+  const host = isOwner(ev), g = myGuest(ev);
+  if (!host && g?.status !== "approved") return { ok: false, title: "Join the event first", msg: "You need to join this event before you can add photos.", href: `#/join/${id}`, cta: "Join the event" };
+  if (!uploadsOpen(ev)) return { ok: false, title: "Uploads are closed", msg: "The upload window for this event has ended. You can still browse the album.", href: host ? `#/event/${id}` : `#/e/${id}`, cta: "Back to the album" };
+  if (atLimit(ev)) return { ok: false, title: "The album is full", msg: `This event has reached its limit of ${ev.limit} photos.${host ? " Paid plans with more photos are coming soon." : ""}`, href: host ? `#/event/${id}` : `#/e/${id}`, cta: "Back to the album" };
+  return { ok: true, ev, host, g };
+}
+function vBooth(id) {
+  const acc = boothAccess(id), ev = acc.ev;
+  const backHref = !id ? "#/" : acc.host ? `#/event/${id}` : `#/e/${id}`;
+  const bar = `<div class="bbar"><div class="left"><a class="back" href="${backHref}">${ICON.back} ${id ? "Back to album" : "Home"}</a><span class="ev">${ev ? esc(ev.name) : "KLIK booth"}</span></div>
+    ${acc.ok ? `<div class="bctrl">
+      <div class="bgroup">Timer<div class="seg" id="timerSeg"><button data-v="3" class="on">3s</button><button data-v="5">5s</button></div></div>
+      <div class="bgroup">Layout<div class="seg" id="layoutSeg">
+        <button data-v="1x3" class="on" aria-label="Strip of 3"><i class="lay" style="grid-template:repeat(3,4px)/7px"><b></b><b></b><b></b></i>3</button>
+        <button data-v="1x4" aria-label="Strip of 4"><i class="lay" style="grid-template:repeat(4,3px)/7px"><b></b><b></b><b></b><b></b></i>4</button>
+        <button data-v="2x2" aria-label="Grid of 4"><i class="lay" style="grid-template:repeat(2,6px)/repeat(2,6px)"><b></b><b></b><b></b><b></b></i>2×2</button>
+        <button data-v="1x1" aria-label="Single photo"><i class="lay" style="grid-template:12px/10px"><b></b></i>1</button></div></div>
+      <button class="ibtn" id="soundBtn" aria-label="Mute sounds" title="Sounds"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button>
+      <button class="ibtn" id="camBtn" aria-label="Turn camera off" title="Camera"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></button>
+      <button class="ibtn" id="tuneBtn" aria-label="Gesture settings" title="Gesture settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg></button>
+    </div>` : ""}</div>`;
+  if (!acc.ok) return `<div class="booth">${bar}<div class="bmain"><div class="blocked-msg"><h2>${acc.title}</h2><p>${acc.msg}</p><a class="btn light" href="${acc.href}">${acc.cta || "Go back"}</a></div></div></div>`;
+  const cursor = id => `<div class="cursor" id="${id}"><svg viewBox="0 0 56 56"><circle cx="28" cy="28" r="25" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="3"/><circle class="arc" cx="28" cy="28" r="25" fill="none" stroke="#F2B705" stroke-width="3" stroke-linecap="round" stroke-dasharray="157" stroke-dashoffset="157"/></svg><div class="dot"></div><div class="ax"></div><div class="emoji">✌️</div></div>`;
+  return `<div class="booth">${bar}
+  <div class="bmain">
+    <div class="stage" id="stage">
+      <video id="video" playsinline muted></video><canvas id="view" width="960" height="720"></canvas>
+      <div class="shade t"></div><div class="shade b"></div><div class="shade s ui"></div>
+      <div class="slots" id="slots"></div><div class="bstep glass ui" id="bstep"></div>
+      <div class="bhint glass ui" id="bhint" role="status" aria-live="polite"></div>
+      <div class="fname ui" id="fname"><b id="fnameB"></b></div>
+      <div class="cmark ui"></div><div class="carousel ui" id="carousel"><div class="track" id="track"></div></div>
+      <div class="intensity glass ui" id="intensity"><span class="lbl">Strength</span><div class="bar"><div class="fill" id="iFill"></div><div class="knob" id="iKnob"></div></div><span class="val" id="iVal">100%</span></div>
+      <div class="legend glass ui"><div class="row" id="lgF"><span class="k">🤏 ↕</span>Change filter</div><div class="row" id="lgI"><span class="k">🤏 ↔</span>Adjust strength</div><div class="row" id="lgP"><span class="k">✌️</span>Take the photo</div><small>Use both hands at once</small></div>
+      ${cursor("curA")}${cursor("curB")}
+      <div class="cdown"><span id="count"></span><small id="smile">Smile!</small></div>
+      <button class="bcancel glass" id="cancelBtn">Cancel <span style="opacity:.6;font-size:12px">Esc</span></button>
+      <div class="flash" id="flash"></div>
+      <div class="boverlay" id="intro">
+        <h2>Strike a pose, hands free</h2>
+        <p>Stand about an arm's length from the camera so it can see your hand.</p>
+        <div class="bguides">
+          <div class="bguide"><div class="g">🤏 ↕</div><b>Change the filter</b><small>Pinch your thumb and index finger, slide up or down, then let go.</small></div>
+          <div class="bguide"><div class="g">🤏 ↔</div><b>Adjust its strength</b><small>Pinch and slide left or right to go from 0 to 100%.</small></div>
+          <div class="bguide"><div class="g">✌️</div><b>Take the photo</b><small>Hold up a peace sign until the ring fills. The timer starts.</small></div>
+        </div>
+        <button class="btn light lg" id="startBtn">Turn on camera</button>
+        <div class="berr" id="berr" role="alert"></div>
+        <p class="tiny" style="color:rgba(232,237,243,.55)">Your camera feed is processed on this device and never uploaded.</p>
+      </div>
+      <div class="boverlay" id="offOverlay" style="display:none"><h2>Camera is off</h2><p>Turn it back on to pick up where you left off.</p><button class="btn light" id="resumeBtn">Turn on camera</button></div>
+    </div>
+    <section class="breview" id="breview">
+      <div class="strip-wrap" id="stripWrap"><canvas id="strip" class="stamp-shadow"></canvas></div>
+      <div class="bside"><h2>Looking good</h2>
+        <p>Hover over any shot to retake it.${ev ? " When you're happy, publish it to the album." : " Download it or start a new strip."}</p>
+        ${ev ? `<button class="btn red lg" id="pubBtn">Publish to album</button>` : ""}
+        <button class="btn ${ev ? "dark-ghost" : "light lg"}" id="saveBtn">${ICON.down} Download</button>
+        <button class="btn dark-ghost" id="againBtn">Start a new strip</button>
+      </div>
+    </section>
+  </div>
+  <div class="tune" id="tune" role="dialog" aria-label="Gesture settings"><b>Gesture settings</b>
+    <label>Pinch sensitivity <input type="range" id="sPinch" min="0.2" max="0.5" step="0.01" value="0.32"><span id="vPinch"></span></label>
+    <label>Filter scroll speed <input type="range" id="sStep" min="0.04" max="0.15" step="0.01" value="0.07"><span id="vStep"></span></label>
+    <label>Strength speed <input type="range" id="sIStep" min="0.15" max="0.6" step="0.05" value="0.3"><span id="vIStep"></span></label>
+    <label>Peace sign confidence <input type="range" id="sConf" min="0.4" max="0.95" step="0.05" value="0.6"><span id="vConf"></span></label>
+    <label>Peace sign hold <input type="range" id="sHold" min="300" max="1500" step="50" value="800"><span id="vHold"></span></label>
+    <pre id="dstats">—</pre></div>
+  </div>`;
+}
+
+function boothTeardown() {
+  if (!B) return;
+  B.running = false; clearTimeout(B.cdTimer);
+  B.stream?.getTracks().forEach(t => t.stop());
+  document.removeEventListener("keydown", B.onKey); window.removeEventListener("resize", B.onResize);
+  B = null;
+}
+
+function boothInit(eventId) {
+  const acc = boothAccess(eventId); if (!acc.ok) return;
+  const W = 960, H = 720, video = $("#video"), vctx = $("#view").getContext("2d");
+  const tmp = document.createElement("canvas"), tctx = tmp.getContext("2d");
+  const st = B = { running: false, stream: null, cdTimer: null, onKey: null, onResize: null };
+  let state = "intro", current = 0, pos = 0, layoutKey = "1x3", total = 3, shots = [], targetIdx = 0, retaking = false, timer = 3, sound = true;
+  const SET = { pinch: .32, step: .07, istep: .3, conf: .6, hold: 800 };
+  const amounts = FILTERS.map(() => 1), amt = () => amounts[current];
+
+  function drawFiltered(ctx, f, w, h, fx = true, a = 1) {
+    const vw = video.videoWidth, vh = video.videoHeight, ar = w / h;
+    let sw = vw, sh = vw / ar; if (sh > vh) { sh = vh; sw = vh * ar; }
+    const sx = (vw - sw) / 2, sy = (vh - sh) / 2;
+    ctx.save(); ctx.setTransform(-1, 0, 0, 1, w, 0);
+    if (a < 1) { ctx.filter = "none"; ctx.drawImage(video, sx, sy, sw, sh, 0, 0, w, h); }
+    ctx.globalAlpha = a;
+    if (a > 0) {
+      if (f.pixel) { const pw = Math.max(1, Math.round(w / f.pixel * (fx ? 1 : 2.5))), ph = Math.max(1, Math.round(pw / ar));
+        tmp.width = pw; tmp.height = ph; tctx.drawImage(video, sx, sy, sw, sh, 0, 0, pw, ph); ctx.imageSmoothingEnabled = false; ctx.drawImage(tmp, 0, 0, w, h); }
+      else { ctx.filter = f.css; ctx.drawImage(video, sx, sy, sw, sh, 0, 0, w, h); }
+    }
+    ctx.restore();
+    if (!fx || a <= 0) return;
+    ctx.save();
+    if (f.leak) { const g = ctx.createLinearGradient(0, 0, w, h * .6); g.addColorStop(0, `rgba(255,140,60,${.35 * a})`); g.addColorStop(.5, "rgba(255,90,90,0)"); ctx.globalCompositeOperation = "screen"; ctx.fillStyle = g; ctx.fillRect(0, 0, w, h); }
+    if (f.grain) { ctx.globalCompositeOperation = "overlay"; ctx.globalAlpha = f.grain * 2 * a; ctx.fillStyle = ctx.createPattern(noise, "repeat"); ctx.translate(Math.random() * 256, Math.random() * 256); ctx.fillRect(-256, -256, w + 512, h + 512); ctx.setTransform(1, 0, 0, 1, 0, 0); }
+    if (f.vig) { ctx.globalCompositeOperation = "multiply"; ctx.globalAlpha = 1; const g = ctx.createRadialGradient(w / 2, h / 2, h * .35, w / 2, h / 2, h * .85); g.addColorStop(0, "rgba(0,0,0,0)"); g.addColorStop(1, `rgba(0,0,0,${f.vig * a})`); ctx.fillStyle = g; ctx.fillRect(0, 0, w, h); }
+    ctx.restore();
+  }
+
+  /* sounds */
+  let actx = null;
+  const beep = (fq = 880, dur = .06, vol = .08) => { if (!sound) return; actx ||= new AudioContext(); const o = actx.createOscillator(), g = actx.createGain(); o.frequency.value = fq; g.gain.setValueAtTime(vol, actx.currentTime); g.gain.exponentialRampToValueAtTime(.0001, actx.currentTime + dur); o.connect(g).connect(actx.destination); o.start(); o.stop(actx.currentTime + dur); };
+  const shutter = () => { if (!sound) return; actx ||= new AudioContext(); const len = actx.sampleRate * .12, b = actx.createBuffer(1, len, actx.sampleRate), d = b.getChannelData(0); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3); const s = actx.createBufferSource(), g = actx.createGain(); g.gain.value = .25; s.buffer = b; s.connect(g).connect(actx.destination); s.start(); };
+
+  /* camera + model */
+  async function startCamera() { st.stream = await navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 1280 }, height: { ideal: 960 }, facingMode: "user" }, audio: false }); video.srcObject = st.stream; await video.play(); }
+  async function loadModel() {
+    if (recognizer) return;
+    const { FilesetResolver, GestureRecognizer } = await import("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14");
+    const vision = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm");
+    const o = d => ({ baseOptions: { modelAssetPath: "https://storage.googleapis.com/mediapipe-models/gesture_recognizer/gesture_recognizer/float16/1/gesture_recognizer.task", delegate: d }, runningMode: "VIDEO", numHands: 2, minHandDetectionConfidence: .6, minHandPresenceConfidence: .6, minTrackingConfidence: .6 });
+    try { recognizer = await GestureRecognizer.createFromOptions(vision, o("GPU")); } catch { recognizer = await GestureRecognizer.createFromOptions(vision, o("CPU")); }
+  }
+
+  /* loop */
+  let lastT = -1, frame = 0, fps = 0, fc = 0, ft = performance.now();
+  function loop() {
+    if (!st.running || B !== st) return;
+    if ((state === "choose" || state === "countdown") && video.readyState >= 2) {
+      const now = performance.now();
+      drawFiltered(vctx, FILTERS[current], W, H, true, amt());
+      if (++frame % 4 === 0) thumbs.forEach((c, i) => drawFiltered(c.getContext("2d"), FILTERS[i], 120, 120, false));
+      if (recognizer && video.currentTime !== lastT) { lastT = video.currentTime; process(recognizer.recognizeForVideo(video, now), now); fc++; if (now - ft > 1000) { fps = fc; fc = 0; ft = now; } }
+    }
+    requestAnimationFrame(loop);
+  }
+
+  /* hands: pinch ↕ = filter, pinch ↔ = strength, ✌️ = shoot. Each axis is held by one hand at a time. */
+  const d2 = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+  const mk = el => ({ el, pinching: false, pin: 0, rel: 0, cx: null, cy: null, x0: 0, y0: 0, axis: null, startPos: 0, startAmt: 1, seen: false });
+  const HANDS = { Left: mk($("#curA")), Right: mk($("#curB")) }, owner = { x: null, y: null };
+  let peaceSince = 0, peaceFired = false, peaceHand = null; const dbg = {};
+  function process(res, now) {
+    const lms = res.landmarks || [], used = new Set(); let anyPeace = null;
+    Object.values(HANDS).forEach(h => h.seen = false);
+    lms.forEach((lm, i) => {
+      let key = res.handedness?.[i]?.[0]?.categoryName || (i ? "Right" : "Left"); if (used.has(key)) key = key === "Left" ? "Right" : "Left"; used.add(key);
+      const h = HANDS[key]; h.seen = true;
+      const g = res.gestures?.[i]?.[0] || { categoryName: "None", score: 0 };
+      const pd = d2(lm[4], lm[8]) / (d2(lm[0], lm[9]) || 1), mx = 1 - (lm[4].x + lm[8].x) / 2, my = (lm[4].y + lm[8].y) / 2;
+      h.cx = h.cx === null ? mx : h.cx * .5 + mx * .5; h.cy = h.cy === null ? my : h.cy * .5 + my * .5;
+      h.el.style.left = h.cx * 100 + "%"; h.el.style.top = h.cy * 100 + "%"; h.el.classList.toggle("show", state === "choose");
+      if (!h.pinching) { h.pin = pd < SET.pinch ? h.pin + 1 : 0; if (h.pin >= 2 && state === "choose") startPinch(h); }
+      else { h.rel = pd > SET.pinch * 1.6 ? h.rel + 1 : 0; if (h.rel >= 2) endPinch(h); }
+      if (h.pinching) updateDrag(h);
+      const isPeace = !h.pinching && g.categoryName === "Victory" && g.score >= SET.conf; if (isPeace) anyPeace = h;
+      h.el.classList.toggle("peace", isPeace); h.el.classList.toggle("pinch", h.pinching && h.axis !== "blocked"); h.el.classList.toggle("blocked", h.axis === "blocked");
+      dbg[key] = `${g.categoryName} ${g.score.toFixed(2)} pinch:${pd.toFixed(2)} axis:${h.axis}`;
+    });
+    Object.entries(HANDS).forEach(([k, h]) => { if (!h.seen) { if (h.pinching) endPinch(h); h.cx = null; h.el.classList.remove("show", "peace", "pinch", "blocked"); setArc(h, 0); dbg[k] = "—"; } });
+    const anyPinch = Object.values(HANDS).some(h => h.pinching);
+    if (anyPeace && !anyPinch && state === "choose") {
+      if (peaceHand !== anyPeace) { Object.values(HANDS).forEach(h => setArc(h, 0)); peaceHand = anyPeace; peaceSince = now; }
+      const p = Math.min(1, (now - peaceSince) / SET.hold); setArc(anyPeace, p);
+      if (!peaceFired && p >= 1) { peaceFired = true; resetPeace(); startCountdown(); }
+    } else resetPeace();
+    $("#lgF").classList.toggle("on", !!owner.y); $("#lgI").classList.toggle("on", !!owner.x); $("#lgP").classList.toggle("on", !!peaceHand);
+    if (state === "choose") setHint(!lms.length ? "Raise your hand in front of the camera" : Object.values(HANDS).some(h => h.axis === "blocked") ? "Your other hand is already doing that. Try the other direction." : "");
+    dbg.hands = lms.length; dbg.fps = fps; $("#dstats").textContent = Object.entries(dbg).map(([k, v]) => `${k}: ${v}`).join("\n");
+  }
+  function startPinch(h) { h.pinching = true; h.rel = 0; h.axis = null; h.x0 = h.cx; h.y0 = h.cy; }
+  function updateDrag(h) {
+    if (h.axis === "blocked") return;
+    const dx = h.cx - h.x0, dy = h.cy - h.y0;
+    if (!h.axis) {
+      if (Math.hypot(dx, dy) < .035) return;
+      const want = Math.abs(dy) > Math.abs(dx) ? "y" : "x";
+      if (owner[want]) { h.axis = "blocked"; return; }
+      h.axis = want; owner[want] = h; h.x0 = h.cx; h.y0 = h.cy; h.startPos = current; h.startAmt = amt(); h.fIdx = current;
+      $(".ax", h.el).textContent = want === "y" ? "↕" : "↔";
+      if (want === "y") $("#track").classList.add("drag"); else $("#intensity").classList.add("active");
+      return;
+    }
+    if (h.axis === "y") {
+      pos = Math.max(0, Math.min(FILTERS.length - 1, h.startPos - (h.cy - h.y0) / SET.step));
+      const r = Math.round(pos); if (r !== current) { current = r; beep(1200, .03, .04); showName(); }
+      renderCarousel();
+    } else {
+      if (h.fIdx !== current) { h.fIdx = current; h.x0 = h.cx; h.startAmt = amt(); }
+      amounts[current] = Math.max(0, Math.min(1, h.startAmt + (h.cx - h.x0) / SET.istep)); renderIntensity();
+    }
+  }
+  function endPinch(h) {
+    if (h.axis === "y") { pos = current; $("#track").classList.remove("drag"); renderCarousel(); }
+    if (h.axis === "x") $("#intensity").classList.remove("active");
+    if (h.axis && owner[h.axis] === h) owner[h.axis] = null;
+    h.pinching = false; h.pin = 0; h.axis = null;
+  }
+  const resetPeace = () => { if (peaceHand) setArc(peaceHand, 0); peaceHand = null; peaceSince = 0; peaceFired = false; };
+  const setArc = (h, p) => $(".arc", h.el).style.strokeDashoffset = 157 * (1 - p);
+
+  /* capture */
+  function startCountdown() {
+    if (state !== "choose") return;
+    state = "countdown"; Object.values(HANDS).forEach(h => { if (h.pinching) endPinch(h); h.el.classList.remove("show"); });
+    $("#stage").classList.add("counting"); setHint("");
+    let n = timer; showCount(n);
+    const tick = () => { n--; if (n > 0) { showCount(n); st.cdTimer = setTimeout(tick, 1000); } else { showCount(""); capture(); } };
+    st.cdTimer = setTimeout(tick, 1000);
+  }
+  function cancelCountdown() { if (state !== "countdown") return; clearTimeout(st.cdTimer); showCount(""); $("#stage").classList.remove("counting"); state = "choose"; }
+  function showCount(n) { const c = $("#count"); c.textContent = n; c.classList.remove("pop"); void c.offsetWidth; $("#smile").classList.toggle("show", n === 1); if (n !== "") { c.classList.add("pop"); beep(n === 1 ? 1320 : 880); } }
+  function capture() {
+    shutter(); $("#flash").style.opacity = 1; setTimeout(() => $("#flash") && ($("#flash").style.opacity = 0), 200);
+    const c = document.createElement("canvas"); c.width = W; c.height = H; drawFiltered(c.getContext("2d"), FILTERS[current], W, H, true, amt());
+    const idx = targetIdx; shots[idx] = c; $("#stage").classList.remove("counting");
+    if (retaking) { retaking = false; setTimeout(enterReview, 450); return; }
+    targetIdx++;
+    if (targetIdx >= total) { renderSlots(idx); setTimeout(enterReview, 600); } else { enterChoose(); renderSlots(idx); }
+  }
+
+  /* screens */
+  function enterChoose() { state = "choose"; $("#stage").style.display = ""; $("#breview").classList.remove("show");
+    $("#bstep").textContent = retaking ? `Retaking shot ${targetIdx + 1}` : `Shot ${targetIdx + 1} of ${total}`; renderSlots(); renderCarousel(); }
+  async function enterReview() { state = "review"; await buildStrip(); $("#stage").style.display = "none"; $("#breview").classList.add("show"); ($("#pubBtn") || $("#saveBtn")).focus(); }
+  function renderSlots(popIdx = -1) {
+    const el = $("#slots"); el.innerHTML = "";
+    for (let i = 0; i < total; i++) { const s = document.createElement("div"); s.className = "slot" + (i === targetIdx && state === "choose" ? " now" : "") + (i === popIdx ? " pop" : "");
+      if (shots[i]) { const c = document.createElement("canvas"); c.width = 84; c.height = 64; c.getContext("2d").drawImage(shots[i], 0, 0, 84, 64); s.appendChild(c); } el.appendChild(s); }
+  }
+
+  /* filter UI */
+  const thumbs = [];
+  (function buildCarousel() {
+    FILTERS.forEach((f, i) => { const d = document.createElement("div"); d.className = "fx"; d.setAttribute("role", "button"); d.setAttribute("aria-label", f.name + " filter"); d.tabIndex = -1;
+      const c = document.createElement("canvas"); c.width = c.height = 120; thumbs.push(c); const s = document.createElement("span"); s.textContent = f.name; d.append(c, s);
+      d.onclick = () => selectFilter(i); $("#track").appendChild(d); });
+  })();
+  function selectFilter(i) { if (state !== "choose") return; current = i; pos = i; renderCarousel(); showName(); }
+  function renderCarousel() { const ch = $("#carousel").clientHeight; $("#track").style.transform = `translateY(${ch / 2 - 48 - pos * 96}px)`; $$("#track .fx").forEach((el, i) => el.classList.toggle("on", i === current)); renderIntensity(); }
+  function renderIntensity() { const p = Math.round(amt() * 100); $("#iFill").style.width = p + "%"; $("#iKnob").style.left = p + "%"; $("#iVal").textContent = p + "%"; $("#intensity").classList.toggle("dim", current === 0); }
+  function showName() { $("#fnameB").textContent = FILTERS[current].name; const el = $("#fname"); el.classList.add("show"); clearTimeout(showName.t); showName.t = setTimeout(() => el.classList.remove("show"), 900); }
+  const setHint = t => { const h = $("#bhint"); if (h && h.textContent !== t) h.textContent = t; };
+
+  /* final strip: white stamp-like card with KLIK postmark */
+  let slotsRect = [];
+  async function buildStrip() {
+    await document.fonts.load('800 40px "Big Shoulders Display"');
+    const L = LAYOUTS[layoutKey], pad = 30, gap = 16, footer = 120, sw = L.cols === 1 ? 600 : 420, sh = Math.round(sw * .75);
+    const cw = L.cols * sw + (L.cols - 1) * gap + pad * 2, ch = L.rows * sh + (L.rows - 1) * gap + pad * 2 + footer;
+    const s = $("#strip"); s.width = cw; s.height = ch; const g = s.getContext("2d");
+    g.fillStyle = "#fff"; g.fillRect(0, 0, cw, ch);
+    // perforated edges
+    g.globalCompositeOperation = "destination-out"; const r = 7, step = 22;
+    for (let x = step / 2; x < cw; x += step) { g.beginPath(); g.arc(x, 0, r, 0, 7); g.arc(x, ch, r, 0, 7); g.fill(); }
+    for (let y = step / 2; y < ch; y += step) { g.beginPath(); g.arc(0, y, r, 0, 7); g.arc(cw, y, r, 0, 7); g.fill(); }
+    g.globalCompositeOperation = "source-over";
+    slotsRect = [];
+    for (let i = 0; i < total; i++) { const x = pad + (i % L.cols) * (sw + gap), y = pad + Math.floor(i / L.cols) * (sh + gap); slotsRect.push({ x, y, w: sw, h: sh }); if (shots[i]) g.drawImage(shots[i], x, y, sw, sh); }
+    const fy = ch - footer + 26;
+    g.fillStyle = "#16213E"; g.textAlign = "left"; g.font = '800 54px "Big Shoulders Display"'; g.fillText("KLIK", pad, fy + 52);
+    const ev = acc.ev, dt = new Date();
+    g.font = '600 18px "Instrument Sans"'; g.fillStyle = "#4A5677"; g.fillText(ev ? ev.name : dt.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }), pad + 120, fy + 34);
+    if (ev) g.fillText(dt.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }), pad + 120, fy + 58);
+    // postmark rings
+    g.strokeStyle = "rgba(200,16,46,.75)"; g.lineWidth = 3; const pmx = cw - pad - 50, pmy = fy + 34;
+    g.beginPath(); g.arc(pmx, pmy, 40, 0, 7); g.stroke(); g.beginPath(); g.arc(pmx, pmy, 28, 0, 7); g.stroke();
+    g.fillStyle = "rgba(200,16,46,.85)"; g.textAlign = "center"; g.font = '800 17px "Big Shoulders Display"'; g.fillText(`${dt.getDate()} ${dt.toLocaleString("en", { month: "short" }).toUpperCase()}`, pmx, pmy + 6);
+    // retake hot spots
+    const wrap = $("#stripWrap"); $$(".hot", wrap).forEach(h => h.remove());
+    requestAnimationFrame(() => { const k = s.getBoundingClientRect().width / cw;
+      slotsRect.forEach((q, i) => { const h = document.createElement("button"); h.className = "hot"; h.textContent = `Retake shot ${i + 1}`;
+        Object.assign(h.style, { left: q.x * k + "px", top: q.y * k + "px", width: q.w * k + "px", height: q.h * k + "px" }); h.onclick = () => { retaking = true; targetIdx = i; enterChoose(); }; wrap.appendChild(h); }); });
+  }
+  function stripJpeg() { const s = $("#strip"), k = Math.min(1, 900 / s.width), c = document.createElement("canvas"); c.width = s.width * k; c.height = s.height * k;
+    const g = c.getContext("2d"); g.fillStyle = "#E8EDF3"; g.fillRect(0, 0, c.width, c.height); g.drawImage(s, 0, 0, c.width, c.height); return { url: c.toDataURL("image/jpeg", .86), ar: `${s.width}/${s.height}` }; }
+
+  /* publish */
+  function publish() {
+    const ev = getEv(eventId); if (!ev) return;
+    if (atLimit(ev)) return toast("This album is full. No more photos can be added.");
+    if (!uploadsOpen(ev)) return toast("Uploads closed while you were shooting.");
+    let vis = "everyone";
+    modal(`<h2>Publish your strip</h2><p class="muted" style="margin-bottom:20px">Choose who can see it. Published photos can't be edited, but the host can remove them.</p>
+      <div class="vis-demo">
+        <button class="vis-opt on" data-v="everyone" style="text-align:left;width:100%"><span class="ic">${ICON.people}</span><div><b>Everyone at the event</b><span class="muted small">${ev.public ? "Also visible in Explore, because this album is public." : "All approved guests can see it in the album."}</span></div></button>
+        <button class="vis-opt" data-v="admin" style="text-align:left;width:100%"><span class="ic">${ICON.lock}</span><div><b>Only the host</b><span class="muted small">Hidden from other guests.</span></div></button>
+      </div>
+      <p class="tiny" style="margin-top:14px">${ev.photos.length + 1} of ${ev.limit} photos after publishing.</p>
+      <div class="acts"><button class="btn ghost" data-x>Cancel</button><button class="btn red" data-ok>Publish</button></div>`,
+      (el, close) => {
+        $$("[data-v]", el).forEach(b => b.onclick = () => { vis = b.dataset.v; $$("[data-v]", el).forEach(x => x.classList.toggle("on", x === b)); });
+        $("[data-x]", el).onclick = close;
+        $("[data-ok]", el).onclick = async () => {
+          const { url, ar } = stripJpeg(), key = "img_" + uid(), host = isOwner(ev), g = myGuest(ev);
+          try { await putImg(key, url); } catch { return toast("Couldn't save the photo. Free up browser storage and try again."); }
+          ev.photos.push({ id: uid(), img: key, ar, by: host ? "host" : g.id, byName: host ? ev.ownerName : g.name, visibility: vis, at: Date.now() });
+          save(); close(); toast(`Published to ${ev.name}`);
+          location.hash = host ? `#/event/${ev.id}/gallery` : `#/e/${ev.id}/mine`;
+        };
+      });
+  }
+
+  /* controls */
+  const seg = (id, cb) => $$(`#${id} button`).forEach(b => b.onclick = () => { $$(`#${id} button`).forEach(x => x.classList.toggle("on", x === b)); cb(b.dataset.v); });
+  seg("timerSeg", v => timer = +v);
+  seg("layoutSeg", v => { layoutKey = v; total = LAYOUTS[v].cols * LAYOUTS[v].rows; shots = []; targetIdx = 0; retaking = false; if (state === "choose" || state === "review") enterChoose(); });
+  const bind = (id, key, fmt) => { const el = $("#" + id), out = $("#v" + id.slice(1)); const f = () => { SET[key] = +el.value; out.textContent = fmt(+el.value); }; el.oninput = f; f(); };
+  bind("sPinch", "pinch", v => v.toFixed(2)); bind("sStep", "step", v => v.toFixed(2)); bind("sIStep", "istep", v => v.toFixed(2)); bind("sConf", "conf", v => v.toFixed(2)); bind("sHold", "hold", v => v + "ms");
+  $("#tuneBtn").onclick = () => $("#tune").classList.toggle("show");
+  $("#soundBtn").onclick = () => { sound = !sound; $("#soundBtn").classList.toggle("off", !sound); $("#soundBtn").setAttribute("aria-label", sound ? "Mute sounds" : "Unmute sounds"); };
+  $("#cancelBtn").onclick = cancelCountdown;
+  const camOff = () => { cancelCountdown(); st.stream?.getTracks().forEach(t => t.stop()); st.stream = null; st.running = false; state = "off";
+    $("#camBtn").classList.add("off"); $("#camBtn").setAttribute("aria-label", "Turn camera on"); $("#stage").style.display = ""; $("#breview").classList.remove("show"); $("#offOverlay").style.display = "flex"; };
+  const camOn = async () => { await startCamera(); st.running = true; $("#offOverlay").style.display = "none"; $("#camBtn").classList.remove("off"); $("#camBtn").setAttribute("aria-label", "Turn camera off"); enterChoose(); requestAnimationFrame(loop); };
+  $("#camBtn").onclick = () => { if (!recognizer || state === "intro") return; st.stream ? camOff() : camOn(); };
+  $("#resumeBtn").onclick = camOn;
+  $("#saveBtn").onclick = () => download($("#strip").toDataURL("image/png"), `klik-${Date.now()}.png`);
+  $("#againBtn").onclick = () => { shots = []; targetIdx = 0; retaking = false; enterChoose(); };
+  const pb = $("#pubBtn"); if (pb) pb.onclick = publish;
+  st.onKey = e => {
+    if (e.key === "Escape") { cancelCountdown(); $("#tune")?.classList.remove("show"); return; }
+    if (state !== "choose" || e.target.tagName === "INPUT" || document.querySelector(".modal-bg")) return;
+    if (e.key === "ArrowUp" || e.key === "ArrowDown") { e.preventDefault(); selectFilter(Math.max(0, Math.min(FILTERS.length - 1, current + (e.key === "ArrowDown" ? 1 : -1)))); }
+    else if (e.key === "ArrowLeft" || e.key === "ArrowRight") { amounts[current] = Math.max(0, Math.min(1, amt() + (e.key === "ArrowRight" ? .1 : -.1))); renderIntensity(); }
+    else if (e.code === "Space" || e.key === "Enter") { if (e.target.tagName === "BUTTON") return; e.preventDefault(); startCountdown(); }
+  };
+  st.onResize = () => state === "choose" && renderCarousel();
+  document.addEventListener("keydown", st.onKey); window.addEventListener("resize", st.onResize);
+
+  $("#startBtn").onclick = async () => {
+    const b = $("#startBtn"); b.disabled = true; $("#berr").textContent = "";
+    try {
+      b.textContent = "Starting camera…"; await startCamera();
+      b.textContent = "Getting hand tracking ready…"; await loadModel();
+      if (B !== st) return;
+      $("#intro").style.display = "none"; st.running = true; enterChoose(); showName(); requestAnimationFrame(loop);
+    } catch (e) {
+      $("#berr").textContent = e.name === "NotAllowedError" ? "Camera access is blocked. Allow it in your browser's site settings, then try again."
+        : e.name === "NotFoundError" ? "No camera found. Connect a camera to use the booth."
+        : "Hand tracking couldn't load. Check your internet connection and try again.";
+      b.textContent = "Try again"; b.disabled = false;
+    }
+  };
+}
+
+render();
+</script>
+</body>
+</html>
