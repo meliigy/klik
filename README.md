@@ -23,6 +23,10 @@ Open `index.html` in Chrome. No build step.
 - Host gallery (reorder, hide, delete, download), journal (drag photos and notes), guests, requests, settings
 - Explore page for public albums
 
+## Design
+
+Figma is the source of truth for the design. See [FIGMA.md](FIGMA.md) for the file link, the workflow, and which frame maps to which screen.
+
 ## Current limits
 
 - Data is stored in the browser (localStorage + IndexedDB). There is no server yet.
