@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>KLIK — One album for every photo from the day</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Manrope:wght@400;500;700&family=Ubuntu:wght@400&family=Ubuntu+Mono:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Manrope:wght@400;500;700;800&family=Special+Elite&family=Ubuntu:wght@400&family=Ubuntu+Mono:wght@700&display=swap" rel="stylesheet">
 <style>
 :root{
   --paper:#E8EDF3; --paper-2:#F6F8FB; --white:#fff;
@@ -312,20 +312,30 @@ textarea.input{resize:vertical;min-height:84px}
 body.wizard-mode{background:#000;color:#fafafa}
 body.wizard-mode .nav,body.wizard-mode .footer{display:none}
 .nw{--nw-text:#fafafa;--nw-muted:#9e9e9e;--nw-dim:#616161;--nw-line:#424242;--nw-field:rgba(255,255,255,.08);--nw-field-line:rgba(255,255,255,.12);--nw-blue:#1d7afc;--nw-red:#c62828;
-  font-family:"Manrope",system-ui,sans-serif;display:flex;gap:32px;align-items:stretch;padding:24px;min-height:100vh}
-.nw-panel{flex:0 0 min(778px,52%);height:calc(100vh - 48px);position:sticky;top:24px;border-radius:30px;overflow:hidden;
-  background:url("assets/new-event/panel.png") center/cover no-repeat}
-.nw-main{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:8px;padding:0 20px}
-.nw-steps{display:flex;align-items:center;gap:8px;list-style:none}
-.nw-step{display:flex;align-items:center;gap:8px;font-weight:700;font-size:16px;line-height:24px;color:var(--nw-dim)}
+  font-family:"Manrope",system-ui,sans-serif;display:flex;gap:24px;align-items:stretch;min-height:100vh}
+/* live paper preview (Figma 2044:716) */
+.nw-panel{flex:0 0 min(691px,48vw);container-type:inline-size;position:sticky;top:0;height:100vh;overflow:hidden;background:#000;border:1px solid rgba(255,255,255,.3)}
+.nw-bg{position:absolute;width:161.9cqw;height:161.9cqw;left:-1px;bottom:-1px;max-width:none;object-fit:cover;filter:blur(27px);transition:opacity .35s}
+.nw-paper{position:absolute;left:6.23cqw;right:6.36cqw;top:35px;bottom:35px;border-radius:32px;box-shadow:0 0 20px rgba(255,255,255,.25);
+  background:#ececec url("assets/new-event/paper.png") center/calc(100% + 40px) calc(100% + 40px) no-repeat;display:flex;flex-direction:column;align-items:center;overflow:hidden}
+.nw-sheet{width:58cqw;margin-top:13.46cqw;display:flex;flex-direction:column;align-items:center;text-align:center}
+.nw-art{width:55.14cqw;aspect-ratio:381/280;display:block}
+.nw-art[hidden]{display:none}
+.nw-title{padding:1.16cqw;font:400 6.95cqw/1.15 "La Machine Company","Special Elite","Courier New",monospace;letter-spacing:-.14cqw;color:#212121;word-break:break-word;margin-top:1.7cqw}
+.nw-title.ph{opacity:.28}
+.nw-when{font:700 2.2cqw/1.4 "Manrope",sans-serif;color:#424242;letter-spacing:.02em}
+.nw-note{font:400 2cqw/1.5 "Manrope",sans-serif;color:#616161;margin-top:1cqw;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-line}
+.nw-main{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:8px;padding:24px 20px 24px 0}
+.nw-steps{display:flex;align-items:center;gap:8px;list-style:none;width:100%}
+.nw-step{flex:none;display:flex;align-items:center;gap:8px;font-weight:700;font-size:16px;line-height:24px;color:var(--nw-dim)}
 .nw-step b{width:40px;height:40px;border-radius:1000px;background:rgba(255,255,255,.05);display:grid;place-items:center;font-weight:700}
 .nw-step.on,.nw-step.done{color:var(--nw-text)}
-.nw-link{width:100px;height:2px;border-radius:16px;background:var(--nw-line);flex:none}
+.nw-link{flex:1 1 16px;max-width:100px;height:2px;border-radius:16px;background:var(--nw-line)}
 .nw-link.next{background:linear-gradient(90deg,#bdbdbd,#575757 65%)}
 .nw-link.done{background:#bdbdbd}
 .nw-body{flex:1 1 0;display:flex;flex-direction:column;justify-content:center;gap:44px;padding:32px 0}
-.nw-head h1{font-family:"Manrope",sans-serif;font-weight:700;font-size:32px;line-height:38px;letter-spacing:0;color:var(--nw-text)}
-.nw-head p{font-size:14px;line-height:21px;color:var(--nw-muted);margin-top:8px}
+.nw-head h1{font-family:"Manrope",sans-serif;font-weight:800;font-size:36px;line-height:43px;letter-spacing:-1px;color:var(--nw-text)}
+.nw-head p{font-size:14px;line-height:21px;color:var(--nw-muted);margin-top:4px}
 .nw-fields{display:flex;flex-direction:column;gap:24px}
 .nw-field{display:flex;flex-direction:column;gap:4px}
 .nw-field.loose{gap:8px}
@@ -340,19 +350,21 @@ textarea.nw-input{min-height:104px;resize:vertical;display:block}
 .nw-date{position:relative}
 .nw-date .nw-input{padding-right:40px}
 .nw-date .nw-input::-webkit-calendar-picker-indicator{opacity:0;position:absolute;right:0;width:44px;height:100%;cursor:pointer}
-.nw-date input:invalid:not(:focus)::-webkit-datetime-edit{color:var(--nw-muted)}
 .nw-date img{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:20px;height:20px;pointer-events:none}
 .nw-err{font-size:13px;line-height:18px;color:#ef5350}
-.nw-stamps{display:flex;flex-wrap:wrap;gap:12px}
-.nw-stamp{position:relative;width:163px;height:120px;padding:0;border-radius:4px;flex:none;transition:transform .15s}
-.nw-stamp:hover{transform:translateY(-2px)}
-.nw-stamp:focus-visible{outline:2px solid var(--nw-blue);outline-offset:3px}
-.nw-stamp .frame{position:absolute;inset:0;width:163px;height:120px}
-.nw-stamp .photo{position:absolute;left:8.19px;top:7.07px;width:146.65px;height:106.09px;object-fit:cover}
-.nw-stamp .ttl{position:absolute;inset:64.74% 11.14% 10.02% 9.39%;display:flex;flex-direction:column;text-align:left;text-transform:uppercase;color:#424242;line-height:normal}
-.nw-stamp .ttl b{font:700 19.8px/1 "Ubuntu Mono",monospace;margin-bottom:-.66px}
-.nw-stamp .ttl span{font:400 9.9px/1.1 "Ubuntu",sans-serif}
-.nw-stamp.on .ttl{color:#fafafa}
+.nw-styles{display:flex;flex-wrap:wrap;gap:16px;padding:6px 2px}
+.nw-sw{position:relative;width:48px;height:48px;border-radius:16px;padding:0;flex:none;overflow:hidden;background:#000 center/cover no-repeat;border:1px solid rgba(255,255,255,.12);transition:transform .15s,box-shadow .2s}
+.nw-sw:hover{transform:translateY(-2px)}
+.nw-sw[aria-checked=true]{border:3px solid #e0e0e0;box-shadow:0 2px 11.5px var(--glow,#fff)}
+.nw-sw:focus-visible{outline:2px solid var(--nw-blue);outline-offset:4px}
+.nw-ills{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.nw-ill{height:150px;border-radius:12px;background:#ececec url("assets/new-event/paper.png") center/cover;border:3px solid transparent;display:grid;place-items:center;color:#424242;font:700 13px "Manrope",sans-serif;transition:transform .15s}
+.nw-ill img{width:78%;height:auto;display:block}
+.nw-ill:hover{transform:translateY(-2px)}
+.nw-ill[aria-checked=true]{border-color:var(--nw-blue);box-shadow:0 0 0 3px rgba(29,122,252,.35)}
+.nw-ill:focus-visible{outline:2px solid #fafafa;outline-offset:3px}
+.nw-date.blank input:not(:focus)::-webkit-datetime-edit{color:transparent}
+.nw-date.blank:not(:focus-within)::before{content:"Select Date";position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--nw-muted);font:400 14px "Manrope",sans-serif;pointer-events:none}
 .nw-actions{display:flex;justify-content:space-between;align-items:center}
 .nw-btn{display:inline-flex;align-items:center;justify-content:center;gap:4px;padding:8px 20px;border-radius:8px;font:700 14px/21px "Manrope",sans-serif;text-decoration:none;transition:background .15s,border-color .15s}
 .nw-btn.ghost{border:1px solid var(--nw-dim);color:#e0e0e0;background:transparent}
@@ -373,8 +385,9 @@ textarea.nw-input{min-height:104px;resize:vertical;display:block}
 .nw-summary div{display:flex;justify-content:space-between;gap:16px;padding:12px 16px;font-size:14px;border-top:1px solid var(--nw-field-line)}
 .nw-summary div:first-child{border-top:0}
 .nw-summary span{color:var(--nw-muted)}
-@media (max-width:1000px){.nw-panel{display:none}.nw{padding:20px 4px}}
-@media (max-width:560px){.nw-link{width:24px}.nw-step span{display:none}.nw-stamps{gap:10px}.nw-stamp{zoom:.92}}
+@media (max-width:1000px){.nw{flex-direction:column;gap:0}.nw-panel{flex:none;width:100%;height:auto;aspect-ratio:691/560;position:relative;border-width:0 0 1px}
+  .nw-paper{top:20px;bottom:20px}.nw-sheet{margin-top:8cqw}.nw-main{padding:20px}}
+@media (max-width:560px){.nw-step span{display:none}.nw-styles{gap:12px}}
 
 /* ---------- booth ---------- */
 body.booth-mode{background:var(--night);color:#E8EDF3}
@@ -787,40 +800,62 @@ function bindDashboard() { const b = $("#so"); if (b) b.onclick = () => { S.user
    NEW EVENT WIZARD
    ========================================================= */
 let draft = null;
-// Event stamp choices. Artwork is a placeholder from Figma (2028:6453) until the stamp designs are uploaded.
-const STAMPS = Object.keys(COVERS);
+// Event backgrounds (Figma 2047:1319). The first eight are photos; the last is plain black.
+const BGS = [["Green","#1d8e3e"],["Coral","#c8815b"],["Olive","#636345"],["Mist","#a5aaa6"],["Moss","#809170"],["Sand","#947f64"],["Sage","#bac5b3"],["Teal","#457883"],["Black",""]];
+// Illustrations printed on the paper card. Only the wedding artwork exists so far.
+const ILLS = { wedding: { label: "Wedding", src: "assets/new-event/illustration-wedding.png" }, none: { label: "No illustration" } };
+const WZ_STEPS = ["Details", "Illustration", "Access", "Review"];
 function vNew() {
   if (!S.user) return redirect("#/signin?next=new");
   const first = !S.events.some(isOwner);
-  if (!draft) draft = { step: 0, name: "", date: "", desc: "", cover: "wedding", access: "open", window: "1d", public: false };
-  const st = ["Details", "Access", "Review"];
+  if (!draft) draft = { step: 0, name: "", date: "", desc: "", cover: "wedding", bg: 0, illus: "wedding", access: "open", window: "1d", public: false };
+  const st = WZ_STEPS;
   const steps = st.map((l, i) => `<li class="nw-step ${i === draft.step ? "on" : i < draft.step ? "done" : ""}" ${i === draft.step ? 'aria-current="step"' : ""}><b>${i < draft.step ? "✓" : i + 1}</b><span>${l}</span></li>`
     + (i < st.length - 1 ? `<li class="nw-link ${i < draft.step ? "done" : i === draft.step ? "next" : ""}" aria-hidden="true"></li>` : "")).join("");
   return `<div class="nw">
-    <div class="nw-panel" aria-hidden="true"></div>
+    <div class="nw-panel" aria-hidden="true">
+      <img class="nw-bg" id="pvBg" alt="" src="assets/new-event/bgfull-${draft.bg}.png">
+      <div class="nw-paper"><div class="nw-sheet">
+        <img class="nw-art" id="pvArt" alt="" src="${ILLS.wedding.src}">
+        <p class="nw-title" id="pvTitle"></p><p class="nw-when" id="pvWhen"></p><p class="nw-note" id="pvNote"></p>
+      </div></div>
+    </div>
     <div class="nw-main">
       <ol class="nw-steps" aria-label="Steps">${steps}</ol>
-      <div class="nw-body" id="wz">${[wzDetails, wzAccess, wzReview][draft.step](first)}</div>
+      <div class="nw-body" id="wz">${[wzDetails, wzIllus, wzAccess, wzReview][draft.step](first)}</div>
     </div></div>`;
 }
+// Keeps the paper card in sync with the form without re-rendering the page (so typing keeps focus).
+function updatePreview() {
+  const d = draft, set = (id, fn) => { const el = $("#" + id); if (el) fn(el); };
+  set("pvTitle", el => { el.textContent = d.name || "Your event name"; el.classList.toggle("ph", !d.name); });
+  set("pvWhen", el => { el.textContent = d.date ? fmtDate(d.date) : ""; });
+  set("pvNote", el => { el.textContent = d.desc || ""; });
+  set("pvArt", el => { const il = ILLS[d.illus]; el.hidden = !il || !il.src; if (il && il.src) el.src = il.src; });
+  set("pvBg", el => { el.style.opacity = BGS[d.bg][1] ? 1 : 0; if (BGS[d.bg][1]) el.src = `assets/new-event/bgfull-${d.bg}.png`; });
+}
 const wzDetails = () => `
-  <div class="nw-head"><h1>Create Your Event</h1><p>Set up your event and create a space to collect everyone's memories.</p></div>
+  <div class="nw-head"><h1>Create New Event</h1><p>Set up your event and create a space to collect everyone's memories.</p></div>
   <div class="nw-fields">
     <div class="nw-field"><label class="nw-label" for="wn">Event Name<i aria-hidden="true">*</i></label>
-      <input class="nw-input" id="wn" maxlength="60" value="${esc(draft.name)}" placeholder="Ex : Yasser’s Birthday" required aria-describedby="wnerr"><div class="nw-err" id="wnerr"></div></div>
+      <input class="nw-input" id="wn" maxlength="60" value="${esc(draft.name)}" placeholder="Yasser’s Wedding" required aria-describedby="wnerr"><div class="nw-err" id="wnerr"></div></div>
     <div class="nw-field"><label class="nw-label" for="wd">Event Date<i aria-hidden="true">*</i></label>
-      <div class="nw-date"><input class="nw-input" id="wd" type="date" value="${esc(draft.date)}" required aria-describedby="wderr"><img src="assets/new-event/icon-calendar.png" alt="" width="20" height="20"></div><div class="nw-err" id="wderr"></div></div>
+      <div class="nw-date ${draft.date ? "" : "blank"}"><input class="nw-input" id="wd" type="date" value="${esc(draft.date)}" required aria-describedby="wderr"><img src="assets/new-event/icon-calendar.png" alt="" width="20" height="20"></div><div class="nw-err" id="wderr"></div></div>
     <div class="nw-field loose"><label class="nw-label" for="wde">Description</label>
       <textarea class="nw-input" id="wde" maxlength="240" placeholder="Write your message here…">${esc(draft.desc)}</textarea></div>
-    <div class="nw-field loose"><span class="nw-label" id="stampLbl">Event Stamp</span>
-      <div class="nw-stamps" role="radiogroup" aria-labelledby="stampLbl">${STAMPS.map(k => `
-        <button type="button" class="nw-stamp ${draft.cover === k ? "on" : ""}" data-cover="${k}" role="radio" aria-checked="${draft.cover === k}" aria-label="${COVERS[k].label} stamp">
-          <img class="frame" src="assets/new-event/${draft.cover === k ? "stamp-frame-selected" : "stamp-frame"}.png" alt="" width="163" height="120">
-          <img class="photo" src="assets/new-event/stamp-photo.png" alt="">
-          <span class="ttl"><b>${esc(COVERS[k].label)}</b><span>Event stamp</span></span>
-        </button>`).join("")}</div></div>
+    <div class="nw-field loose"><span class="nw-label" id="bgLbl">Event Style<i aria-hidden="true">*</i></span>
+      <div class="nw-styles" role="radiogroup" aria-labelledby="bgLbl">${BGS.map(([l, c], i) => `
+        <button type="button" class="nw-sw" data-bg="${i}" role="radio" aria-checked="${draft.bg === i}" aria-label="${l} style" style="${c ? `background-image:url(assets/new-event/bg-${i}.png);--glow:${c}` : "--glow:rgba(255,255,255,.4)"}"></button>`).join("")}</div></div>
   </div>
   <div class="nw-actions"><a class="nw-btn ghost" href="#/dashboard">Back</a><button class="nw-btn primary" data-next>Continue</button></div>`;
+const wzIllus = () => `
+  <div class="nw-head"><h1>Choose an illustration</h1><p>It is printed on the paper card, above your event name. More illustrations are on the way.</p></div>
+  <div class="nw-fields">
+    <div class="nw-field loose"><span class="nw-label" id="ilLbl">Illustration</span>
+      <div class="nw-ills" role="radiogroup" aria-labelledby="ilLbl">${Object.entries(ILLS).map(([k, il]) => `
+        <button type="button" class="nw-ill" data-illus="${k}" role="radio" aria-checked="${draft.illus === k}" aria-label="${il.label}">${il.src ? `<img src="${il.src}" alt="">` : `<span>${il.label}</span>`}</button>`).join("")}</div></div>
+  </div>
+  <div class="nw-actions"><button class="nw-btn ghost" data-prev>Back</button><button class="nw-btn primary" data-next>Continue</button></div>`;
 const wzAccess = () => `
   <div class="nw-head"><h1>Who can join?</h1><p>Choose how guests get in and how long they can add photos.</p></div>
   <div class="nw-fields">
@@ -836,13 +871,14 @@ const wzAccess = () => `
   </div>
   <div class="nw-actions"><button class="nw-btn ghost" data-prev>Back</button><button class="nw-btn primary" data-next>Continue</button></div>`;
 const wzReview = first => `
-  <div class="nw-head"><h1>Review your event</h1><p>Check the details. You can change any of them later in Settings.</p></div>
+  <div class="nw-head"><h1>Review your event</h1><p>The card on the left is what guests will see. You can change any of this later in Settings.</p></div>
   <div class="nw-fields">
-    <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap">
-      <span class="nw-stamp on" style="pointer-events:none"><img class="frame" src="assets/new-event/stamp-frame-selected.png" alt="" width="163" height="120"><img class="photo" src="assets/new-event/stamp-photo.png" alt=""><span class="ttl"><b>${esc(COVERS[draft.cover].label)}</b><span>Event stamp</span></span></span>
-      <div><h2 style="font:700 24px/30px Manrope,sans-serif">${esc(draft.name)}</h2><p style="font-size:14px;color:var(--nw-muted)">${fmtDate(draft.date)}</p>${draft.desc ? `<p style="font-size:14px;margin-top:6px;max-width:48ch">${esc(draft.desc)}</p>` : ""}</div>
-    </div>
     <div class="nw-summary">
+      <div><span>Event name</span>${esc(draft.name)}</div>
+      <div><span>Date</span>${fmtDate(draft.date)}</div>
+      ${draft.desc ? `<div><span>Description</span><em style="font-style:normal;text-align:right;max-width:34ch">${esc(draft.desc)}</em></div>` : ""}
+      <div><span>Style</span>${BGS[draft.bg][0]}</div>
+      <div><span>Illustration</span>${ILLS[draft.illus].label}</div>
       <div><span>Who can join</span>${draft.access === "open" ? "Anyone with the link" : "Guests you approve"}</div>
       <div><span>Upload window</span>${WINDOWS[draft.window][0]}</div>
       <div><span>Visibility</span>${draft.public ? "Shown in Explore" : "Private, link only"}</div>
@@ -854,7 +890,13 @@ function bindNew() {
   const wz = $("#wz"); if (!wz) return;
   document.body.classList.add("wizard-mode");
   const keep = () => { if ($("#wn")) { draft.name = $("#wn").value.trim(); draft.date = $("#wd").value; draft.desc = $("#wde").value.trim(); } };
-  $$("[data-cover]", wz).forEach(b => b.onclick = () => { keep(); draft.cover = b.dataset.cover; rerender(); $(`[data-cover="${draft.cover}"]`)?.focus(); });
+  updatePreview();
+  if ($("#wn")) {
+    const live = () => { draft.name = $("#wn").value; draft.date = $("#wd").value; draft.desc = $("#wde").value; $(".nw-date").classList.toggle("blank", !draft.date); updatePreview(); };
+    ["#wn", "#wd", "#wde"].forEach(id => $(id).addEventListener("input", live));
+  }
+  $$("[data-bg]", wz).forEach(b => b.onclick = () => { draft.bg = +b.dataset.bg; $$("[data-bg]", wz).forEach(x => x.setAttribute("aria-checked", x === b)); updatePreview(); });
+  $$("[data-illus]", wz).forEach(b => b.onclick = () => { draft.illus = b.dataset.illus; $$("[data-illus]", wz).forEach(x => x.setAttribute("aria-checked", x === b)); updatePreview(); });
   $$("[data-access]", wz).forEach(b => b.onclick = () => { draft.access = b.dataset.access; rerender(); });
   $$("[data-window]", wz).forEach(b => b.onclick = () => { draft.window = b.dataset.window; rerender(); });
   const p = $("#wpub"); if (p) p.onclick = () => { draft.public = !draft.public; rerender(); };
@@ -867,9 +909,9 @@ function bindNew() {
     }
     draft.step++; rerender();
   };
-  const pr = $("[data-prev]", wz); if (pr) pr.onclick = () => { draft.step--; rerender(); };
+  const pr = $("[data-prev]", wz); if (pr) pr.onclick = () => { keep(); draft.step--; rerender(); };
   const c = $("[data-create]", wz); if (c) c.onclick = () => {
-    const ev = { id: uid(), ownerEmail: S.user.email, ownerName: S.user.name, name: draft.name, date: draft.date, desc: draft.desc, cover: draft.cover,
+    const ev = { id: uid(), ownerEmail: S.user.email, ownerName: S.user.name, name: draft.name, date: draft.date, desc: draft.desc, cover: draft.cover, bg: draft.bg, illus: draft.illus,
       access: draft.access, window: draft.window, public: draft.public, createdAt: Date.now(), limit: 20, guests: [], photos: [], notes: [], paper: "t-paper" };
     S.events.push(ev); save(); draft = null; toast("Event created"); location.hash = `#/event/${ev.id}/share`;
   };
