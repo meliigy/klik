@@ -17,7 +17,7 @@ Changes that apply everywhere (colors, fonts, spacing, buttons) should be made o
 
 | Figma node | Screen | Notes |
 |---|---|---|
-| [2017:6706](https://www.figma.com/design/QWop4fDpniRYeC6xhK9Zh7/Klik?node-id=2017-6706) | New event, step 1 Details (v2) | Left = live paper card (blurred style photo behind, illustration, event name, date, description update as you type). Event Style = 9 swatches that change the background. Illustration is chosen in step 2. Title font La Machine Company is not loaded yet (Special Elite fallback). |
+| [2017:6706](https://www.figma.com/design/QWop4fDpniRYeC6xhK9Zh7/Klik?node-id=2017-6706) | New event, step 1 Details (v2) | Left = live paper card (blurred style photo behind, illustration, event name, date, description update as you type). Event Style = 9 swatches that change the background. Illustration is chosen in step 2. Title font La Machine Company (assets/fonts). Backgrounds come from the BG pack. |
 
 Assets exported from this frame are in `assets/new-event/`.
 

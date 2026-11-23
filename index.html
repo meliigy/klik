@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>KLIK — One album for every photo from the day</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Manrope:wght@400;500;700;800&family=Special+Elite&family=Ubuntu:wght@400&family=Ubuntu+Mono:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Manrope:wght@400;500;700;800&family=Ubuntu:wght@400&family=Ubuntu+Mono:wght@700&display=swap" rel="stylesheet">
 <style>
 :root{
   --paper:#E8EDF3; --paper-2:#F6F8FB; --white:#fff;
@@ -313,6 +313,7 @@ body.wizard-mode{background:#000;color:#fafafa}
 body.wizard-mode .nav,body.wizard-mode .footer{display:none}
 .nw{--nw-text:#fafafa;--nw-muted:#9e9e9e;--nw-dim:#616161;--nw-line:#424242;--nw-field:rgba(255,255,255,.08);--nw-field-line:rgba(255,255,255,.12);--nw-blue:#1d7afc;--nw-red:#c62828;
   font-family:"Manrope",system-ui,sans-serif;display:flex;gap:24px;align-items:stretch;min-height:100vh}
+@font-face{font-family:"La Machine Company";src:url("assets/fonts/LaMachineCompany.ttf") format("truetype");font-display:swap}
 /* live paper preview (Figma 2044:716) */
 .nw-panel{flex:0 0 min(691px,48vw);container-type:inline-size;position:sticky;top:0;height:100vh;overflow:hidden;background:#000;border:1px solid rgba(255,255,255,.3)}
 .nw-bg{position:absolute;width:161.9cqw;height:161.9cqw;left:-1px;bottom:-1px;max-width:none;object-fit:cover;filter:blur(27px);transition:opacity .35s}
@@ -321,7 +322,7 @@ body.wizard-mode .nav,body.wizard-mode .footer{display:none}
 .nw-sheet{width:58cqw;margin-top:13.46cqw;display:flex;flex-direction:column;align-items:center;text-align:center}
 .nw-art{width:55.14cqw;aspect-ratio:381/280;display:block}
 .nw-art[hidden]{display:none}
-.nw-title{padding:1.16cqw;font:400 6.95cqw/1.15 "La Machine Company","Special Elite","Courier New",monospace;letter-spacing:-.14cqw;color:#212121;word-break:break-word;margin-top:1.7cqw}
+.nw-title{padding:1.16cqw;font:400 6.95cqw/1.15 "La Machine Company","Courier New",monospace;letter-spacing:-.14cqw;color:#212121;word-break:break-word;margin-top:1.7cqw}
 .nw-title.ph{opacity:.28}
 .nw-when{font:700 2.2cqw/1.4 "Manrope",sans-serif;color:#424242;letter-spacing:.02em}
 .nw-note{font:400 2cqw/1.5 "Manrope",sans-serif;color:#616161;margin-top:1cqw;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-line}
@@ -800,8 +801,8 @@ function bindDashboard() { const b = $("#so"); if (b) b.onclick = () => { S.user
    NEW EVENT WIZARD
    ========================================================= */
 let draft = null;
-// Event backgrounds (Figma 2047:1319). The first eight are photos; the last is plain black.
-const BGS = [["Green","#1d8e3e"],["Coral","#c8815b"],["Olive","#636345"],["Mist","#a5aaa6"],["Moss","#809170"],["Sand","#947f64"],["Sage","#bac5b3"],["Teal","#457883"],["Black",""]];
+// Event backgrounds (Figma 2047:1319). Nine blurred photos, then plain black.
+const BGS = [["Green","#859774"],["Coral","#d38960"],["Olive","#686849"],["Sky","#abb0ab"],["Sand","#9b8569"],["Sage","#c4d0bd"],["Teal","#5d8d98"],["Sunset","#c88161"],["Mist","#a2aab9"],["Black",""]];
 // Illustrations printed on the paper card. Only the wedding artwork exists so far.
 const ILLS = { wedding: { label: "Wedding", src: "assets/new-event/illustration-wedding.png" }, none: { label: "No illustration" } };
 const WZ_STEPS = ["Details", "Illustration", "Access", "Review"];
@@ -814,7 +815,7 @@ function vNew() {
     + (i < st.length - 1 ? `<li class="nw-link ${i < draft.step ? "done" : i === draft.step ? "next" : ""}" aria-hidden="true"></li>` : "")).join("");
   return `<div class="nw">
     <div class="nw-panel" aria-hidden="true">
-      <img class="nw-bg" id="pvBg" alt="" src="assets/new-event/bgfull-${draft.bg}.png">
+      <img class="nw-bg" id="pvBg" alt="" src="assets/new-event/bgfull-${draft.bg}.jpg">
       <div class="nw-paper"><div class="nw-sheet">
         <img class="nw-art" id="pvArt" alt="" src="${ILLS.wedding.src}">
         <p class="nw-title" id="pvTitle"></p><p class="nw-when" id="pvWhen"></p><p class="nw-note" id="pvNote"></p>
@@ -832,7 +833,7 @@ function updatePreview() {
   set("pvWhen", el => { el.textContent = d.date ? fmtDate(d.date) : ""; });
   set("pvNote", el => { el.textContent = d.desc || ""; });
   set("pvArt", el => { const il = ILLS[d.illus]; el.hidden = !il || !il.src; if (il && il.src) el.src = il.src; });
-  set("pvBg", el => { el.style.opacity = BGS[d.bg][1] ? 1 : 0; if (BGS[d.bg][1]) el.src = `assets/new-event/bgfull-${d.bg}.png`; });
+  set("pvBg", el => { el.style.opacity = BGS[d.bg][1] ? 1 : 0; if (BGS[d.bg][1]) el.src = `assets/new-event/bgfull-${d.bg}.jpg`; });
 }
 const wzDetails = () => `
   <div class="nw-head"><h1>Create New Event</h1><p>Set up your event and create a space to collect everyone's memories.</p></div>
@@ -845,7 +846,7 @@ const wzDetails = () => `
       <textarea class="nw-input" id="wde" maxlength="240" placeholder="Write your message here…">${esc(draft.desc)}</textarea></div>
     <div class="nw-field loose"><span class="nw-label" id="bgLbl">Event Style<i aria-hidden="true">*</i></span>
       <div class="nw-styles" role="radiogroup" aria-labelledby="bgLbl">${BGS.map(([l, c], i) => `
-        <button type="button" class="nw-sw" data-bg="${i}" role="radio" aria-checked="${draft.bg === i}" aria-label="${l} style" style="${c ? `background-image:url(assets/new-event/bg-${i}.png);--glow:${c}` : "--glow:rgba(255,255,255,.4)"}"></button>`).join("")}</div></div>
+        <button type="button" class="nw-sw" data-bg="${i}" role="radio" aria-checked="${draft.bg === i}" aria-label="${l} style" style="${c ? `background-image:url(assets/new-event/sw-${i}.jpg);--glow:${c}` : "--glow:rgba(255,255,255,.4)"}"></button>`).join("")}</div></div>
   </div>
   <div class="nw-actions"><a class="nw-btn ghost" href="#/dashboard">Back</a><button class="nw-btn primary" data-next>Continue</button></div>`;
 const wzIllus = () => `
