@@ -771,29 +771,29 @@ body.wizard-mode #app{padding-top:0}
 @media (max-width:560px){.nw-row{grid-template-columns:1fr;gap:32px}}
 
 /* ---------- booth ---------- */
-body.booth-mode{background:var(--night);color:#E8EDF3}
+body.booth-mode{background:var(--night);color:#F5F1EA}
 body.booth-mode .nav,body.booth-mode .footer{display:none}
 .booth{min-height:100vh;display:flex;flex-direction:column}
-.bbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 22px;border-bottom:1px solid rgba(232,237,243,.1)}
+.bbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 22px;border-bottom:1px solid rgba(245,241,234,.1)}
 .bbar .left{display:flex;align-items:center;gap:16px}
-.bbar .back{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:rgba(232,237,243,.75);text-decoration:none;padding:8px 12px;border-radius:8px}
+.bbar .back{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:rgba(245,241,234,.75);text-decoration:none;padding:8px 12px;border-radius:8px}
 .bbar .back:hover{background:rgba(255,255,255,.06);color:#fff}
 .bbar .ev{font-family:var(--display);font-size:22px;font-weight:800}
 .bctrl{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.bgroup{display:flex;align-items:center;gap:8px;font-size:12.5px;color:rgba(232,237,243,.6)}
-.seg{display:flex;background:rgba(255,255,255,.06);border:1px solid rgba(232,237,243,.12);border-radius:10px;padding:3px}
-.seg button{padding:6px 11px;border-radius:7px;font-size:13px;color:rgba(232,237,243,.65);display:flex;align-items:center;gap:6px}
+.bgroup{display:flex;align-items:center;gap:8px;font-size:12.5px;color:rgba(245,241,234,.6)}
+.seg{display:flex;background:rgba(255,255,255,.06);border:1px solid rgba(245,241,234,.12);border-radius:10px;padding:3px}
+.seg button{padding:6px 11px;border-radius:7px;font-size:13px;color:rgba(245,241,234,.65);display:flex;align-items:center;gap:6px}
 .seg button:hover{color:#fff}
-.seg button.on{background:#E8EDF3;color:var(--night)}
+.seg button.on{background:#F5F1EA;color:var(--night)}
 .lay{display:inline-grid;gap:1.5px}.lay b{display:block;background:currentColor;border-radius:1px}
-.ibtn{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(232,237,243,.12);display:grid;place-items:center;color:#E8EDF3}
+.ibtn{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(245,241,234,.12);display:grid;place-items:center;color:#F5F1EA}
 .ibtn:hover{background:rgba(255,255,255,.12)}
 .ibtn.off{color:#ff8a80}
 .bmain{flex:1;display:flex;align-items:center;justify-content:center;padding:20px}
-.stage{position:relative;width:min(100%,calc((100vh - 120px)*4/3));aspect-ratio:4/3;border-radius:22px;overflow:hidden;background:#000;box-shadow:0 30px 80px rgba(0,0,0,.5),0 0 0 1px rgba(232,237,243,.1)}
+.stage{position:relative;width:min(100%,calc((100vh - 120px)*4/3));aspect-ratio:4/3;border-radius:22px;overflow:hidden;background:#000;box-shadow:0 30px 80px rgba(0,0,0,.5),0 0 0 1px rgba(245,241,234,.1)}
 #view{position:absolute;inset:0;width:100%;height:100%}
 #video{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
-.glass{background:rgba(15,23,48,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(232,237,243,.14)}
+.glass{background:rgba(20,17,16,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(245,241,234,.14)}
 .shade{position:absolute;pointer-events:none}
 .shade.t{top:0;left:0;right:0;height:110px;background:linear-gradient(rgba(0,0,0,.45),transparent)}
 .shade.b{bottom:0;left:0;right:0;height:150px;background:linear-gradient(transparent,rgba(0,0,0,.55))}
@@ -802,7 +802,7 @@ body.booth-mode .nav,body.booth-mode .footer{display:none}
 .stage.counting .ui{opacity:0;pointer-events:none}
 .slots{position:absolute;top:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px}
 .slot{width:42px;height:32px;border-radius:5px;border:1.5px solid rgba(255,255,255,.45);overflow:hidden;background:rgba(0,0,0,.3);transition:.3s}
-.slot.now{border-color:var(--gold);box-shadow:0 0 0 3px rgba(242,183,5,.25)}
+.slot.now{border-color:#F5F1EA;box-shadow:0 0 0 3px rgba(245,241,234,.25)}
 .slot.pop{animation:spop .5s ease-out}
 @keyframes spop{0%{transform:scale(1.4)}}
 .slot canvas{width:100%;height:100%;display:block}
@@ -820,28 +820,28 @@ body.booth-mode .nav,body.booth-mode .footer{display:none}
 .fx canvas{width:64px;height:64px;border-radius:50%;border:2px solid rgba(255,255,255,.25);display:block;transition:.3s}
 .fx span{font-size:12px;white-space:nowrap;color:#fff}
 .fx.on{opacity:1;transform:scale(1.08)}
-.fx.on canvas{border-color:var(--gold);box-shadow:0 0 0 4px rgba(242,183,5,.25)}
-.cmark{position:absolute;top:50%;right:124px;width:6px;height:6px;margin-top:-17px;border-radius:50%;background:var(--gold)}
+.fx.on canvas{border-color:#F5F1EA;box-shadow:0 0 0 4px rgba(245,241,234,.25)}
+.cmark{position:absolute;top:50%;right:124px;width:6px;height:6px;margin-top:-17px;border-radius:50%;background:#F5F1EA}
 .intensity{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:999px;transition:.25s}
-.intensity.active{border-color:var(--gold);box-shadow:0 0 0 4px rgba(242,183,5,.2)}
+.intensity.active{border-color:#F5F1EA;box-shadow:0 0 0 4px rgba(245,241,234,.2)}
 .intensity.dim{opacity:.4}
-.intensity .lbl{font-size:12.5px;color:rgba(232,237,243,.65)}
+.intensity .lbl{font-size:12.5px;color:rgba(245,241,234,.65)}
 .intensity .bar{width:190px;height:4px;border-radius:4px;background:rgba(255,255,255,.2);position:relative}
-.intensity .fill{position:absolute;inset:0 auto 0 0;border-radius:4px;background:var(--gold)}
+.intensity .fill{position:absolute;inset:0 auto 0 0;border-radius:4px;background:#F5F1EA}
 .intensity .knob{position:absolute;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:#fff}
 .intensity .val{font-size:13px;font-weight:600;min-width:40px;text-align:right;color:#fff}
 .legend{position:absolute;bottom:18px;left:18px;padding:8px;border-radius:14px;display:flex;flex-direction:column;gap:2px;min-width:200px}
-.legend .row{display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:9px;font-size:13px;color:rgba(232,237,243,.65);transition:.2s}
+.legend .row{display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:9px;font-size:13px;color:rgba(245,241,234,.65);transition:.2s}
 .legend .row .k{width:44px;text-align:center;font-size:15px}
-.legend .row.on{background:rgba(242,183,5,.18);color:#fff}
-.legend small{font-size:11.5px;color:rgba(232,237,243,.55);padding:6px 8px 2px;border-top:1px solid rgba(232,237,243,.12);margin-top:4px}
+.legend .row.on{background:rgba(245,241,234,.18);color:#fff}
+.legend small{font-size:11.5px;color:rgba(245,241,234,.55);padding:6px 8px 2px;border-top:1px solid rgba(245,241,234,.12);margin-top:4px}
 .cursor{position:absolute;width:56px;height:56px;margin:-28px 0 0 -28px;pointer-events:none;opacity:0;transition:opacity .2s;display:grid;place-items:center}
 .cursor.show{opacity:1}
 .cursor .dot{width:16px;height:16px;border-radius:50%;border:2px solid #fff;transition:.15s;box-shadow:0 0 12px rgba(0,0,0,.5)}
-.cursor.pinch .dot{background:var(--gold);border-color:var(--gold);transform:scale(1.3)}
+.cursor.pinch .dot{background:#F5F1EA;border-color:#F5F1EA;transform:scale(1.3)}
 .cursor.blocked .dot{border-color:#ff8a80}
 .cursor svg{position:absolute;inset:0;transform:rotate(-90deg)}
-.cursor .ax{position:absolute;top:-6px;font-size:14px;font-weight:700;color:var(--gold);opacity:0}
+.cursor .ax{position:absolute;top:-6px;font-size:14px;font-weight:700;color:#F5F1EA;opacity:0}
 .cursor.pinch .ax{opacity:1}
 .cursor .emoji{position:absolute;font-size:24px;opacity:0}
 .cursor.peace .emoji{opacity:1}.cursor.peace .dot{opacity:0}
@@ -856,33 +856,86 @@ body.booth-mode .nav,body.booth-mode .footer{display:none}
 .flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;transition:opacity .3s}
 .boverlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:28px;text-align:center;background:radial-gradient(ellipse at center,var(--night-2) 0%,var(--night) 75%)}
 .boverlay h2{font-size:clamp(36px,4.5vw,54px);color:#fff}
-.boverlay p{color:rgba(232,237,243,.7);max-width:46ch}
+.boverlay p{color:rgba(245,241,234,.7);max-width:46ch}
 .bguides{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
-.bguide{width:196px;padding:16px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(232,237,243,.12);text-align:left}
+.bguide{width:196px;padding:16px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(245,241,234,.12);text-align:left}
 .bguide .g{font-size:24px;margin-bottom:8px}
 .bguide b{display:block;font-size:15px;margin-bottom:4px;color:#fff}
-.bguide small{color:rgba(232,237,243,.65);font-size:13px;line-height:1.55;display:block}
-.btn.light{background:#E8EDF3;color:var(--night);border-color:#E8EDF3}
-.btn.dark-ghost{background:transparent;color:#E8EDF3;border-color:rgba(232,237,243,.25)}
-.btn.dark-ghost:hover{border-color:#E8EDF3}
+.bguide small{color:rgba(245,241,234,.65);font-size:13px;line-height:1.55;display:block}
+.btn.light{background:#F5F1EA;color:var(--night);border-color:#F5F1EA}
+.btn.dark-ghost{background:transparent;color:#F5F1EA;border-color:rgba(245,241,234,.25)}
+.btn.dark-ghost:hover{border-color:#F5F1EA}
 .berr{color:#ff9a8f;font-size:14px;min-height:20px;max-width:440px}
 .breview{display:none;width:100%;max-width:1000px;align-items:center;justify-content:center;gap:56px;flex-wrap:wrap}
 .breview.show{display:flex}
 .strip-wrap{position:relative;display:flex}
 #strip{max-height:calc(100vh - 150px);max-width:min(90vw,440px);width:auto;height:auto;display:block}
-.hot{position:absolute;cursor:pointer;display:grid;place-items:center;opacity:0;transition:.2s;background:rgba(15,23,48,.55);color:#fff;font-size:14px;font-weight:600}
+.hot{position:absolute;cursor:pointer;display:grid;place-items:center;opacity:0;transition:.2s;background:rgba(20,17,16,.55);color:#fff;font-size:14px;font-weight:600}
 .hot:hover,.hot:focus-visible{opacity:1}
 .bside{display:flex;flex-direction:column;gap:12px;min-width:260px;max-width:320px}
 .bside h2{font-size:48px;color:#fff}
-.bside p{color:rgba(232,237,243,.7);font-size:15px;margin-bottom:8px}
-.tune{position:fixed;top:66px;right:22px;width:290px;background:var(--night-2);border:1px solid rgba(232,237,243,.14);border-radius:14px;padding:16px;font-size:12.5px;display:none;z-index:20}
+.bside p{color:rgba(245,241,234,.7);font-size:15px;margin-bottom:8px}
+.tune{position:fixed;top:66px;right:22px;width:290px;background:var(--night-2);border:1px solid rgba(245,241,234,.14);border-radius:14px;padding:16px;font-size:12.5px;display:none;z-index:20}
 .tune.show{display:block}
 .tune label{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:10px 0}
-.tune input{flex:1;accent-color:var(--gold)}
+.tune input{flex:1;accent-color:#F5F1EA}
 .tune pre{font-family:ui-monospace,monospace;color:#9be29b;margin-top:8px;white-space:pre-wrap;font-size:11px}
 .blocked-msg{max-width:520px;text-align:center;display:flex;flex-direction:column;gap:16px;align-items:center}
 .blocked-msg h2{font-size:48px;color:#fff}
-.blocked-msg p{color:rgba(232,237,243,.7)}
+.blocked-msg p{color:rgba(245,241,234,.7)}
+
+/* add photos: tour, type picker, shutter, gesture menus */
+body.booth-mode .modal{color:var(--ink)}body.booth-mode .modal .btn.ghost{color:var(--ink);border-color:var(--rule)}body.booth-mode .modal .vis-opt{color:var(--ink)}
+.stage.menu .carousel,.stage.menu .intensity,.stage.menu .legend,.stage.menu .slots,.stage.menu .shutter,.stage[data-tut] .legend,.stage[data-tut] .slots{display:none}
+.stage.menu #view{filter:brightness(.45) blur(2px)}
+.tut{position:absolute;left:50%;bottom:86px;transform:translateX(-50%);width:min(640px,calc(100% - 32px));padding:18px 20px;border-radius:12px;background:rgba(20,17,16,.78);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(245,241,234,.14);z-index:6;color:#F5F1EA}
+.tut-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.tut-dots{display:flex;gap:6px}.tut-dots i{width:22px;height:3px;border-radius:3px;background:rgba(245,241,234,.22);transition:background .3s}.tut-dots i.on{background:#F5F1EA}.tut-dots i.done{background:rgba(245,241,234,.6)}
+.tut-skip{font:400 12px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:rgba(245,241,234,.65);padding:6px 4px}.tut-skip:hover{color:#F5F1EA}
+.tut-body{position:relative;display:grid;grid-template-columns:96px 1fr;gap:18px;align-items:center}
+.tut-hand{position:relative;width:96px;height:96px;border-radius:50%;background:rgba(245,241,234,.08);display:grid;place-items:center}
+.tut-g{font-size:44px;line-height:1}
+.tut-ax{position:absolute;font:700 22px var(--sans);color:#F5F1EA}
+.tut-ax.ax-y{right:6px;animation:axy 1.4s ease-in-out infinite}.tut-ax.ax-x{bottom:4px;animation:axx 1.4s ease-in-out infinite}
+@keyframes axy{50%{transform:translateY(-12px)}}@keyframes axx{50%{transform:translateX(12px)}}
+.tut-ring{position:absolute;inset:-2px;transform:rotate(-90deg)}.tut-ring circle{fill:none;stroke:#F5F1EA;stroke-width:2.5;stroke-dasharray:157;stroke-dashoffset:157;animation:ring 1.8s ease-in-out infinite}
+@keyframes ring{60%,100%{stroke-dashoffset:0}}
+.tut-copy h3{font:700 24px/1.1 var(--sans);letter-spacing:-.02em;margin:6px 0 6px;color:#F5F1EA}
+.tut-copy p{font-size:14px;line-height:1.5;color:rgba(245,241,234,.75)}
+.tut-copy .eyebrow{color:rgba(245,241,234,.55)}
+.tut-alt{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(245,241,234,.12);font-size:13px;color:rgba(245,241,234,.6)}
+.tut-btns{display:flex;gap:6px;flex:none}
+.tut-btn{min-width:38px;height:34px;padding:0 10px;border-radius:4px;border:1px solid rgba(245,241,234,.25);color:#F5F1EA;font:600 15px var(--sans)}
+.tut-btn:hover{background:rgba(245,241,234,.1)}.tut-btn.wide{padding:0 16px;font-size:14px;background:#F5F1EA;color:#141110;border-color:#F5F1EA}
+.tut-ok{position:absolute;inset:-18px -20px;border-radius:12px;background:rgba(20,17,16,.92);display:grid;place-items:center;align-content:center;gap:6px;font:500 18px var(--sans);opacity:0;pointer-events:none;transition:opacity .25s}
+.tut-ok.show{opacity:1}.tut-ok span{width:44px;height:44px;border-radius:50%;background:#F5F1EA;color:#141110;display:grid;place-items:center;font-size:22px;margin:0 auto 6px}
+.stage[data-tut="0"] .carousel,.stage[data-tut="1"] .intensity,.stage[data-tut="2"] .shutter{box-shadow:0 0 0 2px #F5F1EA,0 0 0 8px rgba(245,241,234,.18);border-radius:14px}
+.stage[data-tut] .intensity{bottom:20px}
+.pick{position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:24px;color:#F5F1EA;text-align:center}
+.pick-head h2{font:700 clamp(28px,3.4vw,44px)/1.05 var(--sans);letter-spacing:-.03em;margin:8px 0 12px;color:#F5F1EA}
+.pick-head .eyebrow{color:rgba(245,241,234,.6)}
+.pick-help{font-size:14px;color:rgba(245,241,234,.7);display:flex;gap:10px;flex-wrap:wrap;justify-content:center;align-items:center}
+.pick-help span{padding:3px 8px;border-radius:3px;background:rgba(245,241,234,.12);color:#F5F1EA}.pick-help em{font-style:normal;color:rgba(245,241,234,.5)}
+.pick-grid{display:grid;grid-template-columns:repeat(4,minmax(0,170px));gap:14px}
+.pick-card{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;padding:18px 14px 16px;border-radius:10px;background:rgba(20,17,16,.6);border:1px solid rgba(245,241,234,.16);color:#F5F1EA;transition:transform .25s cubic-bezier(.16,1,.3,1),border-color .2s,background .2s}
+.pick-card:hover,.pick-card.gfocus{border-color:#F5F1EA;background:rgba(245,241,234,.1);transform:translateY(-4px)}
+.pick-card b{font:600 16px var(--sans)}.pick-card small{font-size:12.5px;color:rgba(245,241,234,.6)}
+.pick-vis{height:120px;display:grid;place-items:center;margin-bottom:6px}
+.pick-paper{display:grid;gap:4px;padding:6px;background:#F5F1EA;border-radius:2px;box-shadow:0 8px 20px rgba(0,0,0,.35)}
+.pick-paper i{background:linear-gradient(135deg,#9a958f,#5f5a55);border-radius:1px}
+.pv-1x1 .pick-paper{width:86px;height:72px}.pv-1x3 .pick-paper{width:46px;height:110px}.pv-1x4 .pick-paper{width:40px;height:116px}.pv-2x2 .pick-paper{width:86px;height:86px}
+[data-gi]{position:relative}
+.gfocus::after{content:"";position:absolute;inset:-5px;border-radius:12px;pointer-events:none;
+  background:conic-gradient(#F5F1EA calc(var(--hold,0) * 360deg),transparent 0);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;padding:2px}
+.modal .gfocus{outline:2px solid #141110;outline-offset:2px}
+.shutter{position:absolute;right:22px;bottom:22px;width:64px;height:64px;border-radius:50%;border:3px solid #F5F1EA;display:grid;place-items:center;z-index:4;background:rgba(20,17,16,.25)}
+.shutter i{width:48px;height:48px;border-radius:50%;background:#F5F1EA;transition:transform .15s}.shutter:hover i{transform:scale(.92)}
+.stage.counting .shutter{display:none}
+.minicam{position:relative;border-radius:8px;overflow:hidden;margin-bottom:8px;border:1px solid rgba(245,241,234,.14)}
+.minicam canvas{display:block;width:100%;height:auto;background:#000}
+.minicam span{position:absolute;left:8px;bottom:8px;font:400 11px var(--mono);letter-spacing:.04em;padding:4px 8px;border-radius:3px;background:rgba(20,17,16,.7);color:#F5F1EA}
+.breview [data-gi].gfocus{outline:none}
+@media (max-width:760px){.pick-grid{grid-template-columns:repeat(2,minmax(0,160px))}.tut{bottom:16px}.tut-body{grid-template-columns:64px 1fr}.tut-hand{width:64px;height:64px}.tut-g{font-size:30px}.shutter{width:54px;height:54px;right:14px;bottom:14px}.shutter i{width:40px;height:40px}}
 </style>
 </head>
 <body>
@@ -1569,7 +1622,7 @@ function evHeader(ev, host) {
     </div>
     <div class="ev-actions">
       ${host ? `<a class="btn ghost" href="#/event/${ev.id}/share">Invite guests</a>` : ""}
-      <a class="btn red" href="#/booth/${ev.id}" ${!uploadsOpen(ev) || atLimit(ev) ? `aria-disabled="true" data-blocked="${!uploadsOpen(ev) ? "Uploads are closed for this event." : "This event has reached its photo limit."}"` : ""}>Open the booth</a>
+      <a class="btn red" href="#/booth/${ev.id}" ${!uploadsOpen(ev) || atLimit(ev) ? `aria-disabled="true" data-blocked="${!uploadsOpen(ev) ? "Uploads are closed for this event." : "This event has reached its photo limit."}"` : ""}>Add photos</a>
     </div>
   </header>`;
 }
@@ -1583,7 +1636,7 @@ function tGallery(ev, host) {
   const ph = visiblePhotos(ev, host);
   if (!ph.length) return `<div class="empty"><div style="width:96px;margin:0 auto">${stampCover(ev.cover)}</div><h3>The album is empty</h3>
     <p>${host ? "Share the invite link so guests can start adding photos, or take the first strip yourself." : "Be the first to add a photo strip."}</p>
-    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">${host ? `<a class="btn ghost" href="#/event/${ev.id}/share">Invite guests</a>` : ""}<a class="btn primary" href="#/booth/${ev.id}">Open the booth</a></div></div>`;
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">${host ? `<a class="btn ghost" href="#/event/${ev.id}/share">Invite guests</a>` : ""}<a class="btn primary" href="#/booth/${ev.id}">Add photos</a></div></div>`;
   return `<div class="toolbar"><p class="muted small">${ph.length} photo${ph.length > 1 ? "s" : ""}${host ? " · Drag to reorder" : ""}</p>
     ${host ? `<button class="btn ghost sm" id="dlAll">${ICON.down} Download all</button>` : ""}</div>
   <div class="gallery" id="gal">${ph.map(p => `
@@ -1812,7 +1865,7 @@ function vGuestEvent(id, tab = "gallery") {
 }
 function tMine(ev, g) {
   const ph = ev.photos.filter(p => p.by === g.id);
-  if (!ph.length) return `<div class="empty"><h3>You haven't added photos yet</h3><p>Open the booth to take a photo strip. It appears here and in the album.</p><a class="btn primary" href="#/booth/${ev.id}">Open the booth</a></div>`;
+  if (!ph.length) return `<div class="empty"><h3>You haven't added photos yet</h3><p>Tap Add photos to take a photo or a strip. It appears here and in the album.</p><a class="btn primary" href="#/booth/${ev.id}">Add photos</a></div>`;
   return `<p class="muted small" style="margin-bottom:20px">Photos can't be edited after publishing. Ask the host if you need one removed.</p>
   <div class="gallery" id="gal">${ph.map(p => `<figure class="ph" data-id="${p.id}" tabindex="0"><div class="stamp"><div class="inner" style="--ar:${p.ar || "3/4"}"><img data-img="${p.img}" alt="Your photo strip"></div></div>
   <figcaption class="cap"><span>${new Date(p.at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span><span class="${p.visibility === "admin" ? "badge-admin" : ""}">${p.visibility === "admin" ? ICON.lock + " Host only" : "Everyone"}</span></figcaption></figure>`).join("")}</div>`;
@@ -1933,10 +1986,11 @@ function vBooth(id) {
         <button data-v="1x1" aria-label="Single photo"><i class="lay" style="grid-template:12px/10px"><b></b></i>1</button></div></div>
       <button class="ibtn" id="soundBtn" aria-label="Mute sounds" title="Sounds"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button>
       <button class="ibtn" id="camBtn" aria-label="Turn camera off" title="Camera"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></button>
+      <button class="ibtn" id="helpBtn" aria-label="Show the hand controls tour" title="How it works"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4.5M12 17.5h.01"/></svg></button>
       <button class="ibtn" id="tuneBtn" aria-label="Gesture settings" title="Gesture settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg></button>
     </div>` : ""}</div>`;
   if (!acc.ok) return `<div class="booth">${bar}<div class="bmain"><div class="blocked-msg"><h2>${acc.title}</h2><p>${acc.msg}</p><a class="btn light" href="${acc.href}">${acc.cta || "Go back"}</a></div></div></div>`;
-  const cursor = id => `<div class="cursor" id="${id}"><svg viewBox="0 0 56 56"><circle cx="28" cy="28" r="25" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="3"/><circle class="arc" cx="28" cy="28" r="25" fill="none" stroke="#F2B705" stroke-width="3" stroke-linecap="round" stroke-dasharray="157" stroke-dashoffset="157"/></svg><div class="dot"></div><div class="ax"></div><div class="emoji">✌️</div></div>`;
+  const cursor = id => `<div class="cursor" id="${id}"><svg viewBox="0 0 56 56"><circle cx="28" cy="28" r="25" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="3"/><circle class="arc" cx="28" cy="28" r="25" fill="none" stroke="#F5F1EA" stroke-width="3" stroke-linecap="round" stroke-dasharray="157" stroke-dashoffset="157"/></svg><div class="dot"></div><div class="ax"></div><div class="emoji">✌️</div></div>`;
   return `<div class="booth">${bar}
   <div class="bmain">
     <div class="stage" id="stage">
@@ -1953,26 +2007,35 @@ function vBooth(id) {
       <button class="bcancel glass" id="cancelBtn">Cancel <span style="opacity:.6;font-size:12px">Esc</span></button>
       <div class="flash" id="flash"></div>
       <div class="boverlay" id="intro">
-        <h2>Strike a pose, hands free</h2>
-        <p>Stand about an arm's length from the camera so it can see your hand.</p>
-        <div class="bguides">
-          <div class="bguide"><div class="g">🤏 ↕</div><b>Change the filter</b><small>Pinch your thumb and index finger, slide up or down, then let go.</small></div>
-          <div class="bguide"><div class="g">🤏 ↔</div><b>Adjust its strength</b><small>Pinch and slide left or right to go from 0 to 100%.</small></div>
-          <div class="bguide"><div class="g">✌️</div><b>Take the photo</b><small>Hold up a peace sign until the ring fills. The timer starts.</small></div>
-        </div>
+        <p class="eyebrow" style="color:rgba(245,241,234,.6)">Add photos</p>
+        <h2>Let's take some photos</h2>
+        <p>KLIK needs your camera. Next comes a quick tour of the hand controls, and you can skip it any time.</p>
         <button class="btn light lg" id="startBtn">Turn on camera</button>
         <div class="berr" id="berr" role="alert"></div>
-        <p class="tiny" style="color:rgba(232,237,243,.55)">Your camera feed is processed on this device and never uploaded.</p>
+        <p class="tiny" style="color:rgba(245,241,234,.55)">Your camera feed is processed on this device and never uploaded.</p>
       </div>
+      <div class="tut ui" id="tut" role="dialog" aria-label="Hand controls tour" style="display:none">
+        <div class="tut-top"><span class="tut-dots" id="tutDots"><i></i><i></i><i></i></span><button class="tut-skip" id="tutSkip">Skip tour</button></div>
+        <div class="tut-body" id="tutBody"></div>
+      </div>
+      <div class="pick" id="pick" style="display:none">
+        <div class="pick-head"><p class="eyebrow">Step 2</p><h2>What do you want to take?</h2>
+          <p class="pick-help"><span>🤏 ↔</span> Pinch and slide to move <span>✌️</span> Hold a peace sign to choose <em>or click a card</em></p></div>
+        <div class="pick-grid" role="radiogroup" aria-label="Photo type">
+          ${[["1x1", "Single photo", "One shot", "grid-template:1fr/1fr"], ["1x3", "Strip of 3", "Three shots", "grid-template:repeat(3,1fr)/1fr"], ["1x4", "Strip of 4", "Four shots", "grid-template:repeat(4,1fr)/1fr"], ["2x2", "Grid", "Four shots, square", "grid-template:repeat(2,1fr)/repeat(2,1fr)"]].map(([k, t, d, g]) =>
+            `<button class="pick-card" data-gi data-layout="${k}" role="radio" aria-checked="false"><span class="pick-vis pv-${k}"><span class="pick-paper" style="${g}">${"<i></i>".repeat(LAYOUTS[k].cols * LAYOUTS[k].rows)}</span></span><b>${t}</b><small>${d}</small></button>`).join("")}
+        </div>
+      </div>
+      <button class="shutter ui" id="shutterBtn" aria-label="Take the photo"><i></i></button>
       <div class="boverlay" id="offOverlay" style="display:none"><h2>Camera is off</h2><p>Turn it back on to pick up where you left off.</p><button class="btn light" id="resumeBtn">Turn on camera</button></div>
     </div>
     <section class="breview" id="breview">
       <div class="strip-wrap" id="stripWrap"><canvas id="strip" class="stamp-shadow"></canvas></div>
-      <div class="bside"><h2>Looking good</h2>
-        <p>Hover over any shot to retake it.${ev ? " When you're happy, publish it to the album." : " Download it or start a new strip."}</p>
-        ${ev ? `<button class="btn red lg" id="pubBtn">Publish to album</button>` : ""}
-        <button class="btn ${ev ? "dark-ghost" : "light lg"}" id="saveBtn">${ICON.down} Download</button>
-        <button class="btn dark-ghost" id="againBtn">Start a new strip</button>
+      <div class="bside"><div class="minicam"><canvas id="miniCam" width="240" height="180"></canvas><span>🤏 Slide to move · ✌️ Hold to choose</span></div><h2>Looking good</h2>
+        <p>Click any shot to retake it.${ev ? " When you're happy, publish it to the album." : " Download it or take another."}</p>
+        ${ev ? `<button class="btn red lg" id="pubBtn" data-gi>Publish to album</button>` : ""}
+        <button class="btn ${ev ? "dark-ghost" : "light lg"}" id="saveBtn" data-gi>${ICON.down} Download</button>
+        <button class="btn dark-ghost" id="againBtn" data-gi>Take another</button>
       </div>
     </section>
   </div>
@@ -1999,7 +2062,7 @@ function boothInit(eventId) {
   const W = 960, H = 720, video = $("#video"), vctx = $("#view").getContext("2d");
   const tmp = document.createElement("canvas"), tctx = tmp.getContext("2d");
   const st = B = { running: false, stream: null, cdTimer: null, onKey: null, onResize: null };
-  let state = "intro", current = 0, pos = 0, layoutKey = "1x3", total = 3, shots = [], targetIdx = 0, retaking = false, timer = 3, sound = true;
+  let state = "intro", gIdx = 0, gScope = "", tutStep = 0, tutBase = { f: 0, a: 1 }, tutDone = false, current = 0, pos = 0, layoutKey = "1x3", total = 3, shots = [], targetIdx = 0, retaking = false, timer = 3, sound = true;
   const SET = { pinch: .32, step: .07, istep: .3, conf: .6, hold: 800 };
   const amounts = FILTERS.map(() => 1), amt = () => amounts[current];
 
@@ -2043,11 +2106,13 @@ function boothInit(eventId) {
   let lastT = -1, frame = 0, fps = 0, fc = 0, ft = performance.now();
   function loop() {
     if (!st.running || B !== st) return;
-    if ((state === "choose" || state === "countdown") && video.readyState >= 2) {
+    const live = ["choose", "countdown", "tutorial", "pick"].includes(state);
+    if ((live || state === "review") && video.readyState >= 2) {
       const now = performance.now();
-      drawFiltered(vctx, FILTERS[current], W, H, true, amt());
-      if (++frame % 4 === 0) thumbs.forEach((c, i) => drawFiltered(c.getContext("2d"), FILTERS[i], 120, 120, false));
+      if (live) { drawFiltered(vctx, FILTERS[current], W, H, true, amt()); if (++frame % 4 === 0) thumbs.forEach((c, i) => drawFiltered(c.getContext("2d"), FILTERS[i], 120, 120, false)); }
+      else drawMini();
       if (recognizer && video.currentTime !== lastT) { lastT = video.currentTime; process(recognizer.recognizeForVideo(video, now), now); fc++; if (now - ft > 1000) { fps = fc; fc = 0; ft = now; } }
+      if (state === "tutorial") tutCheck();
     }
     requestAnimationFrame(loop);
   }
@@ -2066,8 +2131,8 @@ function boothInit(eventId) {
       const g = res.gestures?.[i]?.[0] || { categoryName: "None", score: 0 };
       const pd = d2(lm[4], lm[8]) / (d2(lm[0], lm[9]) || 1), mx = 1 - (lm[4].x + lm[8].x) / 2, my = (lm[4].y + lm[8].y) / 2;
       h.cx = h.cx === null ? mx : h.cx * .5 + mx * .5; h.cy = h.cy === null ? my : h.cy * .5 + my * .5;
-      h.el.style.left = h.cx * 100 + "%"; h.el.style.top = h.cy * 100 + "%"; h.el.classList.toggle("show", state === "choose");
-      if (!h.pinching) { h.pin = pd < SET.pinch ? h.pin + 1 : 0; if (h.pin >= 2 && state === "choose") startPinch(h); }
+      h.el.style.left = h.cx * 100 + "%"; h.el.style.top = h.cy * 100 + "%"; h.el.classList.toggle("show", ["choose", "tutorial", "pick"].includes(state));
+      if (!h.pinching) { h.pin = pd < SET.pinch ? h.pin + 1 : 0; if (h.pin >= 2 && (state === "choose" || state === "tutorial" || menuMode())) startPinch(h); }
       else { h.rel = pd > SET.pinch * 1.6 ? h.rel + 1 : 0; if (h.rel >= 2) endPinch(h); }
       if (h.pinching) updateDrag(h);
       const isPeace = !h.pinching && g.categoryName === "Victory" && g.score >= SET.conf; if (isPeace) anyPeace = h;
@@ -2076,17 +2141,19 @@ function boothInit(eventId) {
     });
     Object.entries(HANDS).forEach(([k, h]) => { if (!h.seen) { if (h.pinching) endPinch(h); h.cx = null; h.el.classList.remove("show", "peace", "pinch", "blocked"); setArc(h, 0); dbg[k] = "—"; } });
     const anyPinch = Object.values(HANDS).some(h => h.pinching);
-    if (anyPeace && !anyPinch && state === "choose") {
+    if (menuMode()) syncScope();
+    if (anyPeace && !anyPinch && (state === "choose" || state === "tutorial" || menuMode())) {
       if (peaceHand !== anyPeace) { Object.values(HANDS).forEach(h => setArc(h, 0)); peaceHand = anyPeace; peaceSince = now; }
-      const p = Math.min(1, (now - peaceSince) / SET.hold); setArc(anyPeace, p);
-      if (!peaceFired && p >= 1) { peaceFired = true; resetPeace(); startCountdown(); }
-    } else resetPeace();
+      const p = Math.min(1, (now - peaceSince) / SET.hold); setArc(anyPeace, p); setHold(p);
+      if (!peaceFired && p >= 1) { peaceFired = true; setHold(0); if (menuMode()) gClick(); else if (state === "tutorial") tutPeace(); else startCountdown(); }
+    } else { if (!anyPeace) { resetPeace(); peaceFired = false; } setHold(0); }
     $("#lgF").classList.toggle("on", !!owner.y); $("#lgI").classList.toggle("on", !!owner.x); $("#lgP").classList.toggle("on", !!peaceHand);
     if (state === "choose") setHint(!lms.length ? "Raise your hand in front of the camera" : Object.values(HANDS).some(h => h.axis === "blocked") ? "Your other hand is already doing that. Try the other direction." : "");
     dbg.hands = lms.length; dbg.fps = fps; $("#dstats").textContent = Object.entries(dbg).map(([k, v]) => `${k}: ${v}`).join("\n");
   }
-  function startPinch(h) { h.pinching = true; h.rel = 0; h.axis = null; h.x0 = h.cx; h.y0 = h.cy; }
+  function startPinch(h) { h.pinching = true; h.rel = 0; h.axis = null; h.x0 = h.cx; h.y0 = h.cy; h.mSteps = 0; }
   function updateDrag(h) {
+    if (menuMode()) { const dx = h.cx - h.x0, dy = h.cy - h.y0, d = Math.abs(dx) > Math.abs(dy) ? dx : dy, n = Math.trunc(d / .07); if (n !== h.mSteps) { gFocus(gIdx + n - h.mSteps); h.mSteps = n; } return; }
     if (h.axis === "blocked") return;
     const dx = h.cx - h.x0, dy = h.cy - h.y0;
     if (!h.axis) {
@@ -2113,8 +2180,54 @@ function boothInit(eventId) {
     if (h.axis && owner[h.axis] === h) owner[h.axis] = null;
     h.pinching = false; h.pin = 0; h.axis = null;
   }
-  const resetPeace = () => { if (peaceHand) setArc(peaceHand, 0); peaceHand = null; peaceSince = 0; peaceFired = false; };
+  const resetPeace = () => { if (peaceHand) setArc(peaceHand, 0); peaceHand = null; peaceSince = 0; };
   const setArc = (h, p) => $(".arc", h.el).style.strokeDashoffset = 157 * (1 - p);
+
+
+  /* gesture menus (type picker, export, publish dialog): pinch + slide moves, hold ✌️ chooses */
+  const menuMode = () => st.running && (state === "pick" || state === "review");
+  const gItems = () => { const m = document.querySelector(".modal-bg"); return m ? $$("button", m).filter(b => !b.disabled) : state === "pick" ? $$("#pick [data-gi]") : state === "review" ? $$("#breview [data-gi]") : []; };
+  function syncScope() { const key = (document.querySelector(".modal-bg") ? "modal" : state) + gItems().length; if (key !== gScope) { gScope = key; gFocus(key.startsWith("modal") ? gItems().length - 1 : gIdx, true); } }
+  function gFocus(i, silent) { const it = gItems(); if (!it.length) return; const n = Math.max(0, Math.min(it.length - 1, i)); if (n !== gIdx && !silent) beep(1000, .03, .04); gIdx = n;
+    $$(".gfocus").forEach(e => { if (!it.includes(e)) e.classList.remove("gfocus"); }); it.forEach((b, k) => b.classList.toggle("gfocus", k === gIdx)); }
+  function setHold(p) { const it = gItems()[gIdx]; $$(".gfocus").forEach(e => e.style.setProperty("--hold", 0)); if (it && menuMode()) it.style.setProperty("--hold", p); }
+  function gClick() { const it = gItems()[gIdx]; if (!it) return; beep(1400, .05, .06); it.click(); gScope = ""; }
+  function drawMini() { const c = $("#miniCam"); if (!c) return; const g = c.getContext("2d"), w = c.width, h = c.height;
+    g.save(); g.setTransform(-1, 0, 0, 1, w, 0); g.filter = "grayscale(.4) brightness(.8)"; const vw = video.videoWidth, vh = video.videoHeight, sh = vw * h / w; g.drawImage(video, 0, (vh - sh) / 2, vw, sh, 0, 0, w, h); g.restore();
+    Object.values(HANDS).forEach(hd => { if (hd.cx === null) return; const x = hd.cx * w, y = hd.cy * h; g.beginPath(); g.arc(x, y, hd.pinching ? 9 : 7, 0, 7); g.fillStyle = hd.pinching ? "#F5F1EA" : "rgba(245,241,234,.35)"; g.fill(); g.lineWidth = 2; g.strokeStyle = "#F5F1EA"; g.stroke();
+      if (peaceHand === hd && peaceSince) { const p = Math.min(1, (performance.now() - peaceSince) / SET.hold); g.beginPath(); g.arc(x, y, 15, -Math.PI / 2, -Math.PI / 2 + p * Math.PI * 2); g.lineWidth = 3; g.stroke(); } }); }
+
+  /* type picker */
+  function enterPick() { state = "pick"; cancelCountdown(); $("#stage").style.display = ""; $("#breview").classList.remove("show"); $("#tut").style.display = "none"; $("#pick").style.display = "flex"; $("#stage").classList.add("menu");
+    setHint(""); $("#bstep").textContent = ""; const keys = $$("#pick [data-layout]").map(b => b.dataset.layout); gScope = "pick" + keys.length; gIdx = Math.max(0, keys.indexOf(layoutKey)); gFocus(gIdx, true); $$("#pick [data-layout]")[gIdx].focus({ preventScroll: true }); }
+  function chooseLayout(k) { layoutKey = k; total = LAYOUTS[k].cols * LAYOUTS[k].rows; shots = []; targetIdx = 0; retaking = false;
+    $$("#layoutSeg button").forEach(x => x.classList.toggle("on", x.dataset.v === k)); $("#pick").style.display = "none"; $("#stage").classList.remove("menu"); $$(".gfocus").forEach(e => e.classList.remove("gfocus")); enterChoose(); showName(); }
+  $$("#pick [data-layout]").forEach(b => b.onclick = () => chooseLayout(b.dataset.layout));
+
+  /* tour: 3 interactive steps, each also doable with a button */
+  const TUT = [
+    { g: "🤏", ax: "↕", t: "Change the filter", d: "Pinch your thumb and index finger together, then slide your hand up or down.", btn: `<button class="tut-btn" data-tf="-1" aria-label="Previous filter">▲</button><button class="tut-btn" data-tf="1" aria-label="Next filter">▼</button>`, alt: "Or tap the arrows, or a filter on the right." },
+    { g: "🤏", ax: "↔", t: "Set its strength", d: "Pinch again and slide sideways. Right makes the filter stronger, left makes it softer.", btn: `<button class="tut-btn" data-ta="-0.3" aria-label="Softer">−</button><button class="tut-btn" data-ta="0.3" aria-label="Stronger">+</button>`, alt: "Or use the − and + buttons." },
+    { g: "✌️", ax: "", t: "Take the photo", d: "Hold up a peace sign until the ring fills. The timer starts and everyone gets ready.", btn: `<button class="tut-btn wide" data-tp>Take photo</button>`, alt: "Or press the shutter button. This one is just practice." }
+  ];
+  function enterTutorial() { state = "tutorial"; tutStep = 0; tutDone = false; $("#pick").style.display = "none"; $("#stage").classList.remove("menu"); $("#tut").style.display = ""; $("#stage").style.display = ""; $("#breview").classList.remove("show");
+    $("#bstep").textContent = "Quick tour"; renderTut(); }
+  function renderTut() { const s = TUT[tutStep]; if (tutStep === 1) { if (current === 0) { current = 3; pos = 3; renderCarousel(); } amounts[current] = .6; renderIntensity(); } tutBase = { f: current, a: amt() }; tutDone = false;
+    $$("#tutDots i").forEach((d, i) => d.className = i < tutStep ? "done" : i === tutStep ? "on" : "");
+    $("#tutBody").innerHTML = `<div class="tut-hand"><span class="tut-g">${s.g}</span>${s.ax ? `<span class="tut-ax ax-${s.ax === "↕" ? "y" : "x"}">${s.ax}</span>` : `<svg class="tut-ring" viewBox="0 0 56 56"><circle cx="28" cy="28" r="25"/></svg>`}</div>
+      <div class="tut-copy"><p class="eyebrow">Step ${tutStep + 1} of 3</p><h3>${s.t}</h3><p>${s.d}</p><div class="tut-alt"><span>${s.alt}</span><span class="tut-btns">${s.btn}</span></div></div>
+      <div class="tut-ok" id="tutOk" aria-live="polite"></div>`;
+    $$("[data-tf]", $("#tutBody")).forEach(b => b.onclick = () => selectFilter((current + +b.dataset.tf + FILTERS.length) % FILTERS.length));
+    $$("[data-ta]", $("#tutBody")).forEach(b => b.onclick = () => { amounts[current] = Math.max(0, Math.min(1, amt() + +b.dataset.ta)); renderIntensity(); tutPass(); });
+    const tp = $("[data-tp]", $("#tutBody")); if (tp) tp.onclick = tutPeace;
+    $("#stage").dataset.tut = tutStep; }
+  function tutCheck() { if (tutDone) return; if (tutStep === 0 && current !== tutBase.f) tutPass(); else if (tutStep === 1 && Math.abs(amt() - tutBase.a) >= .25) tutPass(); }
+  function tutPeace() { if (state !== "tutorial") return; if (tutStep !== 2) { tutStep = 2; renderTut(); } $("#flash").style.opacity = .6; setTimeout(() => $("#flash") && ($("#flash").style.opacity = 0), 160); shutter(); tutPass(); }
+  function tutPass() { if (tutDone) return; tutDone = true; beep(1320, .08, .06); const ok = $("#tutOk"); ok.innerHTML = `<span>✓</span>${["Nice, that's a new filter.", "Perfect, strength set.", "That's it. You're ready."][tutStep]}`; ok.classList.add("show");
+    setTimeout(() => { if (state !== "tutorial") return; if (tutStep < 2) { tutStep++; renderTut(); } else finishTutorial(); }, 1100); }
+  function finishTutorial() { try { localStorage.setItem("klik.tour", "1"); } catch {} $("#tut").style.display = "none"; delete $("#stage").dataset.tut; enterPick(); }
+  $("#tutSkip").onclick = finishTutorial;
+  $("#helpBtn").onclick = () => { if (st.running) enterTutorial(); };
 
   /* capture */
   function startCountdown() {
@@ -2139,7 +2252,7 @@ function boothInit(eventId) {
   /* screens */
   function enterChoose() { state = "choose"; $("#stage").style.display = ""; $("#breview").classList.remove("show");
     $("#bstep").textContent = retaking ? `Retaking shot ${targetIdx + 1}` : `Shot ${targetIdx + 1} of ${total}`; renderSlots(); renderCarousel(); }
-  async function enterReview() { state = "review"; await buildStrip(); $("#stage").style.display = "none"; $("#breview").classList.add("show"); ($("#pubBtn") || $("#saveBtn")).focus(); }
+  async function enterReview() { state = "review"; gScope = ""; gIdx = 0; await buildStrip(); $("#stage").style.display = "none"; $("#breview").classList.add("show"); ($("#pubBtn") || $("#saveBtn")).focus(); }
   function renderSlots(popIdx = -1) {
     const el = $("#slots"); el.innerHTML = "";
     for (let i = 0; i < total; i++) { const s = document.createElement("div"); s.className = "slot" + (i === targetIdx && state === "choose" ? " now" : "") + (i === popIdx ? " pop" : "");
@@ -2153,7 +2266,7 @@ function boothInit(eventId) {
       const c = document.createElement("canvas"); c.width = c.height = 120; thumbs.push(c); const s = document.createElement("span"); s.textContent = f.name; d.append(c, s);
       d.onclick = () => selectFilter(i); $("#track").appendChild(d); });
   })();
-  function selectFilter(i) { if (state !== "choose") return; current = i; pos = i; renderCarousel(); showName(); }
+  function selectFilter(i) { if (state !== "choose" && state !== "tutorial") return; current = i; pos = i; renderCarousel(); showName(); }
   function renderCarousel() { const ch = $("#carousel").clientHeight; $("#track").style.transform = `translateY(${ch / 2 - 48 - pos * 96}px)`; $$("#track .fx").forEach((el, i) => el.classList.toggle("on", i === current)); renderIntensity(); }
   function renderIntensity() { const p = Math.round(amt() * 100); $("#iFill").style.width = p + "%"; $("#iKnob").style.left = p + "%"; $("#iVal").textContent = p + "%"; $("#intensity").classList.toggle("dim", current === 0); }
   function showName() { $("#fnameB").textContent = FILTERS[current].name; const el = $("#fname"); el.classList.add("show"); clearTimeout(showName.t); showName.t = setTimeout(() => el.classList.remove("show"), 900); }
@@ -2180,7 +2293,7 @@ function boothInit(eventId) {
     g.font = '400 16px "Fragment Mono", monospace'; g.fillStyle = "rgba(20,17,16,.62)"; g.fillText(ev ? ev.name : dt.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }), pad + 120, fy + 34);
     if (ev) g.fillText(dt.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }), pad + 120, fy + 58);
     // postmark rings
-    g.strokeStyle = "rgba(200,16,46,.75)"; g.lineWidth = 3; const pmx = cw - pad - 50, pmy = fy + 34;
+    g.strokeStyle = "rgba(20,17,16,.7)"; g.lineWidth = 3; const pmx = cw - pad - 50, pmy = fy + 34;
     g.beginPath(); g.arc(pmx, pmy, 40, 0, 7); g.stroke(); g.beginPath(); g.arc(pmx, pmy, 28, 0, 7); g.stroke();
     g.fillStyle = "rgba(20,17,16,.8)"; g.textAlign = "center"; g.font = '700 16px "Switzer"'; g.fillText(`${dt.getDate()} ${dt.toLocaleString("en", { month: "short" }).toUpperCase()}`, pmx, pmy + 6);
     // retake hot spots
@@ -2221,23 +2334,27 @@ function boothInit(eventId) {
   /* controls */
   const seg = (id, cb) => $$(`#${id} button`).forEach(b => b.onclick = () => { $$(`#${id} button`).forEach(x => x.classList.toggle("on", x === b)); cb(b.dataset.v); });
   seg("timerSeg", v => timer = +v);
-  seg("layoutSeg", v => { layoutKey = v; total = LAYOUTS[v].cols * LAYOUTS[v].rows; shots = []; targetIdx = 0; retaking = false; if (state === "choose" || state === "review") enterChoose(); });
+  seg("layoutSeg", v => { if (state === "pick") return chooseLayout(v); layoutKey = v; total = LAYOUTS[v].cols * LAYOUTS[v].rows; shots = []; targetIdx = 0; retaking = false; if (state === "choose" || state === "review") enterChoose(); });
   const bind = (id, key, fmt) => { const el = $("#" + id), out = $("#v" + id.slice(1)); const f = () => { SET[key] = +el.value; out.textContent = fmt(+el.value); }; el.oninput = f; f(); };
   bind("sPinch", "pinch", v => v.toFixed(2)); bind("sStep", "step", v => v.toFixed(2)); bind("sIStep", "istep", v => v.toFixed(2)); bind("sConf", "conf", v => v.toFixed(2)); bind("sHold", "hold", v => v + "ms");
   $("#tuneBtn").onclick = () => $("#tune").classList.toggle("show");
   $("#soundBtn").onclick = () => { sound = !sound; $("#soundBtn").classList.toggle("off", !sound); $("#soundBtn").setAttribute("aria-label", sound ? "Mute sounds" : "Unmute sounds"); };
   $("#cancelBtn").onclick = cancelCountdown;
+  $("#shutterBtn").onclick = () => state === "tutorial" ? (tutStep === 2 && tutPeace()) : startCountdown();
+  $("#intensity .bar").onclick = e => { if (state !== "choose" && state !== "tutorial") return; const r = e.currentTarget.getBoundingClientRect(); amounts[current] = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)); renderIntensity(); };
   const camOff = () => { cancelCountdown(); st.stream?.getTracks().forEach(t => t.stop()); st.stream = null; st.running = false; state = "off";
     $("#camBtn").classList.add("off"); $("#camBtn").setAttribute("aria-label", "Turn camera on"); $("#stage").style.display = ""; $("#breview").classList.remove("show"); $("#offOverlay").style.display = "flex"; };
   const camOn = async () => { await startCamera(); st.running = true; $("#offOverlay").style.display = "none"; $("#camBtn").classList.remove("off"); $("#camBtn").setAttribute("aria-label", "Turn camera off"); enterChoose(); requestAnimationFrame(loop); };
   $("#camBtn").onclick = () => { if (!recognizer || state === "intro") return; st.stream ? camOff() : camOn(); };
   $("#resumeBtn").onclick = camOn;
   $("#saveBtn").onclick = () => download($("#strip").toDataURL("image/png"), `klik-${Date.now()}.png`);
-  $("#againBtn").onclick = () => { shots = []; targetIdx = 0; retaking = false; enterChoose(); };
+  $("#againBtn").onclick = () => { shots = []; targetIdx = 0; retaking = false; enterPick(); };
   const pb = $("#pubBtn"); if (pb) pb.onclick = publish;
   st.onKey = e => {
     if (e.key === "Escape") { cancelCountdown(); $("#tune")?.classList.remove("show"); return; }
-    if (state !== "choose" || e.target.tagName === "INPUT" || document.querySelector(".modal-bg")) return;
+    if (state === "pick" && (e.key === "ArrowLeft" || e.key === "ArrowRight")) { e.preventDefault(); gFocus(gIdx + (e.key === "ArrowRight" ? 1 : -1)); gItems()[gIdx]?.focus(); return; }
+    if (state === "tutorial" && (e.code === "Space" || e.key === "Enter") && e.target.tagName !== "BUTTON") { e.preventDefault(); if (tutStep === 2) tutPeace(); return; }
+    if ((state !== "choose" && state !== "tutorial") || e.target.tagName === "INPUT" || document.querySelector(".modal-bg")) return;
     if (e.key === "ArrowUp" || e.key === "ArrowDown") { e.preventDefault(); selectFilter(Math.max(0, Math.min(FILTERS.length - 1, current + (e.key === "ArrowDown" ? 1 : -1)))); }
     else if (e.key === "ArrowLeft" || e.key === "ArrowRight") { amounts[current] = Math.max(0, Math.min(1, amt() + (e.key === "ArrowRight" ? .1 : -.1))); renderIntensity(); }
     else if (e.code === "Space" || e.key === "Enter") { if (e.target.tagName === "BUTTON") return; e.preventDefault(); startCountdown(); }
@@ -2251,7 +2368,7 @@ function boothInit(eventId) {
       b.textContent = "Starting camera…"; await startCamera();
       b.textContent = "Getting hand tracking ready…"; await loadModel();
       if (B !== st) return;
-      $("#intro").style.display = "none"; st.running = true; enterChoose(); showName(); requestAnimationFrame(loop);
+      $("#intro").style.display = "none"; st.running = true; let seen = false; try { seen = localStorage.getItem("klik.tour") === "1"; } catch {} renderCarousel(); seen ? enterPick() : enterTutorial(); requestAnimationFrame(loop);
     } catch (e) {
       $("#berr").textContent = e.name === "NotAllowedError" ? "Camera access is blocked. Allow it in your browser's site settings, then try again."
         : e.name === "NotFoundError" ? "No camera found. Connect a camera to use the booth."
