@@ -54,3 +54,8 @@ These screens exist in code but have no frame yet: dashboard (`#/dashboard`), gu
 ## Landing intro (Figma page 2001:24, frames Desktop 1–10)
 Loader: black screen, white polaroid (316×356) with the KLIK tag, six photos flash in it (230 ms each). Then the light grey (#f4f4f4) panel wipes up (850 ms), and the hero (Desktop 10) plays: headline lines slide up, photo arc rises from below, centre first. Tap, Space or Esc skips. Plays once per page load; skipped with reduced motion.
 Missing asset: the far-right photo in 2052:3543 (orange blossom) is off-canvas and could not be exported. The slot reuses the far-left photo for now.
+
+## Visual direction v2 (from significant-wombat-152736.framer.app)
+Colours: cream #F5F1EA (page), sand #EFE9DF / #E6DED1 (tiles), card #FBF9F5, ink #141110, ink 62% for secondary text, rule #C9C6C1. No accent colour; photos carry the colour.
+Type: Switzer 300/400/500/700 (self-hosted, assets/fonts) for everything; Fragment Mono for small uppercase labels, numbers and data. Caveat stays only for journal notes.
+Elements: square buttons (4px radius) with an arrow box, floating dark nav bar with MENU drawer, glass chips on photos, hairline lists, mono stat strips, accordion FAQ, full-bleed photo CTA, dark ink footer.
