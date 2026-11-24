@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>KLIK — One album for every photo from the day</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Manrope:wght@400;500;700;800&family=Ubuntu:wght@400&family=Ubuntu+Mono:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Manrope:wght@400;500;700;800&family=Inter+Tight:wght@800&family=Ubuntu:wght@400&family=Ubuntu+Mono:wght@700&display=swap" rel="stylesheet">
 <style>
 :root{
   --paper:#E8EDF3; --paper-2:#F6F8FB; --white:#fff;
@@ -416,6 +416,32 @@ textarea.nw-input{height:138px;min-height:104px;resize:vertical;display:block}
   .nw-stage{top:20px;bottom:60px}.nw-turn span{display:none}.nw-sheet{margin-top:8cqw}.nw-main{padding:0 20px}.nw-steps{position:static;margin:16px 0 0}.nw-body{padding:24px 0 32px;gap:32px}}
 @media (max-width:560px){.nw-step span{display:none}.nw-styles{gap:12px}}
 
+
+/* ---------- landing intro + hero (Figma 2052:2545 → 2052:3509) ---------- */
+.hx{--s:1;position:relative;height:calc(100svh - var(--navh,0px));min-height:520px;background:#f4f4f4;overflow:hidden}
+.hx h1{position:absolute;left:50%;top:calc(171px * var(--s));transform:translateX(-50%);width:min(calc(1251px * var(--s)),92vw);margin:0;
+  font:800 max(34px,calc(92px * var(--s)))/1.074 "Inter Tight","Manrope",sans-serif;letter-spacing:calc(-1.52px * var(--s));text-align:center;color:#000}
+.hx .ln{display:block;overflow:hidden;padding-bottom:.06em}
+.hx .ln>span{display:inline-block;transition:transform .9s cubic-bezier(.16,1,.3,1)}
+.hx .ln:nth-child(2)>span{transition-delay:.08s}
+.hx-row{position:absolute;left:50%;bottom:0;width:calc(1956px * var(--s));height:calc(447px * var(--s));transform:translateX(-50%)}
+.hx-ph{position:absolute;left:calc(var(--x) * var(--s) * 1px);top:calc(var(--y) * var(--s) * 1px);width:calc(var(--w) * var(--s) * 1px);aspect-ratio:1;
+  translate:-50% -50%;rotate:var(--r);border:max(2px,calc(4px * var(--s))) solid #fafafa;box-shadow:0 calc(10px * var(--s)) calc(25px * var(--s)) rgba(0,0,0,.12);
+  background:#e0e0e0 center/cover no-repeat;transition:transform 1.15s cubic-bezier(.16,1,.3,1) var(--d,0s),rotate 1.15s cubic-bezier(.16,1,.3,1) var(--d,0s)}
+.hx.pre .ln>span{transform:translateY(110%)}
+.hx.pre .hx-ph{transform:translateY(calc(560px * var(--s)));rotate:0deg}
+.intro{position:fixed;inset:0;z-index:1000;background:#000;overflow:hidden;cursor:pointer;--k:1}
+.intro-pol{position:absolute;left:50%;top:50%;width:calc(316px * var(--k));height:calc(356px * var(--k));translate:-50% -50%;background:#fff;padding:calc(8px * var(--k));
+  transition:transform .5s cubic-bezier(.16,1,.3,1),opacity .5s}
+.intro-pol div{width:100%;height:100%;border:calc(4px * var(--k)) solid #fafafa;background:#111 center/cover no-repeat}
+.intro-tag{position:absolute;left:calc(50% + 139.5px * var(--k));top:calc(50% - 179.2px * var(--k));width:calc(215px * var(--k));translate:-50% -50%;transition:transform .5s cubic-bezier(.16,1,.3,1) .1s,opacity .5s .1s}
+.intro.pre .intro-pol{transform:scale(.92);opacity:0}
+.intro.pre .intro-tag{transform:translateY(12px) rotate(-6deg);opacity:0}
+.intro-wipe{position:absolute;inset:0;background:#f4f4f4;transform:translateY(100%);transition:transform .85s cubic-bezier(.76,0,.24,1)}
+.intro.out .intro-wipe{transform:none}
+@media (prefers-reduced-motion:reduce){.hx .ln>span,.hx-ph{transition:none}}
+@media (max-width:700px){.hx{height:auto;min-height:0;padding:64px 0 0}.hx h1{position:relative;left:auto;top:auto;transform:none;width:auto;margin:0 20px;font-size:clamp(34px,10.5vw,44px);letter-spacing:-.8px}.hx-row{position:relative;bottom:auto;margin-top:48px}}
+
 /* ---------- booth ---------- */
 body.booth-mode{background:var(--night);color:#E8EDF3}
 body.booth-mode .nav,body.booth-mode .footer{display:none}
@@ -668,11 +694,64 @@ function renderNav() {
 /* =========================================================
    LANDING
    ========================================================= */
+
+/* =========================================================
+   LANDING INTRO (loader → hero), from Figma frames Desktop 1–10
+   ========================================================= */
+const HX_PHOTOS = [ // group coordinates from Figma 2052:3543 (1956 × 447), card centre + size + rotation
+  ["turning", 93.3, 353.9, 150.853, -16], ["attic", 304.1, 292.9, 150.853, -12], ["portrait", 581.2, 220.6, 203.923, -6],
+  ["books", 978.2, 152.5, 305, 0], ["poppies", 1375.2, 220.6, 203.923, 6], ["walking", 1652.3, 292.9, 150.853, 12],
+  ["turning", 1863.1, 353.9, 150.853, 16] // TODO: Figma uses an orange-blossom photo here; it sits off-canvas and could not be exported
+];
+const INTRO_SEQ = ["turning", "attic", "poppies", "portrait", "walking", "books"];
+let introPlayed = false;
+const hxPic = n => `assets/intro/p-${n}.jpg`;
+function vHero() {
+  const order = [3, 2, 4, 1, 5, 0, 6]; // centre first, then outwards
+  return `<section class="hx pre" id="hx">
+    <h1><span class="ln"><span>One album for every photo</span></span> <span class="ln"><span>from the day.</span></span></h1>
+    <div class="hx-row" aria-hidden="true">${HX_PHOTOS.map(([n, x, y, w, r], i) =>
+      `<div class="hx-ph" style="--x:${x};--y:${y};--w:${w};--r:${r}deg;--d:${order.indexOf(i) * .07}s;background-image:url(${hxPic(n)})"></div>`).join("")}</div>
+  </section>`;
+}
+function sizeHero() {
+  const hx = $("#hx"); if (!hx) return;
+  const nav = $(".nav"); document.documentElement.style.setProperty("--navh", (nav ? nav.offsetHeight : 0) + "px");
+  const r = hx.getBoundingClientRect();
+  hx.style.setProperty("--s", (innerWidth <= 700 ? .58 : Math.max(.42, Math.min(r.width / 1440, r.height / 900))).toFixed(4));
+}
+function playHero() { const hx = $("#hx"); if (hx) requestAnimationFrame(() => requestAnimationFrame(() => hx.classList.remove("pre"))); }
+function heroIntro() {
+  sizeHero(); window.onresize = sizeHero;
+  if (introPlayed || matchMedia("(prefers-reduced-motion: reduce)").matches) { introPlayed = true; $("#hx").classList.remove("pre"); return; }
+  introPlayed = true;
+  const k = Math.max(.6, Math.min(1.2, innerWidth / 1440, innerHeight / 900));
+  const el = document.createElement("div");
+  el.className = "intro pre"; el.style.setProperty("--k", k); el.setAttribute("aria-hidden", "true");
+  el.innerHTML = `<div class="intro-pol"><div id="introPic"></div></div><img class="intro-tag" src="assets/intro/klik-tag.png" alt=""><div class="intro-wipe"></div>`;
+  document.body.appendChild(el); document.body.style.overflow = "hidden";
+  const timers = [], at = (ms, fn) => timers.push(setTimeout(fn, ms));
+  const finish = () => { timers.forEach(clearTimeout); el.remove(); document.body.style.overflow = ""; playHero(); };
+  const pic = $("#introPic", el);
+  const load = Promise.all(INTRO_SEQ.map(n => new Promise(res => { const i = new Image(); i.onload = i.onerror = res; i.src = hxPic(n); })));
+  Promise.race([load, new Promise(r => setTimeout(r, 2500))]).then(() => {
+    if (!el.isConnected) return;
+    pic.style.backgroundImage = `url(${hxPic(INTRO_SEQ[0])})`;
+    requestAnimationFrame(() => el.classList.remove("pre"));
+    INTRO_SEQ.slice(1).forEach((n, i) => at(520 + i * 230, () => { pic.style.backgroundImage = `url(${hxPic(n)})`; }));
+    const end = 520 + (INTRO_SEQ.length - 1) * 230 + 380;
+    at(end, () => el.classList.add("out"));
+    at(end + 870, finish);
+  });
+  el.onclick = finish; // tap to skip
+  addEventListener("keydown", function skip(e) { if (e.key === "Escape" || e.key === " ") { removeEventListener("keydown", skip); if (el.isConnected) finish(); } });
+}
+
 function vLanding() {
-  return `
+  return `${vHero()}
   <section class="hero"><div class="wrap">
     <div>
-      <h1 class="h-xl">One album for every photo from the day.</h1>
+      <h2 class="h-xl">Share a link. Get every photo.</h2>
       <p class="lead">Create an event and share a link. Your guests shoot photo strips with a wave of the hand, and every shot lands in one shared album, framed like a stamp.</p>
       <div class="hero-ctas">
         <a class="btn primary lg" href="${S.user ? "#/new" : "#/signin?next=new"}">Create an event</a>
@@ -764,7 +843,8 @@ function vLanding() {
     <a class="btn red lg" href="${S.user ? "#/new" : "#/signin?next=new"}">Create an event</a>
   </div></div></div></section>`;
 }
-function bindLanding() { $$("[data-soon]").forEach(b => b.onclick = () => toast("We'll let you know when paid plans launch.")); }
+function bindLanding() {
+  heroIntro(); $$("[data-soon]").forEach(b => b.onclick = () => toast("We'll let you know when paid plans launch.")); }
 
 /* =========================================================
    SIGN IN
