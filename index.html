@@ -317,8 +317,28 @@ body.wizard-mode .nav,body.wizard-mode .footer{display:none}
 /* live paper preview (Figma 2044:716) */
 .nw-panel{flex:0 0 min(691px,48vw);container-type:inline-size;position:sticky;top:0;height:100vh;overflow:hidden;background:#000;border:1px solid rgba(255,255,255,.3)}
 .nw-bg{position:absolute;width:161.9cqw;height:161.9cqw;left:-1px;bottom:-1px;max-width:none;object-fit:cover;filter:blur(27px);transition:opacity .35s}
-.nw-paper{position:absolute;left:6.23cqw;right:6.36cqw;top:35px;bottom:35px;border-radius:32px;box-shadow:0 0 20px rgba(255,255,255,.25);
-  background:#ececec url("assets/new-event/paper.png") center/calc(100% + 40px) calc(100% + 40px) no-repeat;display:flex;flex-direction:column;align-items:center;overflow:hidden}
+.nw-stage{position:absolute;left:6.23cqw;right:6.36cqw;top:35px;bottom:35px;perspective:1800px;cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.nw-stage.drag{cursor:grabbing}
+.nw-card{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform}
+.nw-face,.nw-edge{position:absolute;inset:0;border-radius:32px}
+.nw-face{backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;background:#ececec url("assets/new-event/paper.png") center/calc(100% + 40px) calc(100% + 40px) no-repeat}
+.nw-edge{background:#cfcfcf}
+.nw-paper{transform:translateZ(3px);box-shadow:0 0 20px rgba(255,255,255,.25);display:flex;flex-direction:column;align-items:center}
+.nw-back{transform:rotateY(180deg) translateZ(3px)}
+.nw-pc{position:absolute;inset:0;padding:7cqw 6.5cqw 6cqw;display:flex;flex-direction:column;color:#212121;text-align:left}
+.nw-pc-top{display:flex;justify-content:space-between;align-items:flex-start}
+.nw-pc-logo{font:400 7cqw/1 "La Machine Company","Courier New",monospace}
+.nw-pc-stamp{width:14cqw;aspect-ratio:3/4;padding:.9cqw;background:#fafafa;box-shadow:0 1px 4px rgba(0,0,0,.25);transform:rotate(4deg)}
+.nw-pc-stamp img,.nw-pc-stamp i{display:block;width:100%;height:100%;object-fit:cover;background:#000}
+.nw-pc-msg{flex:1;margin-top:8cqw;font:500 4.6cqw/1.35 "Caveat",cursive;color:#2b3a67;white-space:pre-line;overflow:hidden;word-break:break-word}
+.nw-pc-msg.ph{opacity:.35}
+.nw-pc-lines p{border-bottom:1px solid rgba(0,0,0,.22);padding:1.5cqw 0;font:700 2.6cqw/1.4 "Manrope",sans-serif;color:#424242;min-height:5.4cqw;word-break:break-word}
+.nw-pc-foot{margin-top:4cqw;font:500 1.9cqw "Manrope",sans-serif;color:#757575}
+.nw-turn{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);display:flex;align-items:center;gap:4px;padding:4px;border-radius:999px;background:rgba(0,0,0,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font:500 13px/1 "Manrope",sans-serif;color:#e0e0e0;z-index:2}
+.nw-turn span{padding:0 10px 0 8px;color:#bdbdbd;white-space:nowrap}
+.nw-turn button{padding:7px 12px;border-radius:999px;color:#fafafa;font:600 13px/1 "Manrope",sans-serif}
+.nw-turn button:hover{background:rgba(255,255,255,.12)}
+.nw-turn button:focus-visible{outline:2px solid #fafafa;outline-offset:1px}
 .nw-sheet{width:58cqw;margin-top:8.18cqw;display:flex;flex-direction:column;align-items:center;text-align:center}
 .nw-art{width:55.14cqw;aspect-ratio:381/280;display:block}
 .nw-art[hidden]{display:none}
@@ -389,7 +409,7 @@ textarea.nw-input{height:138px;min-height:104px;resize:vertical;display:block}
 .nw-summary div:first-child{border-top:0}
 .nw-summary span{color:var(--nw-muted)}
 @media (max-width:1000px){.nw{flex-direction:column;gap:0}.nw-panel{flex:none;width:100%;height:auto;aspect-ratio:691/560;position:relative;border-width:0 0 1px}
-  .nw-paper{top:20px;bottom:20px}.nw-sheet{margin-top:8cqw}.nw-main{padding:0 20px}.nw-steps{position:static;margin:16px 0 0}.nw-body{padding:24px 0 32px;gap:32px}}
+  .nw-stage{top:20px;bottom:60px}.nw-turn span{display:none}.nw-sheet{margin-top:8cqw}.nw-main{padding:0 20px}.nw-steps{position:static;margin:16px 0 0}.nw-body{padding:24px 0 32px;gap:32px}}
 @media (max-width:560px){.nw-step span{display:none}.nw-styles{gap:12px}}
 
 /* ---------- booth ---------- */
@@ -816,12 +836,21 @@ function vNew() {
   const steps = st.map((l, i) => `<li class="nw-step ${i === draft.step ? "on" : i < draft.step ? "done" : ""}" ${i === draft.step ? 'aria-current="step"' : ""}><b>${i < draft.step ? "✓" : i + 1}</b><span>${l}</span></li>`
     + (i < st.length - 1 ? `<li class="nw-link ${i < draft.step ? "done" : i === draft.step ? "next" : ""}" aria-hidden="true"></li>` : "")).join("");
   return `<div class="nw">
-    <div class="nw-panel" aria-hidden="true">
+    <div class="nw-panel" role="region" aria-label="Card preview">
       <img class="nw-bg" id="pvBg" alt="" src="assets/new-event/bgfull-${draft.bg}.jpg">
-      <div class="nw-paper"><div class="nw-sheet">
-        <img class="nw-art" id="pvArt" alt="" src="${ILLS.wedding.src}">
-        <p class="nw-title" id="pvTitle"></p><p class="nw-when" id="pvWhen"></p><p class="nw-note" id="pvNote"></p>
+      <div class="nw-stage" id="pvStage" aria-hidden="true"><div class="nw-card" id="pvCard"><i class="nw-edge" style="transform:translateZ(-2.5px)"></i><i class="nw-edge" style="transform:translateZ(-2.0px)"></i><i class="nw-edge" style="transform:translateZ(-1.5px)"></i><i class="nw-edge" style="transform:translateZ(-1.0px)"></i><i class="nw-edge" style="transform:translateZ(-0.5px)"></i><i class="nw-edge" style="transform:translateZ(0.0px)"></i><i class="nw-edge" style="transform:translateZ(0.5px)"></i><i class="nw-edge" style="transform:translateZ(1.0px)"></i><i class="nw-edge" style="transform:translateZ(1.5px)"></i><i class="nw-edge" style="transform:translateZ(2.0px)"></i><i class="nw-edge" style="transform:translateZ(2.5px)"></i>
+        <div class="nw-face nw-paper"><div class="nw-sheet">
+          <img class="nw-art" id="pvArt" alt="" src="${ILLS.wedding.src}">
+          <p class="nw-title" id="pvTitle"></p><p class="nw-when" id="pvWhen"></p><p class="nw-note" id="pvNote"></p>
+        </div></div>
+        <div class="nw-face nw-back"><div class="nw-pc">
+          <div class="nw-pc-top"><span class="nw-pc-logo">KLIK</span><span class="nw-pc-stamp" id="pvStamp"></span></div>
+          <p class="nw-pc-msg" id="pvBackNote"></p>
+          <div class="nw-pc-lines"><p id="pvBackName"></p><p id="pvBackWhen"></p><p>Hosted by ${esc(S.user.name || "you")}</p></div>
+          <p class="nw-pc-foot">Memories collected with KLIK</p>
+        </div></div>
       </div></div>
+      <div class="nw-turn"><span>Drag to turn</span><button type="button" data-turn="0,0">Front</button><button type="button" data-turn="-68,6">Side</button><button type="button" data-turn="180,0">Back</button></div>
     </div>
     <div class="nw-main">
       <ol class="nw-steps" aria-label="Steps">${steps}</ol>
@@ -835,6 +864,10 @@ function updatePreview() {
   set("pvWhen", el => { el.textContent = d.date ? fmtDate(d.date) : ""; });
   set("pvNote", el => { el.textContent = d.desc || ""; });
   set("pvArt", el => { const il = ILLS[d.illus]; el.hidden = !il || !il.src; if (il && il.src) el.src = il.src; });
+  set("pvBackNote", el => { el.textContent = d.desc || "Your message to guests appears here."; el.classList.toggle("ph", !d.desc); });
+  set("pvBackName", el => { el.textContent = d.name; });
+  set("pvBackWhen", el => { el.textContent = d.date ? fmtDate(d.date) : ""; });
+  set("pvStamp", el => { el.innerHTML = BGS[d.bg][1] ? `<img src="assets/new-event/sw-${d.bg}.jpg" alt="">` : "<i></i>"; });
   set("pvBg", el => { el.style.opacity = BGS[d.bg][1] ? 1 : 0; if (BGS[d.bg][1]) el.src = `assets/new-event/bgfull-${d.bg}.jpg`; });
 }
 const wzDetails = () => `
@@ -889,11 +922,51 @@ const wzReview = first => `
     </div>
   </div>
   <div class="nw-actions"><button class="nw-btn ghost" data-prev>Back</button><button class="nw-btn primary" data-create>Create event</button></div>`;
+// 3D card: drag to rotate (with a little momentum), or jump to Front / Side / Back.
+const card3d = { x: 4, y: -14, vx: 0, vy: 0, raf: 0 };
+function bindCard() {
+  const st = $("#pvStage"), card = $("#pvCard"); if (!st) return;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const clampX = v => Math.max(-55, Math.min(55, v));
+  const apply = () => { card.style.transform = `rotateX(${card3d.x}deg) rotateY(${card3d.y}deg)`; };
+  cancelAnimationFrame(card3d.raf); card.style.transition = "none"; apply();
+  let drag = null;
+  st.onpointerdown = e => {
+    if (e.button > 0) return;
+    cancelAnimationFrame(card3d.raf); card.style.transition = "none";
+    drag = { px: e.clientX, py: e.clientY, t: performance.now(), mouse: e.pointerType === "mouse" };
+    st.setPointerCapture(e.pointerId); st.classList.add("drag");
+  };
+  st.onpointermove = e => {
+    if (!drag) return;
+    const dx = e.clientX - drag.px, dy = e.clientY - drag.py, now = performance.now(), k = 16 / Math.max(16, now - drag.t);
+    card3d.y += dx * .45; card3d.vy = dx * .45 * k;
+    if (drag.mouse) { card3d.x = clampX(card3d.x - dy * .35); card3d.vx = -dy * .35 * k; } else card3d.vx = 0;
+    drag.px = e.clientX; drag.py = e.clientY; drag.t = now; apply();
+  };
+  const end = () => {
+    if (!drag) return; drag = null; st.classList.remove("drag");
+    if (reduce) return;
+    const spin = () => {
+      card3d.vy *= .94; card3d.vx *= .9; card3d.y += card3d.vy; card3d.x = clampX(card3d.x + card3d.vx); apply();
+      if (Math.abs(card3d.vy) > .05 || Math.abs(card3d.vx) > .05) card3d.raf = requestAnimationFrame(spin);
+    };
+    card3d.raf = requestAnimationFrame(spin);
+  };
+  st.onpointerup = end; st.onpointercancel = end;
+  const turnTo = (y, x) => {
+    cancelAnimationFrame(card3d.raf);
+    card.style.transition = reduce ? "none" : "transform .8s cubic-bezier(.2,.8,.2,1)";
+    card3d.y = Math.round((card3d.y - y) / 360) * 360 + y; card3d.x = x; apply();
+  };
+  st.ondblclick = () => turnTo(0, 0);
+  $$("[data-turn]").forEach(b => b.onclick = () => { const [y, x] = b.dataset.turn.split(",").map(Number); turnTo(y, x); });
+}
 function bindNew() {
   const wz = $("#wz"); if (!wz) return;
   document.body.classList.add("wizard-mode");
   const keep = () => { if ($("#wn")) { draft.name = $("#wn").value.trim(); draft.date = $("#wd").value; draft.desc = $("#wde").value.trim(); } };
-  updatePreview();
+  updatePreview(); bindCard();
   if ($("#wn")) {
     const live = () => { draft.name = $("#wn").value; draft.date = $("#wd").value; draft.desc = $("#wde").value; $(".nw-date").classList.toggle("blank", !draft.date); updatePreview(); };
     ["#wn", "#wd", "#wde"].forEach(id => $(id).addEventListener("input", live));
