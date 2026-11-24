@@ -442,6 +442,21 @@ textarea.nw-input{height:138px;min-height:104px;resize:vertical;display:block}
 @media (prefers-reduced-motion:reduce){.hx .ln>span,.hx-ph{transition:none}}
 @media (max-width:700px){.hx{height:auto;min-height:0;padding:64px 0 0}.hx h1{position:relative;left:auto;top:auto;transform:none;width:auto;margin:0 20px;font-size:clamp(34px,10.5vw,44px);letter-spacing:-.8px}.hx-row{position:relative;bottom:auto;margin-top:48px}}
 
+
+/* ---------- photo sphere (landing) ---------- */
+.sph{position:relative;height:min(100svh,900px);min-height:560px;background:#111;overflow:hidden;cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.sph.drag{cursor:grabbing}
+.sph-view{position:absolute;inset:0;perspective:var(--p);perspective-origin:50% 50%}
+.sph-world{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d;will-change:transform}
+.sph-card{position:absolute;left:0;top:0;width:var(--cw);height:var(--ch);margin:calc(var(--ch) / -2) 0 0 calc(var(--cw) / -2);border-radius:calc(var(--cw) * .07);
+  background:#222 center/cover no-repeat;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.sph::before,.sph::after{content:"";position:absolute;left:0;right:0;height:22%;z-index:1;pointer-events:none}
+.sph::before{top:0;background:linear-gradient(#111,rgba(17,17,17,0))}
+.sph::after{bottom:0;background:linear-gradient(rgba(17,17,17,0),#111)}
+.sph-copy{position:absolute;left:0;right:0;bottom:44px;z-index:2;text-align:center;color:#fafafa;pointer-events:none;padding:0 20px}
+.sph-copy h2{font:800 clamp(32px,4.4vw,60px)/1.05 "Inter Tight","Manrope",sans-serif;letter-spacing:-1px;margin:0}
+.sph-copy p{font:500 15px/1.5 "Manrope",sans-serif;color:#bdbdbd;margin-top:10px}
+
 /* ---------- booth ---------- */
 body.booth-mode{background:var(--night);color:#E8EDF3}
 body.booth-mode .nav,body.booth-mode .footer{display:none}
@@ -747,8 +762,73 @@ function heroIntro() {
   addEventListener("keydown", function skip(e) { if (e.key === "Escape" || e.key === " ") { removeEventListener("keydown", skip); if (el.isConnected) finish(); } });
 }
 
+
+/* =========================================================
+   PHOTO SPHERE: photos on the inside of a sphere, drag to look around
+   ========================================================= */
+const SPH_PICS = ["portrait", "poppies", "books", "walking", "attic", "turning"];
+const SPH_ROWS = [-66, -33, 0, 33, 66]; // latitude of each row, degrees
+function vSphere() {
+  return `<section class="sph" id="sph" aria-label="Photos from KLIK albums">
+    <div class="sph-view"><div class="sph-world" id="sphWorld"></div></div>
+    <div class="sph-copy"><h2>Every guest. Every angle.</h2><p>Drag to look around.</p></div>
+  </section>`;
+}
+function bindSphere() {
+  const sec = $("#sph"), world = $("#sphWorld"); if (!sec) return;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const st = { rx: -4, ry: 0, vx: 0, vy: 0, drag: null, on: false };
+  const build = () => {
+    const u = Math.max(.55, Math.min(1.25, sec.clientWidth / 1440)), R = 1000 * u, cw = 400 * u, ch = 530 * u;
+    sec.style.setProperty("--p", R * 1.12 + "px"); sec.style.setProperty("--cw", cw + "px"); sec.style.setProperty("--ch", ch + "px");
+    let html = "", seed = 7, prevRow = [];
+    const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+    SPH_ROWS.forEach((lat, r) => {
+      const row = [];
+      const n = Math.max(6, Math.round(14 * Math.cos(lat * Math.PI / 180)));
+      for (let c = 0; c < n; c++) {
+        const lon = c * 360 / n + (r % 2) * 180 / n;
+        const above = prevRow[Math.round(c * prevRow.length / n) % (prevRow.length || 1)];
+        let k, tries = 0;
+        do { k = Math.floor(rnd() * SPH_PICS.length); } while (tries++ < 20 && (k === row[c - 1] || k === above || (c === n - 1 && k === row[0])));
+        row.push(k);
+        html += `<div class="sph-card" style="transform:rotateY(${lon}deg) rotateX(${-lat}deg) translateZ(${-R}px);background-image:url(${hxPic(SPH_PICS[row[c]])})"></div>`;
+      }
+      prevRow = row;
+    });
+    world.innerHTML = html;
+  };
+  const apply = () => { world.style.transform = `rotateX(${st.rx}deg) rotateY(${st.ry}deg)`; };
+  build(); apply();
+  let w = sec.clientWidth;
+  new ResizeObserver(() => { if (Math.abs(sec.clientWidth - w) > 40) { w = sec.clientWidth; build(); } }).observe(sec);
+  sec.onpointerdown = e => { if (e.button > 0) return; st.drag = { x: e.clientX, y: e.clientY, mouse: e.pointerType === "mouse" }; sec.setPointerCapture(e.pointerId); sec.classList.add("drag"); };
+  sec.onpointermove = e => {
+    if (!st.drag) return;
+    const dx = e.clientX - st.drag.x, dy = e.clientY - st.drag.y; st.drag.x = e.clientX; st.drag.y = e.clientY;
+    st.vy = -dx * .12; st.ry += st.vy;
+    if (st.drag.mouse) { st.vx = dy * .08; st.rx = Math.max(-28, Math.min(28, st.rx + st.vx)); } else st.vx = 0;
+    apply();
+  };
+  const up = () => { st.drag = null; sec.classList.remove("drag"); };
+  sec.onpointerup = up; sec.onpointercancel = up;
+  const tick = () => {
+    if (!sec.isConnected) return;
+    if (st.on && !st.drag) {
+      st.vy *= .95; st.vx *= .9;
+      const auto = reduce ? 0 : .035;
+      st.ry += Math.abs(st.vy) > auto ? st.vy : -auto;
+      st.rx = Math.max(-28, Math.min(28, st.rx + st.vx)) * .995;
+      apply();
+    }
+    requestAnimationFrame(tick);
+  };
+  new IntersectionObserver(([en]) => { st.on = en.isIntersecting; }).observe(sec);
+  requestAnimationFrame(tick);
+}
+
 function vLanding() {
-  return `${vHero()}
+  return `${vHero()}${vSphere()}
   <section class="hero"><div class="wrap">
     <div>
       <h2 class="h-xl">Share a link. Get every photo.</h2>
@@ -844,7 +924,7 @@ function vLanding() {
   </div></div></div></section>`;
 }
 function bindLanding() {
-  heroIntro(); $$("[data-soon]").forEach(b => b.onclick = () => toast("We'll let you know when paid plans launch.")); }
+  heroIntro(); bindSphere(); $$("[data-soon]").forEach(b => b.onclick = () => toast("We'll let you know when paid plans launch.")); }
 
 /* =========================================================
    SIGN IN
