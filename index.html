@@ -752,6 +752,24 @@ body.wizard-mode #app{padding-top:0}
 }
 @media (max-width:560px){.nw-prog li{font-size:12px}.nw-head h1{font-size:30px;line-height:36px}.nw-styles{gap:10px}.nw-sw{width:44px;height:44px}}
 
+
+/* card front date + back details (v3.1) */
+.nw-pc-logo{color:#141110;line-height:0}.nw-pc-logo .klik-logo{height:6cqw;width:auto}
+.nw-when{margin-top:3.2cqw;font:400 2.3cqw/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#424242}
+.nw-when.ph{opacity:.35}
+.nw-pc-msg{flex:0 1 auto;min-height:14cqw;margin:7cqw 0 5cqw}
+.nw-pc-dl{margin:auto 0 0;display:grid;grid-template-columns:1fr 1fr;border-top:1px solid rgba(20,17,16,.18)}
+.nw-pc-dl>div{padding:2.2cqw 0;border-bottom:1px solid rgba(20,17,16,.18)}
+.nw-pc-dl>div:nth-child(odd){padding-right:2.4cqw;border-right:1px solid rgba(20,17,16,.18)}
+.nw-pc-dl>div:nth-child(even){padding-left:2.4cqw}
+.nw-pc-dl dt{font:400 1.7cqw/1.3 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#757575;margin-bottom:.8cqw}
+.nw-pc-dl dd{margin:0;font:600 2.6cqw/1.3 var(--sans);color:#212121;word-break:break-word}
+.nw-pc-dl dd.ph{color:#bdbdbd;font-weight:400}
+.nw-pc-foot{margin-top:3cqw}
+.nw-row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.nw-input[type=time]{color-scheme:dark;height:45px}
+@media (max-width:560px){.nw-row{grid-template-columns:1fr;gap:32px}}
+
 /* ---------- booth ---------- */
 body.booth-mode{background:var(--night);color:#E8EDF3}
 body.booth-mode .nav,body.booth-mode .footer{display:none}
@@ -1326,7 +1344,7 @@ const WZ_STEPS = ["Cover", "Details", "Access", "Review"];
 function vNew() {
   if (!S.user) return redirect("#/signin?next=new");
   const first = !S.events.some(isOwner);
-  if (!draft) draft = { step: 0, name: "", date: "", desc: "", cover: "wedding", bg: 0, illus: "party", access: "open", window: "1d", public: false };
+  if (!draft) draft = { step: 0, name: "", date: "", desc: "", time: "", venue: "", hosts: S.user.name || "", dress: "", cover: "wedding", bg: 0, illus: "party", access: "open", window: "1d", public: false };
   return `<div class="nw" style="--th:${BGS[draft.bg][1] || "#3a3a3a"}"><div class="nw-shell">
     <div class="nw-panel" role="region" aria-label="Card preview">
       <img class="nw-bg" id="pvBg" alt="" src="assets/new-event/bgfull-${draft.bg}.jpg">
@@ -1334,11 +1352,12 @@ function vNew() {
         <div class="nw-face nw-paper"><div class="nw-sheet">
           <p class="nw-title" id="pvTitle"></p>
           <img class="nw-art" id="pvArt" alt="" src="${ILLS.party.src}">
+          <p class="nw-when" id="pvWhen"></p>
         </div></div>
         <div class="nw-face nw-back"><div class="nw-pc">
-          <div class="nw-pc-top"><span class="nw-pc-logo">KLIK</span><span class="nw-pc-stamp" id="pvStamp"></span></div>
+          <div class="nw-pc-top"><span class="nw-pc-logo">${logoSvg(30)}</span><span class="nw-pc-stamp" id="pvStamp"></span></div>
           <p class="nw-pc-msg" id="pvBackNote"></p>
-          <div class="nw-pc-lines"><p id="pvBackName"></p><p id="pvBackWhen"></p><p>Hosted by ${esc(S.user.name || "you")}</p></div>
+          <dl class="nw-pc-dl"><div><dt>When</dt><dd id="pvBackWhen"></dd></div><div><dt>Where</dt><dd id="pvBackWhere"></dd></div><div><dt>Hosted by</dt><dd id="pvBackHosts"></dd></div><div><dt>Dress code</dt><dd id="pvBackDress"></dd></div></dl>
           <p class="nw-pc-foot">Memories collected with KLIK</p>
         </div></div>
       </div></div>
@@ -1352,23 +1371,27 @@ function vNew() {
     </div></div></div>`;
 }
 // Keeps the paper card in sync with the form without re-rendering the page (so typing keeps focus).
+const fmtTime = t => { const [h, m] = t.split(":").map(Number); return `${(h % 12) || 12}:${String(m).padStart(2, "0")} ${h < 12 ? "AM" : "PM"}`; };
 function updatePreview() {
   const bar = $("#wzBar");
   if (bar) { const f = draft.step === 0 ? (1 + !!draft.name.trim() + !!draft.date) / 3 : 1; bar.style.width = ((draft.step + f) / WZ_STEPS.length * 100) + "%"; }
   const nw = $(".nw"); if (nw) nw.style.setProperty("--th", BGS[draft.bg][1] || "#3a3a3a");
   const d = draft, set = (id, fn) => { const el = $("#" + id); if (el) fn(el); };
   set("pvTitle", el => { el.textContent = d.name || "Your event name"; el.classList.toggle("ph", !d.name); });
-  set("pvWhen", el => { el.textContent = d.date ? fmtDate(d.date) : ""; });
+  set("pvWhen", el => { el.textContent = d.date ? fmtDate(d.date) : "Event date"; el.classList.toggle("ph", !d.date); });
   set("pvArt", el => { const il = ILLS[d.illus]; el.hidden = !il || !il.src; if (il && il.src) el.src = il.src; });
   set("pvBackNote", el => { el.textContent = d.desc || "Your message to guests appears here."; el.classList.toggle("ph", !d.desc); });
-  set("pvBackName", el => { el.textContent = d.name; });
-  set("pvBackWhen", el => { el.textContent = d.date ? fmtDate(d.date) : ""; });
+  const dash = (el, v) => { el.textContent = v || "—"; el.classList.toggle("ph", !v); };
+  set("pvBackWhen", el => dash(el, [d.date ? fmtDate(d.date) : "", d.time ? fmtTime(d.time) : ""].filter(Boolean).join(", ")));
+  set("pvBackWhere", el => dash(el, d.venue.trim()));
+  set("pvBackHosts", el => dash(el, d.hosts.trim()));
+  set("pvBackDress", el => dash(el, d.dress.trim()));
   set("pvStamp", el => { el.innerHTML = BGS[d.bg][1] ? `<img src="assets/new-event/sw-${d.bg}.jpg" alt="">` : "<i></i>"; });
   set("pvBg", el => { el.style.opacity = BGS[d.bg][1] ? 1 : 0; if (BGS[d.bg][1]) el.src = `assets/new-event/bgfull-${d.bg}.jpg`; });
 }
 const wzDesign = () => `
   <div class="nw-form">
-  <div class="nw-head"><h1>Create New Event</h1><p>Name your event, then pick a style and an illustration. The card updates as you go.</p></div>
+  <div class="nw-head"><h1>Create New Event</h1><p>Everything here goes on the front of the card. Pick a theme, name your event and choose an illustration.</p></div>
   <div class="nw-fields">
     <div class="nw-field loose"><span class="nw-label" id="bgLbl">Event Theme<i aria-hidden="true">*</i></span>
       <div class="nw-styles" role="radiogroup" aria-labelledby="bgLbl">${BGS.map(([l, c], i) => `
@@ -1377,18 +1400,31 @@ const wzDesign = () => `
       <input class="nw-input" id="wn" maxlength="40" value="${esc(draft.name)}" placeholder="Mohamed Birthday" required aria-describedby="wnerr" autocomplete="off"><div class="nw-err" id="wnerr"></div></div>
     <div class="nw-field"><label class="nw-label" for="wd">Event Date<i aria-hidden="true">*</i></label>
       <div class="nw-date ${draft.date ? "" : "blank"}"><input class="nw-input" id="wd" type="date" value="${esc(draft.date)}" required aria-describedby="wderr"><img src="assets/new-event/icon-calendar.png" alt="" width="20" height="20"></div><div class="nw-err" id="wderr"></div></div>
-    <div class="nw-field loose"><label class="nw-label" for="wde">Description</label>
-      <textarea class="nw-input" id="wde" maxlength="240" placeholder="Write a short note for your guests…" aria-describedby="wdecount">${esc(draft.desc)}</textarea>
-      <div class="nw-count" id="wdecount">${draft.desc.length}/240</div></div>
+    <div class="nw-field loose"><span class="nw-label" id="ilLbl">Illustration</span>
+      <div class="nw-ills" role="radiogroup" aria-labelledby="ilLbl">${Object.entries(ILLS).map(([k, il]) => `
+        <button type="button" class="nw-ill" data-illus="${k}" role="radio" aria-checked="${draft.illus === k}" aria-label="${il.label}" title="${il.label}">${il.src ? `<img src="${il.src}" alt="">` : `<span>None</span>`}</button>`).join("")}</div></div>
   </div></div>
   <div class="nw-actions"><a class="nw-btn ghost" href="#/dashboard">Cancel</a><button class="nw-btn primary" data-next>Continue</button></div>`;
 const wzDetails = () => `
   <div class="nw-form">
-  <div class="nw-head"><h1>Pick an illustration</h1><p>It's printed on the card, under your event name. More illustrations are on the way.</p></div>
+  <div class="nw-head"><h1>Add the details</h1><p>These go on the back of the card. Only fill in what your guests need to know.</p></div>
   <div class="nw-fields">
-    <div class="nw-field loose"><span class="nw-label" id="ilLbl">Illustration</span>
-      <div class="nw-ills" role="radiogroup" aria-labelledby="ilLbl">${Object.entries(ILLS).map(([k, il]) => `
-        <button type="button" class="nw-ill" data-illus="${k}" role="radio" aria-checked="${draft.illus === k}" aria-label="${il.label}" title="${il.label}">${il.src ? `<img src="${il.src}" alt="">` : `<span>None</span>`}</button>`).join("")}</div></div>
+    <div class="nw-field loose"><label class="nw-label" for="wde">Description</label>
+      <textarea class="nw-input" id="wde" maxlength="240" placeholder="Write a short note for your guests…" aria-describedby="wdecount" data-back>${esc(draft.desc)}</textarea>
+      <div class="nw-count" id="wdecount">${draft.desc.length}/240</div></div>
+    <div class="nw-row">
+      <div class="nw-field"><label class="nw-label" for="wt">Start time</label>
+        <input class="nw-input" id="wt" type="time" value="${esc(draft.time)}" data-back></div>
+      <div class="nw-field"><label class="nw-label" for="wv">Venue</label>
+        <input class="nw-input" id="wv" maxlength="60" value="${esc(draft.venue)}" placeholder="Ex: The Garden, Zamalek" autocomplete="off" data-back></div>
+    </div>
+    <div class="nw-row">
+      <div class="nw-field"><label class="nw-label" for="wh">Hosted by</label>
+        <input class="nw-input" id="wh" maxlength="50" value="${esc(draft.hosts)}" placeholder="Ex: Mohamed & Salma" autocomplete="off" data-back></div>
+      <div class="nw-field"><label class="nw-label" for="wdr">Dress code</label>
+        <input class="nw-input" id="wdr" maxlength="40" value="${esc(draft.dress)}" placeholder="Ex: Smart casual" list="dressList" autocomplete="off" data-back>
+        <datalist id="dressList"><option>Smart casual</option><option>Formal</option><option>Black tie</option><option>All white</option><option>Come as you are</option></datalist></div>
+    </div>
   </div></div>
   <div class="nw-actions"><button class="nw-btn ghost" data-prev>Back</button><button class="nw-btn primary" data-next>Continue</button></div>`;
 const wzAccess = () => `
@@ -1411,10 +1447,12 @@ const wzReview = first => `
   <div class="nw-head"><h1>Review your event</h1><p>The card on the left is what guests will see. You can change any of this later in Settings.</p></div>
   <div class="nw-fields">
     <div class="nw-summary">
-      ${[["Event", `${esc(draft.name)}, ${BGS[draft.bg][0]} theme`, 0],
+      ${[["Cover", `${esc(draft.name)}, ${BGS[draft.bg][0]} theme, ${ILLS[draft.illus].label.toLowerCase()} illustration`, 0],
          ["Date", fmtDate(draft.date), 0],
-         ["Description", draft.desc ? esc(draft.desc) : "None", 0],
-         ["Illustration", ILLS[draft.illus].label, 1],
+         ["Description", draft.desc ? esc(draft.desc) : "None", 1],
+         ["Time and place", [draft.time ? fmtTime(draft.time) : "", esc(draft.venue)].filter(Boolean).join(", ") || "Not set", 1],
+         ["Hosted by", esc(draft.hosts) || "Not set", 1],
+         ["Dress code", esc(draft.dress) || "Not set", 1],
          ["Who can join", draft.access === "open" ? "Anyone with the link" : "Guests you approve", 2],
          ["Upload window", WINDOWS[draft.window][0], 2],
          ["Visibility", draft.public ? "Shown in Explore" : "Private, link only", 2],
@@ -1466,9 +1504,12 @@ function bindCard() {
 function bindNew() {
   const wz = $("#wz"); if (!wz) return;
   document.body.classList.add("wizard-mode");
-  const keep = () => { if ($("#wn")) draft.name = $("#wn").value.trim(); if ($("#wd")) draft.date = $("#wd").value; if ($("#wde")) draft.desc = $("#wde").value.trim(); };
+  const keep = () => { if ($("#wn")) draft.name = $("#wn").value.trim(); if ($("#wd")) draft.date = $("#wd").value; if ($("#wde")) draft.desc = $("#wde").value.trim();
+    [["wt", "time"], ["wv", "venue"], ["wh", "hosts"], ["wdr", "dress"]].forEach(([id, k]) => { const el = $("#" + id); if (el) draft[k] = el.value.trim(); }); };
   updatePreview(); bindCard();
   const wn = $("#wn"), wd = $("#wd"), wde = $("#wde");
+  [["wt", "time"], ["wv", "venue"], ["wh", "hosts"], ["wdr", "dress"]].forEach(([id, k]) => { const el = $("#" + id); if (el) el.addEventListener("input", () => { draft[k] = el.value; updatePreview(); }); });
+  $$("[data-back]", wz).forEach(el => el.addEventListener("focus", () => card3d.turn && card3d.turn(180, 0)));
   [wn, wd].forEach(el => el && el.addEventListener("input", () => { el.removeAttribute("aria-invalid"); $(`#${el.id}err`).textContent = ""; }));
   if (wn) { wn.addEventListener("input", () => { draft.name = wn.value; updatePreview(); }); wn.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); $("[data-next]").click(); } }); }
   if (wd) { wd.addEventListener("input", () => { draft.date = wd.value; $(".nw-date").classList.toggle("blank", !draft.date); updatePreview(); }); wd.addEventListener("focus", () => card3d.turn && card3d.turn(0, 0)); }
@@ -1486,12 +1527,12 @@ function bindNew() {
       const firstBad = errs.find(e => e[1]); if (firstBad) return $("#" + firstBad[0]).focus();
     }
     draft.step++; rerender();
-    if (card3d.turn) card3d.turn(0, 0);
+    if (card3d.turn) card3d.turn(draft.step === 1 ? 180 : 0, 0);
   };
   $$("[data-goto]", wz).forEach(b => b.onclick = () => { draft.step = +b.dataset.goto; rerender(); });
   const pr = $("[data-prev]", wz); if (pr) pr.onclick = () => { keep(); draft.step--; rerender(); };
   const c = $("[data-create]", wz); if (c) c.onclick = () => {
-    const ev = { id: uid(), ownerEmail: S.user.email, ownerName: S.user.name, name: draft.name, date: draft.date, desc: draft.desc, cover: draft.cover, bg: draft.bg, illus: draft.illus,
+    const ev = { id: uid(), ownerEmail: S.user.email, ownerName: S.user.name, name: draft.name, date: draft.date, desc: draft.desc, time: draft.time, venue: draft.venue, hosts: draft.hosts, dress: draft.dress, cover: draft.cover, bg: draft.bg, illus: draft.illus,
       access: draft.access, window: draft.window, public: draft.public, createdAt: Date.now(), limit: 20, guests: [], photos: [], notes: [], paper: "t-paper" };
     S.events.push(ev); save(); draft = null; toast("Event created"); location.hash = `#/event/${ev.id}/share`;
   };
