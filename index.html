@@ -695,6 +695,63 @@ html.has-cur input,html.has-cur textarea,html.has-cur [contenteditable]{cursor:t
 .hw:hover .hw-pol{rotate:0deg;translate:0 -6px}
 .hw-img .ph-tag{position:absolute;left:16px;top:14px;font:400 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:rgba(245,241,234,.8)}
 
+
+/* ---------- new event wizard v3 (Figma 2062:10243) ---------- */
+body.wizard-mode{background:#000}
+body.wizard-mode .nav{display:block}
+body.wizard-mode #app{padding-top:0}
+.nw{display:block;min-height:100vh;padding:126px 24px 24px;gap:0}
+.nw-shell{display:flex;gap:40px;align-items:center;min-height:calc(100vh - 150px);padding:20px 24px;border-radius:32px;background:color-mix(in srgb,var(--th,#859774) 7%,#000);transition:background .5s}
+.nw-panel{flex:0 0 min(659px,47%);height:min(748px,calc(100vh - 190px));min-height:560px;position:relative;top:auto;border:0;border-radius:32px;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;gap:24px;padding:24px;background:#111;container-type:inline-size}
+.nw-bg{position:absolute;inset:0;left:0;top:0;bottom:auto;width:100%;height:100%;max-width:none;object-fit:cover;filter:none;border-radius:32px}
+.nw-stage{position:relative;inset:auto;left:auto;right:auto;top:auto;bottom:auto;flex:1;width:100%;min-height:0;perspective:1800px}
+.nw-face{border-radius:24px;background:#fff radial-gradient(circle,#cfcfcf .8px,transparent 1.2px) center/15.08px 15.08px}
+.nw-edge{border-radius:24px;background:#e2e2e2}
+.nw-paper{box-shadow:none;justify-content:flex-start}
+.nw-sheet{width:100%;margin-top:7.97cqw;padding:0 4cqw}
+.nw-title{order:0;margin:0;padding:0;font:400 7.27cqw/1.15 "La Machine Company","Courier New",monospace;letter-spacing:0;color:#212121;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:clip}
+.nw-art{width:45.4cqw;margin-top:6.45cqw}
+.nw-badge{position:absolute;left:50%;bottom:59px;width:75px;height:auto;translate:-50% 0;z-index:3;pointer-events:none}
+.nw-turn{position:relative;left:auto;bottom:auto;transform:none;z-index:3;display:flex;align-items:center;gap:4px;padding:4px;border-radius:999px;background:rgba(0,0,0,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.nw-turn span{padding:0 10px 0 8px;font:500 13px/13px var(--sans);color:#bdbdbd}
+.nw-turn button{padding:7px 12px;border-radius:999px;font:600 13px/13px var(--sans);color:#fafafa}
+.nw-turn button:hover{background:rgba(255,255,255,.12)}
+.nw-main{flex:1;align-self:stretch;min-width:0;display:flex;flex-direction:column;padding:0;position:static}
+.nw-prog{display:flex;flex-direction:column;gap:8px}
+.nw-prog .bar{height:4px;border-radius:16px;background:#424242;position:relative;overflow:hidden}
+.nw-prog .bar i{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:16px;background:#fafafa;transition:width .6s cubic-bezier(.16,1,.3,1)}
+.nw-prog ol{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;list-style:none;margin:0;padding:0}
+.nw-prog li{font:600 14px/21px var(--sans);color:#616161}
+.nw-prog li.on{color:#fafafa}
+.nw-prog li button{font:inherit;color:#bdbdbd;padding:0}
+.nw-prog li button:hover{color:#fafafa}
+.nw-body{flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:40px;padding:60px 0 0}
+.nw-form{display:flex;flex-direction:column;gap:48px}
+.nw-head h1{font:700 36px/43px var(--sans);letter-spacing:-1.08px;color:#fafafa}
+.nw-head p{margin-top:12px;font-size:14px;line-height:21px;color:#9e9e9e}
+.nw-fields{gap:32px}
+.nw-field{gap:4px}
+.nw-field.loose{gap:8px}
+.nw-label i{margin-left:1px}
+#bgLbl i{margin-left:8px}
+.nw-input{border-width:.8px;padding:11px;border-radius:4px}
+.nw-date .nw-input{height:45px}
+.nw-sw{border:.8px solid rgba(255,255,255,.12);border-radius:16px}
+.nw-sw[aria-checked=true]{border:2.4px solid #e0e0e0;box-shadow:0 2px 11.5px var(--glow,#fff)}
+.nw-count{font-size:12px;line-height:19.2px;color:#616161}
+.nw-btn{padding:7px 19px;border-width:.8px;border-radius:4px;font:700 14px/21px var(--sans)}
+.nw-btn.ghost{border-color:#616161;color:#e0e0e0}
+.nw-ill{background:#fff radial-gradient(circle,#cfcfcf .8px,transparent 1.2px) center/12px 12px}
+@media (max-width:1000px){
+  .nw{padding:96px 12px 12px}
+  .nw-shell{flex-direction:column;align-items:stretch;gap:28px;padding:16px;border-radius:24px;min-height:0}
+  .nw-panel{flex:none;width:100%;height:auto;min-height:0;aspect-ratio:659/748;max-height:72vh;margin:0 auto;max-width:520px;border-width:0;position:relative}
+  .nw-body{padding-top:32px}
+  .nw-badge{bottom:52px;width:60px}
+}
+@media (max-width:560px){.nw-prog li{font-size:12px}.nw-head h1{font-size:30px;line-height:36px}.nw-styles{gap:10px}.nw-sw{width:44px;height:44px}}
+
 /* ---------- booth ---------- */
 body.booth-mode{background:var(--night);color:#E8EDF3}
 body.booth-mode .nav,body.booth-mode .footer{display:none}
@@ -1264,22 +1321,19 @@ let draft = null;
 // Event backgrounds (Figma 2047:1319). Nine blurred photos, then plain black.
 const BGS = [["Green","#859774"],["Coral","#d38960"],["Olive","#686849"],["Sky","#abb0ab"],["Sand","#9b8569"],["Sage","#c4d0bd"],["Teal","#5d8d98"],["Sunset","#c88161"],["Mist","#a2aab9"],["Black",""]];
 // Illustrations printed on the paper card. Only the wedding artwork exists so far.
-const ILLS = { wedding: { label: "Wedding", src: "assets/new-event/illustration-wedding.png" }, none: { label: "No illustration" } };
-const WZ_STEPS = ["Design", "Details", "Access", "Review"];
+const ILLS = { party: { label: "Pink", src: "assets/new-event/illustration-party.png" }, wedding: { label: "Ink", src: "assets/new-event/illustration-wedding.png" }, none: { label: "No illustration" } };
+const WZ_STEPS = ["Cover", "Details", "Access", "Review"];
 function vNew() {
   if (!S.user) return redirect("#/signin?next=new");
   const first = !S.events.some(isOwner);
-  if (!draft) draft = { step: 0, name: "", date: "", desc: "", cover: "wedding", bg: 0, illus: "wedding", access: "open", window: "1d", public: false };
-  const st = WZ_STEPS;
-  const steps = st.map((l, i) => `<li class="nw-step ${i === draft.step ? "on" : i < draft.step ? "done" : ""}" ${i === draft.step ? 'aria-current="step"' : ""}><b>${i < draft.step ? "✓" : i + 1}</b><span>${l}</span></li>`
-    + (i < st.length - 1 ? `<li class="nw-link ${i < draft.step ? "done" : i === draft.step ? "next" : ""}" aria-hidden="true"></li>` : "")).join("");
-  return `<div class="nw">
+  if (!draft) draft = { step: 0, name: "", date: "", desc: "", cover: "wedding", bg: 0, illus: "party", access: "open", window: "1d", public: false };
+  return `<div class="nw" style="--th:${BGS[draft.bg][1] || "#3a3a3a"}"><div class="nw-shell">
     <div class="nw-panel" role="region" aria-label="Card preview">
       <img class="nw-bg" id="pvBg" alt="" src="assets/new-event/bgfull-${draft.bg}.jpg">
       <div class="nw-stage" id="pvStage" aria-hidden="true" data-cursor="Turn"><div class="nw-card" id="pvCard"><i class="nw-edge" style="transform:translateZ(-2.5px)"></i><i class="nw-edge" style="transform:translateZ(-2.0px)"></i><i class="nw-edge" style="transform:translateZ(-1.5px)"></i><i class="nw-edge" style="transform:translateZ(-1.0px)"></i><i class="nw-edge" style="transform:translateZ(-0.5px)"></i><i class="nw-edge" style="transform:translateZ(0.0px)"></i><i class="nw-edge" style="transform:translateZ(0.5px)"></i><i class="nw-edge" style="transform:translateZ(1.0px)"></i><i class="nw-edge" style="transform:translateZ(1.5px)"></i><i class="nw-edge" style="transform:translateZ(2.0px)"></i><i class="nw-edge" style="transform:translateZ(2.5px)"></i>
         <div class="nw-face nw-paper"><div class="nw-sheet">
-          <img class="nw-art" id="pvArt" alt="" src="${ILLS.wedding.src}">
-          <p class="nw-title" id="pvTitle"></p><p class="nw-when" id="pvWhen"></p>
+          <p class="nw-title" id="pvTitle"></p>
+          <img class="nw-art" id="pvArt" alt="" src="${ILLS.party.src}">
         </div></div>
         <div class="nw-face nw-back"><div class="nw-pc">
           <div class="nw-pc-top"><span class="nw-pc-logo">KLIK</span><span class="nw-pc-stamp" id="pvStamp"></span></div>
@@ -1288,15 +1342,20 @@ function vNew() {
           <p class="nw-pc-foot">Memories collected with KLIK</p>
         </div></div>
       </div></div>
+      <img class="nw-badge" src="assets/new-event/badge-3d.png" alt="" width="75" height="69">
       <div class="nw-turn"><span>Drag to turn</span><button type="button" data-turn="0,0">Front</button><button type="button" data-turn="-68,6">Side</button><button type="button" data-turn="180,0">Back</button></div>
     </div>
     <div class="nw-main">
-      <ol class="nw-steps" aria-label="Steps">${steps}</ol>
+      <nav class="nw-prog" aria-label="Steps"><div class="bar"><i id="wzBar"></i></div>
+        <ol>${WZ_STEPS.map((l, i) => `<li class="${i === draft.step ? "on" : i < draft.step ? "done" : ""}"${i === draft.step ? ' aria-current="step"' : ""}>${i < draft.step ? `<button type="button" data-goto="${i}">${l}</button>` : l}</li>`).join("")}</ol></nav>
       <div class="nw-body" id="wz">${[wzDesign, wzDetails, wzAccess, wzReview][draft.step](first)}</div>
-    </div></div>`;
+    </div></div></div>`;
 }
 // Keeps the paper card in sync with the form without re-rendering the page (so typing keeps focus).
 function updatePreview() {
+  const bar = $("#wzBar");
+  if (bar) { const f = draft.step === 0 ? (1 + !!draft.name.trim() + !!draft.date) / 3 : 1; bar.style.width = ((draft.step + f) / WZ_STEPS.length * 100) + "%"; }
+  const nw = $(".nw"); if (nw) nw.style.setProperty("--th", BGS[draft.bg][1] || "#3a3a3a");
   const d = draft, set = (id, fn) => { const el = $("#" + id); if (el) fn(el); };
   set("pvTitle", el => { el.textContent = d.name || "Your event name"; el.classList.toggle("ph", !d.name); });
   set("pvWhen", el => { el.textContent = d.date ? fmtDate(d.date) : ""; });
@@ -1308,29 +1367,32 @@ function updatePreview() {
   set("pvBg", el => { el.style.opacity = BGS[d.bg][1] ? 1 : 0; if (BGS[d.bg][1]) el.src = `assets/new-event/bgfull-${d.bg}.jpg`; });
 }
 const wzDesign = () => `
-  <div class="nw-head"><h1>Design your event card</h1><p>Name your event, then pick a style and an illustration. The card updates as you go.</p></div>
+  <div class="nw-form">
+  <div class="nw-head"><h1>Create New Event</h1><p>Name your event, then pick a style and an illustration. The card updates as you go.</p></div>
   <div class="nw-fields">
-    <div class="nw-field"><label class="nw-label" for="wn">Event Name<i aria-hidden="true">*</i></label>
-      <input class="nw-input" id="wn" maxlength="40" value="${esc(draft.name)}" placeholder="Yasser’s Wedding" required aria-describedby="wnerr" autocomplete="off"><div class="nw-err" id="wnerr"></div></div>
-    <div class="nw-field loose"><span class="nw-label" id="bgLbl">Event Style<i aria-hidden="true">*</i></span>
+    <div class="nw-field loose"><span class="nw-label" id="bgLbl">Event Theme<i aria-hidden="true">*</i></span>
       <div class="nw-styles" role="radiogroup" aria-labelledby="bgLbl">${BGS.map(([l, c], i) => `
-        <button type="button" class="nw-sw" data-bg="${i}" role="radio" aria-checked="${draft.bg === i}" aria-label="${l} style" title="${l}" style="${c ? `background-image:url(assets/new-event/sw-${i}.jpg);--glow:${c}` : "--glow:rgba(255,255,255,.4)"}"></button>`).join("")}</div></div>
-    <div class="nw-field loose"><span class="nw-label" id="ilLbl">Illustration</span>
-      <div class="nw-ills" role="radiogroup" aria-labelledby="ilLbl">${Object.entries(ILLS).map(([k, il]) => `
-        <button type="button" class="nw-ill" data-illus="${k}" role="radio" aria-checked="${draft.illus === k}" aria-label="${il.label}" title="${il.label}">${il.src ? `<img src="${il.src}" alt="">` : `<span>None</span>`}</button>`).join("")}</div></div>
-  </div>
-  <div class="nw-actions"><a class="nw-btn ghost" href="#/dashboard">Cancel</a><button class="nw-btn primary" data-next>Continue</button></div>`;
-const wzDetails = () => `
-  <div class="nw-head"><h1>Add the details</h1><p>The date goes on the front of the card. Your description is written on the back.</p></div>
-  <div class="nw-fields">
+        <button type="button" class="nw-sw" data-bg="${i}" role="radio" aria-checked="${draft.bg === i}" aria-label="${l} theme" title="${l}" style="${c ? `background-image:url(assets/new-event/sw-${i}.jpg);--glow:${c}` : "--glow:rgba(255,255,255,.4)"}"></button>`).join("")}</div></div>
+    <div class="nw-field"><label class="nw-label" for="wn">Event Name<i aria-hidden="true">*</i></label>
+      <input class="nw-input" id="wn" maxlength="40" value="${esc(draft.name)}" placeholder="Mohamed Birthday" required aria-describedby="wnerr" autocomplete="off"><div class="nw-err" id="wnerr"></div></div>
     <div class="nw-field"><label class="nw-label" for="wd">Event Date<i aria-hidden="true">*</i></label>
       <div class="nw-date ${draft.date ? "" : "blank"}"><input class="nw-input" id="wd" type="date" value="${esc(draft.date)}" required aria-describedby="wderr"><img src="assets/new-event/icon-calendar.png" alt="" width="20" height="20"></div><div class="nw-err" id="wderr"></div></div>
     <div class="nw-field loose"><label class="nw-label" for="wde">Description</label>
       <textarea class="nw-input" id="wde" maxlength="240" placeholder="Write a short note for your guests…" aria-describedby="wdecount">${esc(draft.desc)}</textarea>
       <div class="nw-count" id="wdecount">${draft.desc.length}/240</div></div>
-  </div>
+  </div></div>
+  <div class="nw-actions"><a class="nw-btn ghost" href="#/dashboard">Cancel</a><button class="nw-btn primary" data-next>Continue</button></div>`;
+const wzDetails = () => `
+  <div class="nw-form">
+  <div class="nw-head"><h1>Pick an illustration</h1><p>It's printed on the card, under your event name. More illustrations are on the way.</p></div>
+  <div class="nw-fields">
+    <div class="nw-field loose"><span class="nw-label" id="ilLbl">Illustration</span>
+      <div class="nw-ills" role="radiogroup" aria-labelledby="ilLbl">${Object.entries(ILLS).map(([k, il]) => `
+        <button type="button" class="nw-ill" data-illus="${k}" role="radio" aria-checked="${draft.illus === k}" aria-label="${il.label}" title="${il.label}">${il.src ? `<img src="${il.src}" alt="">` : `<span>None</span>`}</button>`).join("")}</div></div>
+  </div></div>
   <div class="nw-actions"><button class="nw-btn ghost" data-prev>Back</button><button class="nw-btn primary" data-next>Continue</button></div>`;
 const wzAccess = () => `
+  <div class="nw-form">
   <div class="nw-head"><h1>Who can join?</h1><p>Choose how guests get in and how long they can add photos.</p></div>
   <div class="nw-fields">
     <div class="nw-field loose"><span class="nw-label">Access</span><div class="nw-choices">
@@ -1342,21 +1404,23 @@ const wzAccess = () => `
     </div></div>
     <div class="nw-toggle"><div><b style="font-size:14px">Show in Explore</b><p>Anyone on KLIK can view this album. Guests are told before they publish.</p></div>
       <button type="button" class="switch" role="switch" aria-checked="${draft.public}" id="wpub" aria-label="Show in Explore"></button></div>
-  </div>
+  </div></div>
   <div class="nw-actions"><button class="nw-btn ghost" data-prev>Back</button><button class="nw-btn primary" data-next>Continue</button></div>`;
 const wzReview = first => `
+  <div class="nw-form">
   <div class="nw-head"><h1>Review your event</h1><p>The card on the left is what guests will see. You can change any of this later in Settings.</p></div>
   <div class="nw-fields">
     <div class="nw-summary">
-      ${[["Card", `${esc(draft.name)}, ${BGS[draft.bg][0]} style, ${ILLS[draft.illus].label.toLowerCase()}`, 0],
-         ["Date", fmtDate(draft.date), 1],
-         ["Description", draft.desc ? esc(draft.desc) : "None", 1],
+      ${[["Event", `${esc(draft.name)}, ${BGS[draft.bg][0]} theme`, 0],
+         ["Date", fmtDate(draft.date), 0],
+         ["Description", draft.desc ? esc(draft.desc) : "None", 0],
+         ["Illustration", ILLS[draft.illus].label, 1],
          ["Who can join", draft.access === "open" ? "Anyone with the link" : "Guests you approve", 2],
          ["Upload window", WINDOWS[draft.window][0], 2],
          ["Visibility", draft.public ? "Shown in Explore" : "Private, link only", 2],
          ["Plan", "Free, up to 20 photos", -1]].map(([k, v, st]) => `<div><span>${k}</span><em>${v}</em>${st >= 0 ? `<button type="button" class="nw-edit" data-goto="${st}" aria-label="Edit ${k.toLowerCase()}">Edit</button>` : "<i></i>"}</div>`).join("")}
     </div>
-  </div>
+  </div></div>
   <div class="nw-actions"><button class="nw-btn ghost" data-prev>Back</button><button class="nw-btn primary" data-create>Create event</button></div>`;
 // 3D card: drag to rotate (with a little momentum), or jump to Front / Side / Back.
 const card3d = { x: 4, y: -14, vx: 0, vy: 0, raf: 0 };
@@ -1416,13 +1480,13 @@ function bindNew() {
   const p = $("#wpub"); if (p) p.onclick = () => { draft.public = !draft.public; rerender(); };
   const n = $("[data-next]", wz); if (n) n.onclick = () => {
     keep();
-    const errs = draft.step === 0 ? [["wn", !draft.name, "Give your event a name."]] : draft.step === 1 ? [["wd", !draft.date, "Pick the date of your event."]] : [];
+    const errs = draft.step === 0 ? [["wn", !draft.name, "Give your event a name."], ["wd", !draft.date, "Pick the date of your event."]] : [];
     {
       errs.forEach(([id, bad, msg]) => { $("#" + id).setAttribute("aria-invalid", bad); $(`#${id}err`).textContent = bad ? msg : ""; });
       const firstBad = errs.find(e => e[1]); if (firstBad) return $("#" + firstBad[0]).focus();
     }
     draft.step++; rerender();
-    if (draft.step !== 1 && card3d.turn) card3d.turn(0, 0);
+    if (card3d.turn) card3d.turn(0, 0);
   };
   $$("[data-goto]", wz).forEach(b => b.onclick = () => { draft.step = +b.dataset.goto; rerender(); });
   const pr = $("[data-prev]", wz); if (pr) pr.onclick = () => { keep(); draft.step--; rerender(); };

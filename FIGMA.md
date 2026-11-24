@@ -51,6 +51,8 @@ All frames are 1512 px wide desktop captures. They are currently named "Code - /
 
 These screens exist in code but have no frame yet: dashboard (`#/dashboard`), guest join and request sent (`#/join/:id`), guest album and My photos (`#/e/:id`), gallery and journal with photos, booth while shooting and review, publish dialog, explore (`#/explore`), mobile layouts, and the Arabic version.
 
+| [2062:10243](https://www.figma.com/design/QWop4fDpniRYeC6xhK9Zh7/Klik?node-id=2062-10243) | New event wizard v3 | Site nav on top, dark panel tinted by the chosen theme, progress bar Cover / Details / Access / Review. Step 1 Cover = theme, name, date, description. White dot-grid card, title above the pink illustration, 3D badge. Step 2 Details = illustration choice (not in the frame yet). |
+
 ## Landing intro (Figma page 2001:24, frames Desktop 1–10)
 Loader: black screen, white polaroid (316×356) with the KLIK tag, six photos flash in it (230 ms each). Then the light grey (#f4f4f4) panel wipes up (850 ms), and the hero (Desktop 10) plays: headline lines slide up, photo arc rises from below, centre first. Tap, Space or Esc skips. Plays once per page load; skipped with reduced motion.
 Missing asset: the far-right photo in 2052:3543 (orange blossom) is off-canvas and could not be exported. The slot reuses the far-left photo for now.
