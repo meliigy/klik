@@ -917,6 +917,25 @@ body.booth-mode .nav,body.booth-mode .footer{display:none}
 @media (max-width:980px){.pick-grid.many{grid-template-columns:repeat(3,minmax(0,150px))}}
 @media (max-width:640px){.pick-grid.many{grid-template-columns:repeat(2,minmax(0,150px))}.tut-way{grid-template-columns:1fr}.tut-way .tut-btns{justify-self:start}}
 
+
+/* camera extras: effects + face stickers bar, group chip, film badge, event filter */
+body.booth-mode #app{padding-top:0}
+body.booth-mode .btn.red{background:#F5F1EA;color:#141110;border-color:#F5F1EA}body.booth-mode .btn.red:hover{background:#e6ded1}
+.fxbar{position:absolute;left:16px;top:64px;z-index:4;display:grid;grid-template-columns:44px 44px;column-gap:6px;row-gap:6px;padding:8px;border-radius:12px;justify-items:center}
+.fxbar .fxl{font:400 9.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:rgba(245,241,234,.55);text-align:center}
+.fxcol{display:flex;flex-direction:column;gap:6px}
+.fxbar button{width:40px;height:40px;border-radius:10px;border:1px solid rgba(245,241,234,.16);color:#F5F1EA;font:600 15px var(--sans);display:grid;place-items:center;transition:background .15s}
+.fxbar button:hover{background:rgba(245,241,234,.1)}
+.fxbar button[aria-pressed=true]{background:#F5F1EA;color:#141110;border-color:#F5F1EA}
+.people{position:absolute;top:108px;left:50%;transform:translateX(-50%);font-size:13px;padding:6px 13px;border-radius:999px;white-space:nowrap}
+.people:empty{display:none}
+.fx.film span::after{content:" ·film";opacity:.55}
+.fx.evf{position:relative}.fx em{position:absolute;top:2px;left:50%;transform:translateX(-50%);font:600 9px var(--mono);letter-spacing:.08em;text-transform:uppercase;background:#F5F1EA;color:#141110;padding:1px 5px;border-radius:3px;font-style:normal}
+.stage.rec::after{content:"● REC";position:absolute;top:18px;right:120px;font:600 12px var(--mono);color:#ff5a4e;letter-spacing:.1em}
+.stage.menu .fxbar,.stage.menu .people,.stage[data-tut] .fxbar,.stage.counting .fxbar{display:none}
+.pick-tag{position:absolute;top:8px;right:8px;font:600 9.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;background:#F5F1EA;color:#141110;padding:2px 6px;border-radius:3px;font-style:normal}
+@media (max-width:760px){.fxbar{top:auto;bottom:86px;left:10px;grid-template-columns:38px 38px}.fxbar button{width:36px;height:36px;font-size:13px}}
+
 /* add photos: tour, type picker, shutter, gesture menus */
 body.booth-mode .modal{color:var(--ink)}body.booth-mode .modal .btn.ghost{color:var(--ink);border-color:var(--rule)}body.booth-mode .modal .vis-opt{color:var(--ink)}
 .stage.menu .carousel,.stage.menu .intensity,.stage.menu .legend,.stage.menu .slots,.stage.menu .shutter,.stage[data-tut] .legend,.stage[data-tut] .slots{display:none}
@@ -1811,6 +1830,8 @@ function tSettings(ev) {
       <div class="field"><label for="ed">Date</label><input class="input" id="ed" type="date" value="${esc(ev.date)}" style="max-width:240px"></div>
       <div class="field"><label for="ede">Description</label><textarea class="input" id="ede" maxlength="240">${esc(ev.desc)}</textarea></div>
       <button class="btn primary" id="saveD">Save changes</button></div></div>
+    <div><div class="group-h">Event filter</div><p class="small muted" style="margin-bottom:12px">Every guest starts with this filter, so the whole album looks like one set. Guests can still change it.</p>
+      <div class="choice-grid"><button class="choice ${!ev.filter ? "on" : ""}" data-sfil=""><b>Guests choose</b><span>No default</span></button>${FILTERS.slice(1).map(f => `<button class="choice ${ev.filter === f.name ? "on" : ""}" data-sfil="${f.name}"><b>${f.name}</b><span>${f.film ? "Film look" : f.pixel ? "Pixel art" : "Colour"}</span></button>`).join("")}</div></div>
     <div><div class="group-h">Access</div><div class="choice-grid">
       <button class="choice wide ${ev.access === "open" ? "on" : ""}" data-sacc="open"><b>Anyone with the link</b><span>Guests join right away.</span></button>
       <button class="choice wide ${ev.access === "approval" ? "on" : ""}" data-sacc="approval"><b>Guests you approve</b><span>Review each request first.</span></button></div></div>
@@ -1823,6 +1844,7 @@ function tSettings(ev) {
 }
 function bindSettings(ev) {
   $("#saveD").onclick = () => { const n = $("#en").value.trim(); if (!n) return toast("Event name can't be empty."); ev.name = n; ev.date = $("#ed").value; ev.desc = $("#ede").value.trim(); save(); toast("Changes saved"); rerender(); };
+  $$("[data-sfil]").forEach(b => b.onclick = () => { ev.filter = b.dataset.sfil; save(); toast(ev.filter ? `Event filter set to ${ev.filter}` : "Guests choose their own filter"); rerender(); });
   $$("[data-sacc]").forEach(b => b.onclick = () => { ev.access = b.dataset.sacc; save(); toast("Access updated"); rerender(); });
   $$("[data-swin]").forEach(b => b.onclick = () => { ev.window = b.dataset.swin; save(); toast("Upload window updated"); rerender(); });
   $("#spub").onclick = () => { ev.public = !ev.public; save(); toast(ev.public ? "Shown in Explore" : "Hidden from Explore"); rerender(); };
@@ -1990,11 +2012,74 @@ const FILTERS = [
   { name: "Sunset", css: "sepia(.35) saturate(1.4) hue-rotate(-10deg) brightness(1.06)", leak: true, vig: .2 },
   { name: "Y2K", css: "saturate(1.6) contrast(1.15) hue-rotate(8deg) brightness(1.05)", grain: .05 },
   { name: "Darkroom", css: "contrast(1.25) brightness(.85) saturate(.8) sepia(.2)", grain: .1, vig: .55 },
+  { name: "Portra", css: "saturate(1.12) contrast(.96) brightness(1.06) sepia(.14) hue-rotate(-6deg)", grain: .07, warm: .12, film: true },
+  { name: "Tri-X", css: "grayscale(1) contrast(1.5) brightness(.93)", grain: .24, vig: .35, film: true },
+  { name: "Polaroid", css: "contrast(.86) brightness(1.1) saturate(.82) sepia(.2)", fade: .16, vig: .22, film: true },
+  { name: "Disposable", css: "saturate(1.45) contrast(1.18) brightness(1.04)", flash: .35, vig: .5, grain: .12, film: true },
   { name: "Mosaic", pixel: 22 }
 ];
 const LAYOUTS = { "1x3": { cols: 1, rows: 3 }, "1x4": { cols: 1, rows: 4 }, "2x2": { cols: 2, rows: 2 }, "1x1": { cols: 1, rows: 1 } };
 const noise = document.createElement("canvas"); noise.width = noise.height = 256;
 { const n = noise.getContext("2d"), d = n.createImageData(256, 256); for (let i = 0; i < d.data.length; i += 4) { const v = Math.random() * 255; d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = 255; } n.putImageData(d, 0, 0); }
+/* GIF encoder (for Boomerang): fixed 252-colour palette with ordered dithering, LZW, looping */
+function encodeGIF(frames, delayCs = 8) {
+  const w = frames[0].width, h = frames[0].height, out = [];
+  const b = (...x) => out.push(...x), w16 = v => b(v & 255, (v >> 8) & 255), str = s => [...s].forEach(c => b(c.charCodeAt(0)));
+  str("GIF89a"); w16(w); w16(h); b(0xF7, 0, 0);
+  for (let i = 0; i < 256; i++) { if (i < 252) { const r = Math.floor(i / 42), g = Math.floor(i / 6) % 7, bl = i % 6; b(Math.round(r * 51), Math.round(g * 42.5), Math.round(bl * 51)); } else b(0, 0, 0); }
+  b(0x21, 0xFF, 0x0B); str("NETSCAPE2.0"); b(3, 1, 0, 0, 0);
+  const bayer = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+  frames.forEach(c => {
+    const d = c.getContext("2d").getImageData(0, 0, w, h).data, idx = new Uint8Array(w * h);
+    for (let y = 0, p = 0; y < h; y++) for (let x = 0; x < w; x++, p++) { const t = (bayer[(y & 3) * 4 + (x & 3)] / 16 - .5), q = p * 4;
+      const r = Math.min(5, Math.max(0, Math.round(d[q] / 51 + t))), g = Math.min(6, Math.max(0, Math.round(d[q + 1] / 42.5 + t))), bl = Math.min(5, Math.max(0, Math.round(d[q + 2] / 51 + t)));
+      idx[p] = r * 42 + g * 6 + bl; }
+    b(0x21, 0xF9, 4, 0); w16(delayCs); b(0, 0); b(0x2C); w16(0); w16(0); w16(w); w16(h); b(0); b(8);
+    const bytes = []; let cur = 0, nb = 0; const emit = (code, size) => { cur |= code << nb; nb += size; while (nb >= 8) { bytes.push(cur & 255); cur >>>= 8; nb -= 8; } };
+    const clear = 256, eoi = 257; let size = 9, next = 258, table = new Map(); emit(clear, size);
+    let prefix = idx[0];
+    for (let i = 1; i < idx.length; i++) { const k = idx[i], key = (prefix << 8) | k, v = table.get(key);
+      if (v !== undefined) { prefix = v; continue; }
+      emit(prefix, size);
+      if (next === 4096) { emit(clear, size); next = 258; size = 9; table = new Map(); }
+      else { if (next >= (1 << size)) size++; table.set(key, next++); }
+      prefix = k; }
+    emit(prefix, size); emit(eoi, size); if (nb > 0) bytes.push(cur & 255);
+    for (let i = 0; i < bytes.length; i += 255) { const chunk = bytes.slice(i, i + 255); b(chunk.length, ...chunk); } b(0);
+  });
+  b(0x3B);
+  let bin = ""; const u = new Uint8Array(out); for (let i = 0; i < u.length; i += 0x8000) bin += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000));
+  return "data:image/gif;base64," + btoa(bin);
+}
+
+/* face stickers drawn on the live view and baked into the photo */
+const FACE_STICKERS = [["none", "None", "∅"], ["shades", "Shades", "🕶️"], ["crown", "Crown", "👑"], ["hearts", "Hearts", "💕"], ["bunny", "Bunny", "🐰"], ["mustache", "Mustache", "🥸"], ["hat", "Party hat", "🎉"]];
+function drawSticker(ctx, kind, F, t) {
+  const [e1, e2] = [F.k[0], F.k[1]].sort((a, b) => a.x - b.x), nose = F.k[2], mouth = F.k[3];
+  const d = Math.hypot(e2.x - e1.x, e2.y - e1.y), ang = Math.atan2(e2.y - e1.y, e2.x - e1.x), cx = (e1.x + e2.x) / 2, cy = (e1.y + e2.y) / 2, fw = F.w, top = F.y;
+  ctx.save();
+  if (kind === "shades") { ctx.translate(cx, cy); ctx.rotate(ang); const r = d * .42;
+    ctx.fillStyle = "rgba(20,17,16,.9)"; ctx.strokeStyle = "#141110"; ctx.lineWidth = d * .09;
+    [-d / 2, d / 2].forEach(x => { rrect(ctx, x - r * 1.05, -r * .7, r * 2.1, r * 1.45, r * .45); ctx.fill(); ctx.stroke(); ctx.save(); ctx.globalAlpha = .35; ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.ellipse(x - r * .45, -r * .25, r * .28, r * .12, -.5, 0, 7); ctx.fill(); ctx.restore(); });
+    ctx.beginPath(); ctx.moveTo(-d / 2 + r * 1.05, -r * .3); ctx.quadraticCurveTo(0, -r * .65, d / 2 - r * 1.05, -r * .3); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(-d / 2 - r * 1.05, -r * .3); ctx.lineTo(-d * 1.05, -r * .1); ctx.moveTo(d / 2 + r * 1.05, -r * .3); ctx.lineTo(d * 1.05, -r * .1); ctx.stroke(); }
+  if (kind === "mustache") { const mx = nose.x + (mouth.x - nose.x) * .55, my = nose.y + (mouth.y - nose.y) * .55; ctx.translate(mx, my); ctx.rotate(ang); const s = d * .6; ctx.fillStyle = "#141110";
+    ctx.beginPath(); ctx.moveTo(0, -s * .12); ctx.bezierCurveTo(s * .5, -s * .45, s * 1.1, -s * .2, s * 1.15, s * .25); ctx.bezierCurveTo(s * .8, 0, s * .4, s * .18, 0, s * .1);
+    ctx.bezierCurveTo(-s * .4, s * .18, -s * .8, 0, -s * 1.15, s * .25); ctx.bezierCurveTo(-s * 1.1, -s * .2, -s * .5, -s * .45, 0, -s * .12); ctx.fill(); }
+  if (kind === "crown") { ctx.translate(F.x + fw / 2, top - fw * .18); ctx.rotate(ang); ctx.font = `${fw * .8}px serif`; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText("👑", 0, 0); }
+  if (kind === "hearts") { ctx.font = `${fw * .26}px serif`; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    for (let i = 0; i < 4; i++) { const a = t * 1.6 + i * Math.PI / 2; ctx.fillText("❤️", F.x + fw / 2 + Math.cos(a) * fw * .62, top - fw * .05 + Math.sin(a) * fw * .16); } }
+  if (kind === "bunny") { ctx.translate(F.x + fw / 2, top); ctx.rotate(ang);
+    [-1, 1].forEach(sd => { ctx.save(); ctx.translate(sd * fw * .2, -fw * .32); ctx.rotate(sd * .22); ctx.fillStyle = "#FBF9F5"; ctx.strokeStyle = "rgba(20,17,16,.25)"; ctx.lineWidth = fw * .015;
+      ctx.beginPath(); ctx.ellipse(0, 0, fw * .11, fw * .34, 0, 0, 7); ctx.fill(); ctx.stroke(); ctx.fillStyle = "#f2a7b4"; ctx.beginPath(); ctx.ellipse(0, fw * .02, fw * .055, fw * .24, 0, 0, 7); ctx.fill(); ctx.restore(); }); }
+  if (kind === "hat") { ctx.translate(F.x + fw / 2, top + fw * .02); ctx.rotate(ang - .12); const bw = fw * .5, hh = fw * .7;
+    ctx.beginPath(); ctx.moveTo(-bw / 2, 0); ctx.lineTo(0, -hh); ctx.lineTo(bw / 2, 0); ctx.closePath(); ctx.fillStyle = "#d38960"; ctx.fill(); ctx.save(); ctx.clip();
+    ctx.strokeStyle = "#F5F1EA"; ctx.lineWidth = fw * .05; for (let i = 1; i < 5; i++) { ctx.beginPath(); ctx.moveTo(-bw, -hh * i / 5 + fw * .1); ctx.lineTo(bw, -hh * i / 5 - fw * .1); ctx.stroke(); } ctx.restore();
+    ctx.fillStyle = "#F5F1EA"; ctx.beginPath(); ctx.arc(0, -hh, fw * .07, 0, 7); ctx.fill(); }
+  ctx.restore();
+}
+let faceDet = null;
+
 let recognizer = null, B = null;
 
 function boothAccess(id) {
@@ -2179,7 +2264,10 @@ function vBooth(id) {
     <div class="stage" id="stage">
       <video id="video" playsinline muted></video><canvas id="view" width="960" height="720"></canvas>
       <div class="shade t"></div><div class="shade b"></div><div class="shade s ui"></div>
-      <div class="slots" id="slots"></div><div class="bstep glass ui" id="bstep"></div>
+      <div class="slots" id="slots"></div><div class="bstep glass ui" id="bstep"></div><div class="people glass ui" id="people" aria-live="polite"></div>
+      <div class="fxbar glass ui" id="fxbar"><span class="fxl">Effects</span><span class="fxl">Face</span>
+        <div class="fxcol"><button data-fx="leak" aria-pressed="false" title="Light leak">☀︎</button><button data-fx="dust" aria-pressed="false" title="Dust and scratches">✦</button><button data-fx="date" aria-pressed="false" title="Date stamp">'26</button></div>
+        <div class="fxcol">${FACE_STICKERS.map(([k, l, e]) => `<button data-face="${k}" aria-pressed="${k === "none"}" title="${l}">${e}</button>`).join("")}</div></div>
       <div class="bhint glass ui" id="bhint" role="status" aria-live="polite"></div>
       <div class="fname ui" id="fname"><b id="fnameB"></b></div>
       <div class="cmark ui"></div><div class="carousel ui" id="carousel"><div class="track" id="track"></div></div>
@@ -2231,7 +2319,7 @@ function vBooth(id) {
 
 function boothTeardown() {
   if (!B) return;
-  B.running = false; clearTimeout(B.cdTimer);
+  B.running = false; clearTimeout(B.cdTimer); clearInterval(B.boomT);
   B.stream?.getTracks().forEach(t => t.stop());
   document.removeEventListener("keydown", B.onKey); window.removeEventListener("resize", B.onResize);
   B = null;
@@ -2242,7 +2330,7 @@ function boothInit(eventId) {
   const W = 960, H = 720, video = $("#video"), vctx = $("#view").getContext("2d");
   const tmp = document.createElement("canvas"), tctx = tmp.getContext("2d");
   const st = B = { running: false, stream: null, cdTimer: null, onKey: null, onResize: null };
-  let mode = "booth", D = LAYOUTS2.strip3, bopts = null, state = "intro", gIdx = 0, gScope = "", tutStep = 0, tutBase = { f: 0, a: 1 }, tutDone = false, current = 0, pos = 0, total = 3, shots = [], targetIdx = 0, retaking = false, timer = 3, sound = true;
+  let fxOn = { leak: false, dust: false, date: false }, face = "none", faces = [], lastGroupAt = 0, boomFrames = [], boomCards = [], mode = "booth", D = LAYOUTS2.strip3, bopts = null, state = "intro", gIdx = 0, gScope = "", tutStep = 0, tutBase = { f: 0, a: 1 }, tutDone = false, current = 0, pos = 0, total = 3, shots = [], targetIdx = 0, retaking = false, timer = 3, sound = true;
   const SET = { pinch: .32, step: .07, istep: .3, conf: .6, hold: 800 };
   const amounts = FILTERS.map(() => 1), amt = () => amounts[current];
 
@@ -2259,13 +2347,43 @@ function boothInit(eventId) {
       else { ctx.filter = f.css; ctx.drawImage(video, sx, sy, sw, sh, 0, 0, w, h); }
     }
     ctx.restore();
-    if (!fx || a <= 0) return;
+    if (!fx) return;
+    drawExtras(ctx, w, h, sx, sy, sw, sh);
+    if (a <= 0) return;
     ctx.save();
+    if (f.warm) { ctx.globalCompositeOperation = "soft-light"; ctx.fillStyle = `rgba(255,170,90,${f.warm * 2 * a})`; ctx.fillRect(0, 0, w, h); }
+    if (f.fade) { ctx.globalCompositeOperation = "screen"; ctx.fillStyle = `rgba(255,244,230,${f.fade * a})`; ctx.fillRect(0, 0, w, h); }
+    if (f.flash) { ctx.globalCompositeOperation = "screen"; const g = ctx.createRadialGradient(w / 2, h * .45, 0, w / 2, h * .45, h * .6); g.addColorStop(0, `rgba(255,255,255,${f.flash * a})`); g.addColorStop(1, "rgba(255,255,255,0)"); ctx.fillStyle = g; ctx.fillRect(0, 0, w, h); }
+    ctx.globalCompositeOperation = "source-over";
     if (f.leak) { const g = ctx.createLinearGradient(0, 0, w, h * .6); g.addColorStop(0, `rgba(255,140,60,${.35 * a})`); g.addColorStop(.5, "rgba(255,90,90,0)"); ctx.globalCompositeOperation = "screen"; ctx.fillStyle = g; ctx.fillRect(0, 0, w, h); }
     if (f.grain) { ctx.globalCompositeOperation = "overlay"; ctx.globalAlpha = f.grain * 2 * a; ctx.fillStyle = ctx.createPattern(noise, "repeat"); ctx.translate(Math.random() * 256, Math.random() * 256); ctx.fillRect(-256, -256, w + 512, h + 512); ctx.setTransform(1, 0, 0, 1, 0, 0); }
     if (f.vig) { ctx.globalCompositeOperation = "multiply"; ctx.globalAlpha = 1; const g = ctx.createRadialGradient(w / 2, h / 2, h * .35, w / 2, h / 2, h * .85); g.addColorStop(0, "rgba(0,0,0,0)"); g.addColorStop(1, `rgba(0,0,0,${f.vig * a})`); ctx.fillStyle = g; ctx.fillRect(0, 0, w, h); }
     ctx.restore();
   }
+
+
+  /* overlays: face stickers, light leak, dust, date stamp */
+  function drawExtras(ctx, w, h, sx, sy, sw, sh) {
+    const vw = video.videoWidth, vh = video.videoHeight, t = performance.now() / 1000;
+    if (face !== "none" && faces.length) { const map = (x, y) => ({ x: w - (x * vw - sx) / sw * w, y: (y * vh - sy) / sh * h });
+      faces.forEach(det => { const bb = det.boundingBox, k = det.keypoints || []; if (!bb || k.length < 4) return;
+        const p1 = map(bb.originX / vw, bb.originY / vh), p2 = map((bb.originX + bb.width) / vw, (bb.originY + bb.height) / vh);
+        drawSticker(ctx, face, { x: Math.min(p1.x, p2.x), y: p1.y, w: Math.abs(p2.x - p1.x), k: k.map(q => map(q.x, q.y)) }, t); }); }
+    ctx.save();
+    if (fxOn.leak) { ctx.globalCompositeOperation = "screen";
+      [[.18 + .12 * Math.sin(t * .7), .2 + .12 * Math.cos(t * .5), "255,120,40", .5], [.86 - .1 * Math.sin(t * .4), .82 + .08 * Math.cos(t * .6), "255,60,90", .32]].forEach(([x, y, c, al]) => {
+        const g = ctx.createRadialGradient(w * x, h * y, 0, w * x, h * y, h * .75); g.addColorStop(0, `rgba(${c},${al})`); g.addColorStop(1, `rgba(${c},0)`); ctx.fillStyle = g; ctx.fillRect(0, 0, w, h); }); }
+    if (fxOn.dust) { ctx.globalCompositeOperation = "source-over";
+      for (let i = 0; i < 46; i++) { ctx.fillStyle = Math.random() < .5 ? "rgba(255,255,255,.55)" : "rgba(20,17,16,.45)"; ctx.beginPath(); ctx.arc(Math.random() * w, Math.random() * h, Math.random() * 1.8 + .3, 0, 7); ctx.fill(); }
+      ctx.strokeStyle = "rgba(255,255,255,.22)"; ctx.lineWidth = 1; for (let i = 0; i < 2; i++) { const x = Math.random() * w; ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x + (Math.random() - .5) * 20, h); ctx.stroke(); } }
+    if (fxOn.date) { const d = acc.ev && acc.ev.date ? new Date(acc.ev.date + "T12:00") : new Date(), txt = `'${String(d.getFullYear()).slice(2)}  ${String(d.getMonth() + 1).padStart(2, "0")}  ${String(d.getDate()).padStart(2, "0")}`;
+      ctx.globalCompositeOperation = "source-over"; ctx.font = `700 ${Math.round(h * .052)}px "Fragment Mono", ui-monospace, monospace`; ctx.textAlign = "right"; ctx.textBaseline = "alphabetic";
+      ctx.shadowColor = "rgba(255,120,20,.9)"; ctx.shadowBlur = h * .02; ctx.fillStyle = "#ff8a1f"; ctx.fillText(txt, w * .94, h * .93); }
+    ctx.restore();
+  }
+  function updatePeople() { const n = faces.length; if (n >= 3) lastGroupAt = performance.now();
+    const el = $("#people"); if (!el) return; const txt = n >= 2 ? `👥 Group shot · ${n} people` : ""; if (el.textContent !== txt) el.textContent = txt; }
+  const groupRecent = () => performance.now() - lastGroupAt < 10000;
 
   /* sounds */
   let actx = null;
@@ -2276,10 +2394,12 @@ function boothInit(eventId) {
   async function startCamera() { st.stream = await navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 1280 }, height: { ideal: 960 }, facingMode: "user" }, audio: false }); video.srcObject = st.stream; await video.play(); }
   async function loadModel() {
     if (recognizer) return;
-    const { FilesetResolver, GestureRecognizer } = await import("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14");
+    const { FilesetResolver, GestureRecognizer, FaceDetector } = await import("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14");
     const vision = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm");
     const o = d => ({ baseOptions: { modelAssetPath: "https://storage.googleapis.com/mediapipe-models/gesture_recognizer/gesture_recognizer/float16/1/gesture_recognizer.task", delegate: d }, runningMode: "VIDEO", numHands: 2, minHandDetectionConfidence: .6, minHandPresenceConfidence: .6, minTrackingConfidence: .6 });
     try { recognizer = await GestureRecognizer.createFromOptions(vision, o("GPU")); } catch { recognizer = await GestureRecognizer.createFromOptions(vision, o("CPU")); }
+    if (FaceDetector && !faceDet) { const fo = d => ({ baseOptions: { modelAssetPath: "https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite", delegate: d }, runningMode: "VIDEO", minDetectionConfidence: .5 });
+      FaceDetector.createFromOptions(vision, fo("GPU")).catch(() => FaceDetector.createFromOptions(vision, fo("CPU"))).then(f => faceDet = f).catch(() => {}); }
   }
 
   /* loop */
@@ -2289,6 +2409,7 @@ function boothInit(eventId) {
     const live = ["choose", "countdown", "tutorial", "pick"].includes(state);
     if ((live || state === "review" || state === "edit") && video.readyState >= 2) {
       const now = performance.now();
+      if (live && faceDet && frame % 2 === 0 && (face !== "none" || frame % 8 === 0)) { try { faces = faceDet.detectForVideo(video, now + .5).detections || []; } catch { faces = []; } updatePeople(); }
       if (live) { drawFiltered(vctx, FILTERS[current], W, H, true, amt()); if (++frame % 4 === 0) thumbs.forEach((c, i) => drawFiltered(c.getContext("2d"), FILTERS[i], 120, 120, false)); }
       else drawMini();
       if (recognizer && video.currentTime !== lastT) { lastT = video.currentTime; process(recognizer.recognizeForVideo(video, now), now); fc++; if (now - ft > 1000) { fps = fc; fc = 0; ft = now; } }
@@ -2383,7 +2504,8 @@ function boothInit(eventId) {
     ["single", "Single photo", "One shot, framed and ready", () => SINGLE],
     ["booth", "Photo booth", "Strips, rows and grids", () => LAYOUTS2.strip4],
     ["frame", "Frame booth", "Pick a designed frame first", () => FRAMES.velvet],
-    ["build", "Build your own", "Shoot, then add a frame and text", () => buildDesign(defaultBuild())]
+    ["build", "Build your own", "Shoot, then add a frame and text", () => buildDesign(defaultBuild())],
+    ["boom", "Boomerang", "A looping GIF, back and forth", () => SINGLE]
   ];
   function defaultBuild() { return { frame: "stamp", color: "#FBF9F5", bg: "plain", font: "type", caption: meta().title, date: true, stickers: [] }; }
   async function previews() { await Promise.all([...PREVIEW_IMGS.map(i => i.decode().catch(() => {})), document.fonts.load('400 20px "La Machine Company"').catch(() => {}), document.fonts.load('700 20px "Caveat"').catch(() => {})]);
@@ -2395,16 +2517,17 @@ function boothInit(eventId) {
     $("#pickHead").innerHTML = `<p class="eyebrow">${step}</p><h2>${title}</h2><p class="pick-help"><span>🤏 ↔</span> Pinch and slide to move <span>✌️</span> Hold a peace sign to choose <em>or click</em></p>`;
     $("#pickGrid").className = "pick-grid" + (items.length > 4 ? " many" : "");
     $("#pickGrid").innerHTML = (backTo ? `<button class="pick-card back" data-gi data-back><span class="pick-vis">←</span><b>Back</b><small>${backTo}</small></button>` : "") +
-      items.map((it, i) => `<button class="pick-card" data-gi data-i="${i}" role="radio" aria-checked="false"><span class="pick-vis"><canvas data-prev></canvas></span><b>${it.name}</b><small>${it.sub}</small></button>`).join("");
+      items.map((it, i) => `<button class="pick-card" data-gi data-i="${i}" role="radio" aria-checked="false">${it.tag ? `<em class="pick-tag">${it.tag}</em>` : ""}${it.name === "Boomerang" ? `<em class="pick-tag">GIF</em>` : ""}<span class="pick-vis"><canvas data-prev></canvas></span><b>${it.name}</b><small>${it.sub}</small></button>`).join("");
     $$("#pickGrid canvas[data-prev]").forEach((c, i) => c._d = items[i].d);
     $$("#pickGrid [data-i]").forEach(b => b.onclick = () => items[+b.dataset.i].go());
     const bk = $("#pickGrid [data-back]"); if (bk) bk.onclick = enterMode;
-    gScope = ""; gIdx = backTo ? 1 : 0; gFocus(gIdx, true); previews(); }
+    clearInterval(st.boomT); gScope = ""; const ti = items.findIndex(x => x.tag); gIdx = (backTo ? 1 : 0) + (ti > 0 ? ti : 0); gFocus(gIdx, true); previews(); }
   function enterMode() { showPicker("Step 2", "What do you want to take?", "", MODES.map(([k, name, sub, d]) => ({ name, sub, d: d(), go: () => pickMode(k) }))); }
   function pickMode(k) {
     if (k === "single") return startDesign(SINGLE, "single");
+    if (k === "boom") return startDesign(SINGLE, "boom");
     if (k === "build") { bopts = defaultBuild(); return startDesign(buildDesign(bopts), "build"); }
-    if (k === "booth") return showPicker("Photo booth", "Choose a layout", "", Object.values(LAYOUTS2).map(d => ({ name: d.name, sub: d.sub, d, go: () => startDesign(d, "booth") })), "All options");
+    if (k === "booth") { const grp = groupRecent(); return showPicker("Photo booth", grp ? "Choose a layout · wide ones fit a group" : "Choose a layout", "", Object.entries(LAYOUTS2).map(([key, d]) => ({ name: d.name, sub: d.sub, d, tag: grp && ["row3", "grid4", "feature"].includes(key) ? "Good for groups" : "", go: () => startDesign(d, "booth") })), "All options"); }
     showPicker("Frame booth", "Choose a frame", "", Object.values(FRAMES).map(d => ({ name: d.name, sub: d.sub, d, go: () => startDesign(d, "frame") })), "All options");
   }
   function startDesign(d, m) { D = d; mode = m; total = d.n; shots = []; targetIdx = 0; retaking = false;
@@ -2471,6 +2594,7 @@ function boothInit(eventId) {
   function cancelCountdown() { if (state !== "countdown") return; clearTimeout(st.cdTimer); showCount(""); $("#stage").classList.remove("counting"); state = "choose"; }
   function showCount(n) { const c = $("#count"); c.textContent = n; c.classList.remove("pop"); void c.offsetWidth; $("#smile").classList.toggle("show", n === 1); if (n !== "") { c.classList.add("pop"); beep(n === 1 ? 1320 : 880); } }
   function capture() {
+    if (mode === "boom") return captureBurst();
     shutter(); $("#flash").style.opacity = 1; setTimeout(() => $("#flash") && ($("#flash").style.opacity = 0), 200);
     const c = document.createElement("canvas"); c.width = W; c.height = H; drawFiltered(c.getContext("2d"), FILTERS[current], W, H, true, amt());
     const idx = targetIdx; shots[idx] = c; $("#stage").classList.remove("counting");
@@ -2479,8 +2603,15 @@ function boothInit(eventId) {
     if (targetIdx >= total) { renderSlots(idx); setTimeout(mode === "build" ? enterEdit : enterReview, 600); } else { enterChoose(); renderSlots(idx); }
   }
 
+  function captureBurst() {
+    shutter(); const frames = []; let i = 0; $("#bstep").textContent = "Recording…"; $("#stage").classList.add("rec");
+    const grab = () => { const c = document.createElement("canvas"); c.width = 480; c.height = 360; drawFiltered(c.getContext("2d"), FILTERS[current], 480, 360, true, amt()); frames.push(c);
+      if (++i < 12) return setTimeout(grab, 85);
+      boomFrames = frames; shots[0] = frames[6]; retaking = false; $("#stage").classList.remove("counting", "rec"); renderSlots(0); setTimeout(enterReview, 250); };
+    grab();
+  }
   /* screens */
-  function enterChoose() { state = "choose"; $("#stage").style.display = ""; $("#breview").classList.remove("show"); $("#bedit").classList.remove("show");
+  function enterChoose() { clearInterval(st.boomT); state = "choose"; $("#stage").style.display = ""; $("#breview").classList.remove("show"); $("#bedit").classList.remove("show");
     $("#bstep").textContent = retaking ? `Retaking shot ${targetIdx + 1}` : `Shot ${targetIdx + 1} of ${total}`; renderSlots(); renderCarousel(); }
   async function enterReview() { state = "review"; gScope = ""; gIdx = 0; $("#bedit").classList.remove("show"); $("#editBtn").style.display = mode === "build" ? "" : "none"; await buildStrip(); $("#stage").style.display = "none"; $("#breview").classList.add("show"); ($("#pubBtn") || $("#saveBtn")).focus(); }
   function renderSlots(popIdx = -1) {
@@ -2496,6 +2627,9 @@ function boothInit(eventId) {
       const c = document.createElement("canvas"); c.width = c.height = 120; thumbs.push(c); const s = document.createElement("span"); s.textContent = f.name; d.append(c, s);
       d.onclick = () => selectFilter(i); $("#track").appendChild(d); });
   })();
+  { const evF = acc.ev && acc.ev.filter ? FILTERS.findIndex(f => f.name === acc.ev.filter) : -1;
+    if (evF > 0) { current = evF; pos = evF; const el = $$("#track .fx")[evF]; el.classList.add("evf"); el.insertAdjacentHTML("beforeend", "<em>Event</em>"); } }
+  $$("#track .fx").forEach((el, i) => FILTERS[i].film && el.classList.add("film"));
   function selectFilter(i) { if (state !== "choose" && state !== "tutorial") return; current = i; pos = i; renderCarousel(); showName(); }
   function renderCarousel() { const ch = $("#carousel").clientHeight; $("#track").style.transform = `translateY(${ch / 2 - 48 - pos * 96}px)`; $$("#track .fx").forEach((el, i) => el.classList.toggle("on", i === current)); renderIntensity(); }
   function renderIntensity() { const p = Math.round(amt() * 100); $("#iFill").style.width = p + "%"; $("#iKnob").style.left = p + "%"; $("#iVal").textContent = p + "%"; $("#intensity").classList.toggle("dim", current === 0); }
@@ -2506,13 +2640,20 @@ function boothInit(eventId) {
   async function buildStrip() {
     await Promise.all([document.fonts.load('700 40px "Switzer"'), document.fonts.load('400 16px "Fragment Mono"'), document.fonts.load('400 20px "La Machine Company"'), document.fonts.load('700 20px "Caveat"')].map(p => p.catch(() => {})));
     logoImg("#141110"); logoImg("#F5F1EA"); await new Promise(r => setTimeout(r, 40));
-    const d = mode === "build" ? buildDesign(bopts) : D, s = $("#strip"), rects = renderDesign(s, d, shots, meta(), 1);
+    const s = $("#strip"); let rects;
+    if (mode === "boom") {
+      const seq = [...boomFrames, ...boomFrames.slice(1, -1).reverse()];
+      boomCards = seq.map(f => { const card = document.createElement("canvas"); renderDesign(card, SINGLE, [f], meta(), .5); const c = document.createElement("canvas"); c.width = card.width; c.height = card.height; const g = c.getContext("2d"); g.fillStyle = "#F5F1EA"; g.fillRect(0, 0, c.width, c.height); g.drawImage(card, 0, 0); return c; });
+      s.width = boomCards[0].width; s.height = boomCards[0].height; const g = s.getContext("2d"); let k = 0; clearInterval(st.boomT);
+      st.boomT = setInterval(() => { if (!s.isConnected) return clearInterval(st.boomT); g.drawImage(boomCards[k++ % boomCards.length], 0, 0); }, 80);
+      rects = renderDesign(document.createElement("canvas"), SINGLE, [boomFrames[0]], meta(), 1).map(q => q && ({ x: q.x * .5, y: q.y * .5, w: q.w * .5, h: q.h * .5 }));
+    } else rects = renderDesign(s, mode === "build" ? buildDesign(bopts) : D, shots, meta(), 1);
     const wrap = $("#stripWrap"); $$(".hot", wrap).forEach(h => h.remove());
     requestAnimationFrame(() => { const k = s.getBoundingClientRect().width / s.width;
       rects.forEach((q, i) => { if (!q) return; const h = document.createElement("button"); h.className = "hot"; h.textContent = `Retake shot ${i + 1}`;
         Object.assign(h.style, { left: q.x * k + "px", top: q.y * k + "px", width: q.w * k + "px", height: q.h * k + "px" }); h.onclick = () => { retaking = true; targetIdx = i; enterChoose(); }; wrap.appendChild(h); }); });
   }
-  function stripJpeg() { const s = $("#strip"), k = Math.min(1, 900 / s.width), c = document.createElement("canvas"); c.width = s.width * k; c.height = s.height * k;
+  function stripJpeg() { if (mode === "boom") return { url: encodeGIF(boomCards, 8), ar: `${boomCards[0].width}/${boomCards[0].height}` }; const s = $("#strip"), k = Math.min(1, 900 / s.width), c = document.createElement("canvas"); c.width = s.width * k; c.height = s.height * k;
     const g = c.getContext("2d"); g.fillStyle = "#E8EDF3"; g.fillRect(0, 0, c.width, c.height); g.drawImage(s, 0, 0, c.width, c.height); return { url: c.toDataURL("image/jpeg", .86), ar: `${s.width}/${s.height}` }; }
 
   /* publish */
@@ -2549,6 +2690,8 @@ function boothInit(eventId) {
   $("#tuneBtn").onclick = () => $("#tune").classList.toggle("show");
   $("#soundBtn").onclick = () => { sound = !sound; $("#soundBtn").classList.toggle("off", !sound); $("#soundBtn").setAttribute("aria-label", sound ? "Mute sounds" : "Unmute sounds"); };
   $("#cancelBtn").onclick = cancelCountdown;
+  $$("#fxbar [data-fx]").forEach(b => b.onclick = () => { const k = b.dataset.fx; fxOn[k] = !fxOn[k]; b.setAttribute("aria-pressed", fxOn[k]); beep(1000, .03, .04); });
+  $$("#fxbar [data-face]").forEach(b => b.onclick = () => { face = b.dataset.face; $$("#fxbar [data-face]").forEach(x => x.setAttribute("aria-pressed", x === b)); beep(1000, .03, .04); if (face !== "none" && !faceDet) toast("Face stickers are still loading. Give it a second."); });
   $("#shutterBtn").onclick = () => state === "tutorial" ? (tutStep === 2 && tutPeace()) : startCountdown();
   $("#intensity .bar").onclick = e => { if (state !== "choose" && state !== "tutorial") return; const r = e.currentTarget.getBoundingClientRect(); amounts[current] = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)); renderIntensity(); };
   const camOff = () => { cancelCountdown(); st.stream?.getTracks().forEach(t => t.stop()); st.stream = null; st.running = false; state = "off";
@@ -2556,7 +2699,7 @@ function boothInit(eventId) {
   const camOn = async () => { await startCamera(); st.running = true; $("#offOverlay").style.display = "none"; $("#camBtn").classList.remove("off"); $("#camBtn").setAttribute("aria-label", "Turn camera off"); enterChoose(); requestAnimationFrame(loop); };
   $("#camBtn").onclick = () => { if (!recognizer || state === "intro") return; st.stream ? camOff() : camOn(); };
   $("#resumeBtn").onclick = camOn;
-  $("#saveBtn").onclick = () => download($("#strip").toDataURL("image/png"), `klik-${Date.now()}.png`);
+  $("#saveBtn").onclick = () => mode === "boom" ? download(encodeGIF(boomCards, 8), `klik-boomerang-${Date.now()}.gif`) : download($("#strip").toDataURL("image/png"), `klik-${Date.now()}.png`);
   $("#againBtn").onclick = () => { shots = []; targetIdx = 0; retaking = false; enterMode(); };
   $("#editBtn").onclick = enterEdit;
   const pb = $("#pubBtn"); if (pb) pb.onclick = publish;
